@@ -1,0 +1,23 @@
+{
+	"root": true,
+	"extends": ["marine/prettier/react"],
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	},
+	"parser": "@typescript-eslint/parser",
+  	"plugins": ["@typescript-eslint"],
+	"parserOptions": {
+		"project": "./tsconfig.eslint.json"
+	},
+	"rules": {
+		"react/react-in-jsx-scope": 0,
+		"react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
+		"@typescript-eslint/no-use-before-define": ["off"],
+		"@typescript-eslint/prefer-string-starts-ends-with": ["off"],
+    "@typescript-eslint/no-require-imports": ["off"],
+		"no-eq-null": ["off"],
+		"eqeqeq": ["error", "always", {"null": "ignore"}]
+	}
+}
