@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_PAGES: true
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

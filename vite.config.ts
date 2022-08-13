@@ -3,8 +3,10 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
-export default ({ mode }: { mode: string }) =>
-	defineConfig({
+// eslint-disable-next-line arrow-body-style
+export default ({ mode }: { mode: string }) => {
+	return defineConfig({
+		base: process.env.GITHUB_PAGES ? '/riichi-tracker/' : '/',
 		plugins: [
 			react(),
 			VitePWA({
@@ -18,3 +20,4 @@ export default ({ mode }: { mode: string }) =>
 			}),
 		],
 	});
+};
