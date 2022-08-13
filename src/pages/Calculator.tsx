@@ -453,10 +453,10 @@ export default function Calculator() {
 								</ToggleOnOff>
 							</HorizontalRow>
 							<HorizontalRow>
-								<ActionButton t="dora" disabled={hand.dora.length >= 10}>
+								<ActionButton t="dora" disabled={hand.dora.length >= 5}>
 									Add Dora
 								</ActionButton>
-								<ActionButton t="uradora" disabled={hand.riichi == null || hand.uradora.length >= 10}>
+								<ActionButton t="uradora" disabled={hand.riichi == null || hand.uradora.length >= 5}>
 									Add Uradora
 								</ActionButton>
 								<Counter
