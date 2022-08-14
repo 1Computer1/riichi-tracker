@@ -31,7 +31,7 @@ export default function ScoreDisplay({
 			>
 				{score}
 			</button>
-			<div className={clsx(vertical ? 'rotate-90 mx-2 -my-2' : '')}>
+			<div className={clsx(vertical && 'rotate-90 mx-2 -my-2', 'flex flex-col justify-center items-center')}>
 				<TileButton onClick={onTileClick} red={seatWind === '1'} tile={`${seatWind}z`}></TileButton>
 			</div>
 		</div>
