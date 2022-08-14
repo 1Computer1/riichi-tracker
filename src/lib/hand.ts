@@ -130,7 +130,7 @@ export const YakuNames: Record<string, string> = {
 	小四喜: 'Four Little Winds',
 	大三元: 'Three Big Dragons',
 	字一色: 'All Honors',
-	緑一色: 'All Greens',
+	緑一色: 'All Green',
 	清老頭: 'All Terminals',
 	四槓子: 'Four Quads',
 	大七星: 'Big Seven Stars',
