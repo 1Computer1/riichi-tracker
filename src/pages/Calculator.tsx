@@ -60,22 +60,14 @@ export default function Calculator() {
 		switch (action.t) {
 			case 'dora': {
 				updateHand((h) => {
-					if (t[0] === '0') {
-						h.dora.push(`5${t[1]}` as TileCode);
-					} else {
-						h.dora.push(t);
-					}
+					h.dora.push(t);
 					updateAction(null);
 				});
 				break;
 			}
 			case 'uradora': {
 				updateHand((h) => {
-					if (t[0] === '0') {
-						h.uradora.push(`5${t[1]}` as TileCode);
-					} else {
-						h.uradora.push(t);
-					}
+					h.uradora.push(t);
 					updateAction(null);
 				});
 				break;
@@ -91,6 +83,9 @@ export default function Calculator() {
 					updateHand((h) => {
 						h.melds.push({ t: 'chiipon', tiles: sortTiles([...action.tiles, t]) });
 						sortMelds(h.melds);
+						if (h.riichi) {
+							h.riichi = null;
+						}
 					});
 					updateAction(null);
 				}
@@ -101,6 +96,9 @@ export default function Calculator() {
 					const tx = t[0] === '0' ? (`5${t[1]}` as TileCode) : t;
 					h.melds.push({ t: 'chiipon', tiles: [t, tx, tx] });
 					sortMelds(h.melds);
+					if (h.riichi) {
+						h.riichi = null;
+					}
 				});
 				updateAction(null);
 				break;
@@ -110,6 +108,9 @@ export default function Calculator() {
 					const tx = t[0] === '0' ? (`5${t[1]}` as TileCode) : t;
 					h.melds.push({ t: 'kan', closed: false, tiles: [t, tx, tx, tx] });
 					sortMelds(h.melds);
+					if (h.riichi) {
+						h.riichi = null;
+					}
 				});
 				updateAction(null);
 				break;
@@ -119,6 +120,9 @@ export default function Calculator() {
 					const tx = t[0] === '0' ? (`5${t[1]}` as TileCode) : t;
 					h.melds.push({ t: 'kan', closed: true, tiles: [t, tx, tx, tx] });
 					sortMelds(h.melds);
+					if (h.riichi?.double && h.riichi.ippatsu) {
+						h.riichi.ippatsu = false;
+					}
 				});
 				updateAction(null);
 				break;
@@ -186,9 +190,7 @@ export default function Calculator() {
 										updateAction(null);
 										updateHand((h) => {
 											h.tiles.splice(i, 1);
-											if (h.agariIndex === i) {
-												h.agariIndex = -1;
-											} else if (h.agariIndex > i) {
+											if (h.agariIndex >= i) {
 												h.agariIndex -= 1;
 											}
 										});
@@ -321,7 +323,7 @@ export default function Calculator() {
 								<ToggleOnOff
 									toggled={hand.riichi != null}
 									// No riichi if there are melds, except closed kans.
-									disabled={hand.melds.filter((m) => m.t === 'kan' && !m.closed).length > 0}
+									disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
 									// Can swap between riichi and blessings.
 									incompatible={hand.blessing}
 									onToggle={(b) => {
@@ -341,8 +343,12 @@ export default function Calculator() {
 								</ToggleOnOff>
 								<ToggleOnOff
 									toggled={hand.riichi?.double ?? false}
-									disabled={hand.melds.filter((m) => m.t === 'kan' && !m.closed).length > 0}
-									incompatible={hand.riichi == null}
+									disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
+									incompatible={
+										hand.riichi == null ||
+										(hand.riichi.ippatsu && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) ||
+										(hand.riichi.ippatsu && hand.lastTile)
+									}
 									onToggle={(b) => {
 										updateAction(null);
 										updateHand((h) => {
@@ -350,6 +356,15 @@ export default function Calculator() {
 												h.riichi = { double: true, ippatsu: false };
 											}
 											h.riichi!.double = b;
+											if (b) {
+												// Cannot be ippatsu if closed kan and double riichi.
+												if (h.riichi?.ippatsu && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) {
+													h.riichi.ippatsu = false;
+												}
+												if (h.riichi?.ippatsu && h.lastTile) {
+													h.lastTile = false;
+												}
+											}
 										});
 									}}
 								>
@@ -357,11 +372,13 @@ export default function Calculator() {
 								</ToggleOnOff>
 								<ToggleOnOff
 									toggled={hand.riichi?.ippatsu ?? false}
-									disabled={hand.melds.filter((m) => m.t === 'kan' && !m.closed).length > 0}
+									disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
 									incompatible={
 										hand.riichi == null ||
+										(hand.riichi.double && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) ||
 										(hand.agari === 'tsumo' && hand.kan) ||
-										(hand.agari === 'ron' && hand.lastTile)
+										(hand.agari === 'ron' && hand.lastTile) ||
+										(hand.lastTile && hand.riichi.double)
 									}
 									onToggle={(b) => {
 										updateAction(null);
@@ -370,12 +387,20 @@ export default function Calculator() {
 												h.riichi = { double: false, ippatsu: true };
 											}
 											h.riichi!.ippatsu = b;
-											// If ippatsu, cannot be after a kan or under the river.
 											if (b) {
+												// If ippatsu, cannot be after a kan or under the river.
 												if (h.agari === 'tsumo') {
 													h.kan = false;
 												}
 												if (h.agari === 'ron') {
+													h.lastTile = false;
+												}
+												// Cannot be double riichi if closed kan and ippatsu.
+												if (h.riichi?.double && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) {
+													h.riichi.double = false;
+												}
+												// Cannot be last tile if double riichi and ippatsu.
+												if (h.lastTile && h.riichi?.double) {
 													h.lastTile = false;
 												}
 											}
@@ -392,7 +417,8 @@ export default function Calculator() {
 									// No robbing a kan if all 4 kans in hand.
 									disabled={
 										(hand.agari === 'tsumo' && !hand.melds.some((m) => m.t === 'kan')) ||
-										(hand.agari === 'ron' && hand.melds.filter((m) => m.t === 'kan').length === 4)
+										(hand.agari === 'ron' && hand.melds.filter((m) => m.t === 'kan').length === 4) ||
+										(hand.agari === 'ron' && hand.tiles.filter((t) => hand.tiles[hand.agariIndex] === t).length > 1)
 									}
 									incompatible={hand.blessing || (hand.agari === 'tsumo' && hand.riichi?.ippatsu) || hand.lastTile}
 									onToggle={(b) => {
@@ -414,7 +440,12 @@ export default function Calculator() {
 								</ToggleOnOff>
 								<ToggleOnOff
 									toggled={hand.lastTile}
-									incompatible={hand.blessing || (hand.agari === 'ron' && hand.riichi?.ippatsu) || hand.kan}
+									incompatible={
+										hand.blessing ||
+										(hand.agari === 'ron' && hand.riichi?.ippatsu) ||
+										hand.kan ||
+										(hand.riichi?.double && hand.riichi.ippatsu)
+									}
 									onToggle={(b) => {
 										updateAction(null);
 										updateHand((h) => {
@@ -424,6 +455,9 @@ export default function Calculator() {
 												h.blessing = false;
 												h.kan = false;
 												if (h.agari === 'ron' && h.riichi) {
+													h.riichi.ippatsu = false;
+												}
+												if (h.riichi?.double && h.riichi.ippatsu) {
 													h.riichi.ippatsu = false;
 												}
 											}

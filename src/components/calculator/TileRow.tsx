@@ -1,6 +1,6 @@
 import TileButton from './TileButton';
 import { Action } from '../../lib/action';
-import { Hand, isDora, TileCode, Tiles } from '../../lib/hand';
+import { Hand, isDora, nextDoraTile, TileCode, Tiles } from '../../lib/hand';
 
 export function SuitRow({
 	suit,
@@ -67,16 +67,17 @@ export function HonorRow({
 }
 
 function isDisabled(tile: TileCode, action: Action | null, tileCount: number, allTiles: TileCode[]): boolean {
-	// Can always add dora (even if it technically doesn't make sense when the indicator are all in hand, in case of house rules).
+	// Cannot add dora if indicator tiles are taken, but otherwise always.
 	if (action?.t === 'dora' || action?.t === 'uradora') {
-		return false;
+		const indicator = nextDoraTile(tile, -1);
+		const count =
+			indicator[0] === '0' || indicator[0] === '5'
+				? allTiles.filter((t) => t === `0${indicator[1]}` || t === `5${indicator[1]}`).length
+				: allTiles.filter((t) => t === indicator).length;
+		return count >= 4;
 	}
 	// Cannot add over 14 tiles to hand.
 	if (tileCount >= 14) {
-		return true;
-	}
-	// Cannot add more than one red five.
-	if (tile[0] === '0' && allTiles.some((t) => t === tile)) {
 		return true;
 	}
 	// Count 5s and red 5s together.
@@ -84,6 +85,10 @@ function isDisabled(tile: TileCode, action: Action | null, tileCount: number, al
 		tile[0] === '0' || tile[0] === '5'
 			? allTiles.filter((t) => t === `0${tile[1]}` || t === `5${tile[1]}`).length
 			: allTiles.filter((t) => t === tile).length;
+	// Cannot add more than one red five.
+	if (tile[0] === '0' && allTiles.some((t) => t === tile)) {
+		return true;
+	}
 	// Cannot add more than 4 of a tile.
 	if (count >= 4) {
 		return true;

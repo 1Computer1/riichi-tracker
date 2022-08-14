@@ -58,6 +58,21 @@ export function nextWind(w: Wind, k = 1): Wind {
 	return next.toString() as Wind;
 }
 
+export function nextDoraTile(t: TileCode, k = 1): TileCode {
+	const num = Number(t[0]) || 5;
+	const suit = t[1];
+	if (suit === 'z') {
+		if (num <= 4) {
+			const d = k < 0 ? 4 + k : k;
+			return `${((num + d - 1) % 4) + 1}z` as TileCode;
+		}
+		const d = k < 0 ? 3 + k : k;
+		return `${((num + d - 5) % 3) + 5}z` as TileCode;
+	}
+	const d = k < 0 ? 9 + k : k;
+	return `${((num + d - 1) % 9) + 1}${suit}` as TileCode;
+}
+
 export function translateWind(w: Wind): string {
 	return { 1: 'East', 2: 'South', 3: 'West', 4: 'North' }[w];
 }
