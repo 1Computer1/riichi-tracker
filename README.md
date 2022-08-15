@@ -29,3 +29,4 @@ Works on desktop and mobile, including in landscape orientation!
 - Icons in `src/icons/` from [heroicons](https://heroicons.com/) (MIT)
 - Github logo from [tholman/github-corners](https://github.com/tholman/github-corners) (MIT)
 - Riichi calculations [forked](https://github.com/1Computer1/riichi) from [takayama-lily/riichi](https://github.com/takayama-lily/riichi) (MIT)
+- Loading indicator from [dephraiim/react-svg-spinners](https://github.com/dephraiim/react-svg-spinners) (MIT)
