@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GithubLogo from '../assets/github-corner-right.svg';
 import Button from '../components/Button';
@@ -16,6 +16,7 @@ export default function App() {
 	const [makingNewCompass, setMakingNewCompass] = useState(false);
 	const [newCompassInitialScore, setNewCompassInitialScore] = useState(25000);
 	const [newCompassBottomWind, setNewCompassBottomWind] = useState<Wind>('1');
+	const initialScoreInputRef = useRef<HTMLInputElement | null>(null);
 
 	function NewCompassDialog() {
 		if (!makingNewCompass) {
@@ -36,7 +37,7 @@ export default function App() {
 		}
 
 		return (
-			<CustomDialog onClose={() => setMakingNewCompass(false)}>
+			<CustomDialog initialFocus={initialScoreInputRef} onClose={() => setMakingNewCompass(false)}>
 				<form
 					className="flex flex-col justify-center items-center gap-y-2"
 					onSubmit={(e) => {
@@ -46,6 +47,7 @@ export default function App() {
 				>
 					<p className="text-xl lg:text-2xl">Initial Score</p>
 					<input
+						ref={initialScoreInputRef}
 						type="tel"
 						className="bg-slate-300 dark:bg-sky-900 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl rounded-xl w-36 lg:w-80"
 						value={newCompassInitialScore}
