@@ -621,7 +621,7 @@ export default function Calculator() {
 								}}
 							/>
 						</div>
-						<div className="w-full flex flex-col justify-center px-4 py-4 lg:py-8">
+						<div className="w-full min-h-screen flex flex-col justify-center px-4 py-4 lg:py-8">
 							<div className="w-full flex flex-col justify-center items-center gap-y-2 lg:gap-y-4">
 								<h1 className="text-2xl lg:text-4xl">Points Calculator</h1>
 								<div className="flex flex-col gap-y-2 lg:gap-y-4 justify-center items-center">
