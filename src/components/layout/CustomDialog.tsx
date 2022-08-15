@@ -14,7 +14,7 @@ export default function CustomDialog({
 }) {
 	return (
 		<Dialog open onClose={onClose} initialFocus={initialFocus}>
-			<div className="fixed inset-0 bg-black/70" aria-hidden="true" />
+			<div className="fixed inset-0 bg-black/80" aria-hidden="true" />
 			<div className="fixed inset-0 w-screen h-screen overflow-auto">
 				<div className="min-h-screen min-w-screen p-4 flex flex-col justify-center items-center">
 					<Dialog.Panel className="bg-slate-200 dark:bg-gray-900 text-black dark:text-white rounded-xl shadow p-4">

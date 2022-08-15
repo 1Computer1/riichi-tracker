@@ -148,18 +148,6 @@ export default function Calculator() {
 		.concat(hand.melds.flatMap((m) => m.tiles))
 		.concat(action?.t === 'chii' ? action.tiles : []);
 
-	function ActionButton({ t, disabled, children }: { t: Action['t']; disabled?: boolean; children?: ReactNode }) {
-		return (
-			<Button
-				onClick={() => updateAction(action?.t === t ? null : defaultAction(t))}
-				active={action?.t === t}
-				disabled={disabled}
-			>
-				{children}
-			</Button>
-		);
-	}
-
 	const [handBuilderEl, setHandBuilderEl] = useState<Element | null>(null);
 	const [scoreResultEl, setScoreResultEl] = useState<Element | null>(null);
 	const [pointsCalculatorEl, setPointsCalculatorEl] = useState<Element | null>(null);
@@ -172,7 +160,7 @@ export default function Calculator() {
 	const db = useDb();
 	const game = db.useGame(locState?.id ?? '$tools', { enabled: locState?.id != null });
 
-	async function transferScores(calcPoints: Exclude<CalculatedPoints, { agari: null }>) {
+	const transferScores = async (calcPoints: Exclude<CalculatedPoints, { agari: null }>) => {
 		if (game == null || !game.ok || locState?.t !== 'transfer' || locState.agari !== calcPoints.agari) {
 			return;
 		}
@@ -232,7 +220,7 @@ export default function Calculator() {
 			id: locState.id,
 		};
 		navigate('/compass', { state, replace: true });
-	}
+	};
 
 	return (
 		<div className="min-h-screen bg-slate-200 dark:bg-gray-900 text-black dark:text-white">
@@ -263,8 +251,11 @@ export default function Calculator() {
 						</JumpButton>
 						<JumpButton element={pointsCalculatorEl}>点</JumpButton>
 					</div>
-					<div ref={setHandBuilderEl} className="flex flex-col justify-center items-center w-full gap-y-2 lg:gap-y-4">
-						<div className="flex flex-col justify-center items-center w-full min-h-screen gap-y-2 lg:gap-y-4 px-2 py-2">
+					<div className="flex flex-col justify-center items-center w-full gap-y-2 lg:gap-y-4">
+						<div
+							ref={setHandBuilderEl}
+							className="flex flex-col justify-center items-center w-full min-h-screen gap-y-2 lg:gap-y-4 px-2 py-2"
+						>
 							<div className="flex flex-row gap-x-2 items-end">
 								<h1 className="text-2xl lg:text-4xl">Score Calculator</h1>
 								{tileCount > 0 && (
@@ -301,16 +292,36 @@ export default function Calculator() {
 							</HorizontalRow>
 							<HorizontalRow>
 								{/* Can't call on a tile when in riichi or for blessing, except closed kans. */}
-								<ActionButton t="chii" disabled={hand.riichi != null || hand.blessing || tileCount + 3 > 14}>
+								<ActionButton
+									t="chii"
+									disabled={hand.riichi != null || hand.blessing || tileCount + 3 > 14}
+									currentAction={action}
+									onActionChange={updateAction}
+								>
 									Chii
 								</ActionButton>
-								<ActionButton t="pon" disabled={hand.riichi != null || hand.blessing || tileCount + 3 > 14}>
+								<ActionButton
+									t="pon"
+									disabled={hand.riichi != null || hand.blessing || tileCount + 3 > 14}
+									currentAction={action}
+									onActionChange={updateAction}
+								>
 									Pon
 								</ActionButton>
-								<ActionButton t="kan" disabled={hand.riichi != null || hand.blessing || tileCount + 3 > 14}>
+								<ActionButton
+									t="kan"
+									disabled={hand.riichi != null || hand.blessing || tileCount + 3 > 14}
+									currentAction={action}
+									onActionChange={updateAction}
+								>
 									Kan
 								</ActionButton>
-								<ActionButton t="closedKan" disabled={hand.blessing || tileCount + 3 > 14}>
+								<ActionButton
+									t="closedKan"
+									disabled={hand.blessing || tileCount + 3 > 14}
+									currentAction={action}
+									onActionChange={updateAction}
+								>
 									Closed Kan
 								</ActionButton>
 							</HorizontalRow>
@@ -583,10 +594,20 @@ export default function Calculator() {
 								</ToggleOnOff>
 							</HorizontalRow>
 							<HorizontalRow>
-								<ActionButton t="dora" disabled={hand.dora.length >= 5}>
+								<ActionButton
+									t="dora"
+									disabled={hand.dora.length >= 5}
+									currentAction={action}
+									onActionChange={updateAction}
+								>
 									Add Dora
 								</ActionButton>
-								<ActionButton t="uradora" disabled={hand.riichi == null || hand.uradora.length >= 5}>
+								<ActionButton
+									t="uradora"
+									disabled={hand.riichi == null || hand.uradora.length >= 5}
+									currentAction={action}
+									onActionChange={updateAction}
+								>
 									Add Uradora
 								</ActionButton>
 								<Counter
@@ -671,5 +692,29 @@ export default function Calculator() {
 				</div>
 			</div>
 		</div>
+	);
+}
+
+function ActionButton({
+	t,
+	currentAction,
+	onActionChange,
+	disabled,
+	children,
+}: {
+	t: Action['t'];
+	currentAction: Action | null;
+	onActionChange: (a: Action | null) => void;
+	disabled?: boolean;
+	children?: ReactNode;
+}) {
+	return (
+		<Button
+			onClick={() => onActionChange(currentAction?.t === t ? null : defaultAction(t))}
+			active={currentAction?.t === t}
+			disabled={disabled}
+		>
+			{children}
+		</Button>
 	);
 }
