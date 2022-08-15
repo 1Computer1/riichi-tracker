@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useImmer } from 'use-immer';
 import Button from '../components/Button';
 import CircleButton from '../components/CircleButton';
+import Counter from '../components/Counter';
 import Toggle from '../components/Toggle';
 import ToggleOnOff from '../components/ToggleOnOff';
 import ToggleThree from '../components/ToggleThree';
@@ -424,8 +425,17 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 						>
 							Rotate Seats
 						</Button>
-						<Button
-							onClick={() => {
+						<Counter
+							onDecrement={() => {
+								(async () => {
+									await db.setGame(gameId, {
+										...game,
+										roundWind: round === 1 ? nextWind(roundWind, -1) : roundWind,
+										round: round === 1 ? 4 : round - 1,
+									});
+								})();
+							}}
+							onIncrement={() => {
 								(async () => {
 									await db.setGame(gameId, {
 										...game,
@@ -435,45 +445,50 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 								})();
 							}}
 						>
-							Next: {translateWind(round === 4 ? nextWind(roundWind) : roundWind)} {round === 4 ? 1 : round + 1}
-						</Button>
-						<Button
-							onClick={() => {
+							{translateWind(roundWind)} {round}
+						</Counter>
+						<Counter
+							canDecrement={repeats > 0}
+							onDecrement={() => {
 								(async () => {
 									await db.setGame(gameId, {
 										...game,
-										roundWind: round === 1 ? nextWind(roundWind, -1) : roundWind,
-										round: round === 1 ? 4 : round - 1,
+										repeats: repeats - 1,
+									});
+								})();
+							}}
+							onIncrement={() => {
+								(async () => {
+									await db.setGame(gameId, {
+										...game,
+										repeats: repeats + 1,
 									});
 								})();
 							}}
 						>
-							Prev: {translateWind(round === 1 ? nextWind(roundWind, -1) : roundWind)} {round === 1 ? 4 : round - 1}
-						</Button>
-						<Button
-							onClick={() => {
+							Repeats ({repeats})
+						</Counter>
+						<Counter
+							canDecrement={riichiSticks > riichi.filter((r) => r).length}
+							onDecrement={() => {
 								(async () => {
 									await db.setGame(gameId, {
 										...game,
-										repeats: 0,
+										riichiSticks: riichiSticks - 1,
+									});
+								})();
+							}}
+							onIncrement={() => {
+								(async () => {
+									await db.setGame(gameId, {
+										...game,
+										riichiSticks: riichiSticks + 1,
 									});
 								})();
 							}}
 						>
-							Clear Repeat Sticks
-						</Button>
-						<Button
-							onClick={() => {
-								(async () => {
-									await db.setGame(gameId, {
-										...game,
-										riichiSticks: game.riichi.filter((r) => r).length,
-									});
-								})();
-							}}
-						>
-							Clear Old Riichi Sticks
-						</Button>
+							Riichi ({riichiSticks})
+						</Counter>
 					</div>
 				</div>
 			</CustomDialog>
@@ -574,7 +589,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 								<span
 									className={clsx(
 										'text-slate-900 dark:text-slate-400 rotate-90',
-										isPortrait ? 'mr-0.5 lg:mr-2' : 'mt-0.5 lg:mt-2',
+										isPortrait ? 'mr-0.5 lg:mr-2' : 'mt-2 lg:mt-2',
 									)}
 								>
 									⠿
