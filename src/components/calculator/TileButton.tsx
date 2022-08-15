@@ -22,10 +22,8 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 	return forced ? (
 		<div
 			className={clsx(
-				'rounded-xl shadow',
-				agari
-					? 'shadow-inner shadow-red-600 dark:shadow-pink-700'
-					: 'shadow-inner shadow-gray-400 dark:shadow-gray-800',
+				'rounded-xl shadow shadow-gray-400 dark:shadow-gray-800',
+				agari ? 'animate-pulse' : '',
 				red
 					? 'bg-rose-500 dark:bg-red-700'
 					: dora
@@ -48,10 +46,8 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 			}
 			disabled={disabled}
 			className={clsx(
-				'disabled:opacity-50 rounded-xl shadow',
-				agari
-					? 'shadow-inner shadow-red-600 dark:shadow-pink-700'
-					: 'shadow-inner shadow-gray-400 dark:shadow-gray-800',
+				'disabled:opacity-50 rounded-xl shadow shadow-gray-400 dark:shadow-gray-800',
+				agari ? 'animate-pulse' : '',
 				red
 					? 'bg-rose-500 enabled:hover:bg-rose-600 enabled:group-hover:bg-rose-600 dark:bg-red-700 dark:enabled:hover:bg-red-800 dark:enabled:group-hover:bg-red-800'
 					: dora
