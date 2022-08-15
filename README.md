@@ -1,9 +1,29 @@
 # Riichi Tracker
 
-Includes a riichi mahjong hand calculator and a mahjong compass.
+Includes a riichi mahjong hand calculator and a mahjong compass.  
+Works on desktop and mobile, including in landscape orientation!
 
-Planned: tracking multiple games, automatic score transfers, house rules configuration, etc.
+## Features
+
+### Calculator
+
+- Interactive meld creation
+- Disallow invalid hands
+- Han and fu calculator
+
+### Compass
+
+- Automatic score transfers with calculator
+- Riichi sticks and repeat sticks
+- Exhaustive and abortive draws
+
+### Planned
+
+- House rules configuration
+- Sanma compass and scoring
+- Tracking multiple games
 
 ## Credits
 
-Tile images from [FluffyStuff/riichi-mahjong-tiles](https://github.com/FluffyStuff/riichi-mahjong-tiles).
+- Tile images from [FluffyStuff/riichi-mahjong-tiles](https://github.com/FluffyStuff/riichi-mahjong-tiles).
+- Icons in `src/icons/` from [heroicons](https://heroicons.com/).
