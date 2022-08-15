@@ -162,6 +162,7 @@ export default function Calculator() {
 
 	const [handBuilderEl, setHandBuilderEl] = useState<Element | null>(null);
 	const [scoreResultEl, setScoreResultEl] = useState<Element | null>(null);
+	const [pointsCalculatorEl, setPointsCalculatorEl] = useState<Element | null>(null);
 	const scoreResult = tileCount === 14 ? calculate(hand, { ...DefaultSettings, noYakuBase: 100 }) : null;
 
 	const [han, setHan] = useState(1);
@@ -255,11 +256,12 @@ export default function Calculator() {
 							<Left />
 						</CircleButton>
 					</div>
-					<div className="fixed bottom-2 right-2 lg:bottom-4 lg:right-8 flex flex-col gap-y-2">
-						<JumpButton element={handBuilderEl}>役</JumpButton>
+					<div className="invisible sm:visible fixed bottom-2 right-2 lg:bottom-4 lg:right-8 flex flex-col gap-y-2">
+						<JumpButton element={handBuilderEl}>牌</JumpButton>
 						<JumpButton element={scoreResultEl} highlight={scoreResult?.agari != null}>
-							点
+							役
 						</JumpButton>
+						<JumpButton element={pointsCalculatorEl}>点</JumpButton>
 					</div>
 					<div ref={setHandBuilderEl} className="flex flex-col justify-center items-center w-full gap-y-2 lg:gap-y-4">
 						<div className="flex flex-col justify-center items-center w-full min-h-screen gap-y-2 lg:gap-y-4 px-2 py-2">
@@ -621,7 +623,10 @@ export default function Calculator() {
 								}}
 							/>
 						</div>
-						<div className="w-full min-h-screen flex flex-col justify-center px-4 py-4 lg:py-8">
+						<div
+							ref={setPointsCalculatorEl}
+							className="w-full min-h-screen flex flex-col justify-center px-4 py-4 lg:py-8"
+						>
 							<div className="w-full flex flex-col justify-center items-center gap-y-2 lg:gap-y-4">
 								<h1 className="text-2xl lg:text-4xl">Points Calculator</h1>
 								<div className="flex flex-col gap-y-2 lg:gap-y-4 justify-center items-center">
