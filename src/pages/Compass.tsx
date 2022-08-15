@@ -587,7 +587,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 							</span>
 						</div>
 					</div>
-					<div className={clsx('flex flex-col gap-y-2')}>
+					<div className={clsx(isPortrait ? 'flex flex-col-reverse' : 'flex flex-col', 'gap-y-2')}>
 						<CircleButton
 							onClick={() => {
 								navigate('/', { replace: true });
