@@ -1,7 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import { MutableRefObject, ReactNode } from 'react';
 import CircleButton from '../CircleButton';
-import X from '../icons/X';
+import X from '../icons/heroicons/X';
 
 export default function CustomDialog({
 	onClose,

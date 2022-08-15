@@ -10,15 +10,15 @@ import ToggleOnOff from '../components/ToggleOnOff';
 import ToggleThree from '../components/ToggleThree';
 import TileButton from '../components/calculator/TileButton';
 import ScoreDisplay from '../components/compass/ScoreDisplay';
-import Cog from '../components/icons/Cog';
-import Hashtag from '../components/icons/Hashtag';
-import Left from '../components/icons/Left';
-import Minus from '../components/icons/Minus';
-import Plus from '../components/icons/Plus';
-import Up from '../components/icons/Up';
+import Cog from '../components/icons/heroicons/Cog';
+import Hashtag from '../components/icons/heroicons/Hashtag';
+import Left from '../components/icons/heroicons/Left';
+import Minus from '../components/icons/heroicons/Minus';
+import Plus from '../components/icons/heroicons/Plus';
+import Up from '../components/icons/heroicons/Up';
 import CustomDialog from '../components/layout/CustomDialog';
 import HorizontalRow from '../components/layout/HorizontalRow';
-import BlocksShuffleThree from '../components/loading/BlocksShuffleThree';
+import BlocksShuffleThree from '../components/loading/react-svg-spinners/BlocksShuffleThree';
 import { Game } from '../data/interfaces';
 import { nextWind, TileCode, translateWind } from '../lib/hand';
 import { CalculatorState, CompassState } from '../lib/states';
@@ -561,6 +561,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 			<DrawDialog />
 			<AdvancedDialog />
 			<div
+				data-1c1
 				className={clsx(
 					'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-300 dark:bg-sky-900 rounded-xl shadow',
 					isPortrait ? '[writing-mode:vertical-lr] p-2 h-[min(70vh,70vw)]' : 'p-2 w-[min(70vh,70vw)]',

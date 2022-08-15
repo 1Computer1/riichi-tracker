@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import GithubLogo from '../assets/github-corner-right.svg';
+import GithubLogo from '../assets/github/github-corner-right.svg';
 import Button from '../components/Button';
 import WindSelect from '../components/calculator/WindSelect';
 import CustomDialog from '../components/layout/CustomDialog';

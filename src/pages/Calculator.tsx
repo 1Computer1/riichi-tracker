@@ -14,7 +14,7 @@ import Selected from '../components/calculator/Selected';
 import SelectedDora from '../components/calculator/SelectedDora';
 import { SuitRow, HonorRow } from '../components/calculator/TileRow';
 import WindSelect from '../components/calculator/WindSelect';
-import Left from '../components/icons/Left';
+import Left from '../components/icons/heroicons/Left';
 import HorizontalRow from '../components/layout/HorizontalRow';
 import VerticalRow from '../components/layout/VerticalRow';
 import { Action, defaultAction } from '../lib/action';

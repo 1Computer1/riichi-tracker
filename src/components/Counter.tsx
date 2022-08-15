@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react';
-import Minus from './icons/Minus';
-import Plus from './icons/Plus';
+import Minus from './icons/heroicons/Minus';
+import Plus from './icons/heroicons/Plus';
 
 export default function Counter({
 	onIncrement,
