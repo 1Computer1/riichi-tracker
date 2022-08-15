@@ -25,5 +25,7 @@ Works on desktop and mobile, including in landscape orientation!
 
 ## Credits
 
-- Tile images from [FluffyStuff/riichi-mahjong-tiles](https://github.com/FluffyStuff/riichi-mahjong-tiles).
-- Icons in `src/icons/` from [heroicons](https://heroicons.com/).
+- Tile images from [FluffyStuff/riichi-mahjong-tiles](https://github.com/FluffyStuff/riichi-mahjong-tiles) (CC BY 4.0)
+- Icons in `src/icons/` from [heroicons](https://heroicons.com/) (MIT)
+- Github logo from [tholman/github-corners](https://github.com/tholman/github-corners) (MIT)
+- Riichi calculations [forked](https://github.com/1Computer1/riichi) from [takayama-lily/riichi](https://github.com/takayama-lily/riichi) (MIT)

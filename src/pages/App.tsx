@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import GithubLogo from '../assets/github-corner-right.svg';
 import Button from '../components/Button';
 import WindSelect from '../components/calculator/WindSelect';
 import CustomDialog from '../components/layout/CustomDialog';
@@ -73,6 +74,11 @@ export default function App() {
 
 	return (
 		<div className="min-h-screen bg-slate-200 dark:bg-gray-900 text-black dark:text-white">
+			<div className="fixed top-0 right-0">
+				<a href="https://github.com/1Computer1/riichi-tracker">
+					<img src={GithubLogo} />
+				</a>
+			</div>
 			<div className="flex flex-col justify-center items-center min-h-screen gap-y-4 lg:gap-y-8 py-4 px-2">
 				<h1 className="text-4xl lg:text-6xl text-center">Riichi Tracker</h1>
 				<div className="flex flex-row justify-center items-start gap-x-8">
