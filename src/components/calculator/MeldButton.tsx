@@ -11,7 +11,7 @@ export default function MeldButton({
 	onClick?: (meld: Meld) => void;
 }) {
 	return (
-		<div className="flex flex-row group">
+		<div className="flex flex-row gap-x-0.5 group">
 			{meld.t === 'chiipon'
 				? meld.tiles.map((t, i) => (
 						<TileButton key={i} tile={t} onClick={onClick && (() => onClick(meld))} dora={isDora(t, hand)} />

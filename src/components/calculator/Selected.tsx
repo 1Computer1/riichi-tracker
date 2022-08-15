@@ -13,7 +13,7 @@ export default function Selected({
 	onMeldClick?: (meld: Meld, i: number) => void;
 }) {
 	return (
-		<div className="flex flex-row gap-x-8 justify-center items-center min-w-min">
+		<div className="flex flex-row gap-x-2 justify-center items-center min-w-min">
 			{hand.tiles.length || hand.melds.length ? (
 				<>
 					<div className="flex flex-row gap-x-0.5">
