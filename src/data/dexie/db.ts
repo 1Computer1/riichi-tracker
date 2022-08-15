@@ -26,7 +26,7 @@ db.version(1).stores({
 
 db.version(2)
 	.stores({
-		games: '++id', // id, roundWind, round, bottomWind, scores, riichiSticks, riichi
+		games: '++id', // id, roundWind, round, repeats, bottomWind, scores, riichiSticks, riichi
 	})
 	.upgrade((tx) =>
 		tx
