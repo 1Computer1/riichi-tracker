@@ -1,12 +1,16 @@
+import { enableMapSet } from 'immer';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { dexieRepository } from './data/db';
 import App from './pages/App';
 import Calculator from './pages/Calculator';
-import './index.css';
 import Compass from './pages/Compass';
 import DbProvider from './providers/DbProvider';
+
+import './index.css';
+
+enableMapSet();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>

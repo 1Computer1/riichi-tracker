@@ -26,7 +26,13 @@ export default function ToggleOnOff({
 						: 'bg-gray-50 hover:bg-gray-200 dark:bg-gray-500 dark:hover:bg-gray-600',
 				)}
 				disabled={disabled}
-				onClick={onToggle && (() => onToggle(!toggled))}
+				onClick={
+					onToggle &&
+					((e) => {
+						e.preventDefault();
+						onToggle(!toggled);
+					})
+				}
 			>
 				{children}
 			</button>

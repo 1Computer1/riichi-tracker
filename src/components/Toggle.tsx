@@ -36,7 +36,14 @@ export default function Toggle({
 								? 'bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-800'
 								: 'bg-gray-50 hover:bg-gray-200 dark:bg-gray-500 dark:hover:bg-gray-600',
 						)}
-						onClick={onToggle && toggled ? () => onToggle(false) : undefined}
+						onClick={
+							onToggle
+								? (e) => {
+										e.preventDefault();
+										if (toggled) onToggle(false);
+								  }
+								: undefined
+						}
 					>
 						{left}
 					</button>
@@ -47,7 +54,14 @@ export default function Toggle({
 								? 'bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-800'
 								: 'bg-gray-50 hover:bg-gray-200 dark:bg-gray-500 dark:hover:bg-gray-600',
 						)}
-						onClick={onToggle && !toggled ? () => onToggle(true) : undefined}
+						onClick={
+							onToggle
+								? (e) => {
+										e.preventDefault();
+										if (!toggled) onToggle(true);
+								  }
+								: undefined
+						}
 					>
 						{right}
 					</button>

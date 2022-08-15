@@ -54,7 +54,8 @@ export function sortMelds(melds: Meld[]): Meld[] {
 export type Wind = '1' | '2' | '3' | '4';
 
 export function nextWind(w: Wind, k = 1): Wind {
-	const next = ((Number(w[0]) + k - 1) % 4) + 1;
+	const d = k < 0 ? 4 + k : k;
+	const next = ((Number(w[0]) + d - 1) % 4) + 1;
 	return next.toString() as Wind;
 }
 
@@ -206,20 +207,103 @@ export function translateScore(name: string): string {
 	}[name]!;
 }
 
-export interface CalculatedValue {
-	agari: 'tsumo' | 'ron' | null;
+export type CalculatedPoints =
+	| {
+			agari: 'tsumo';
+			points: {
+				total: number;
+				oya: { ko: number };
+				ko: { oya: number; ko: number };
+			};
+	  }
+	| {
+			agari: 'ron';
+			points: {
+				total: number;
+				oya: { ron: number };
+				ko: { ron: number };
+			};
+	  }
+	| {
+			agari: null;
+	  };
+
+export function calculateHanFu(
+	han: number,
+	fu: number,
+): { tsumoAsFromOya: number; tsumoAsKo: number; ronAsOya: number; ronAsKo: number } {
+	let base = fu * Math.pow(2, han + 2);
+	if (base > 2000) {
+		if (han >= 13) {
+			base = 8000;
+		} else if (han >= 11) {
+			base = 6000;
+		} else if (han >= 8) {
+			base = 4000;
+		} else if (han >= 6) {
+			base = 3000;
+		} else {
+			base = 2000;
+		}
+	}
+	return calculateScoreTable(base);
+}
+
+export function calculateScoreTable(base: number): {
+	tsumoAsFromOya: number;
+	tsumoAsKo: number;
+	ronAsOya: number;
+	ronAsKo: number;
+} {
+	return {
+		tsumoAsFromOya: ceil100(base * 2),
+		tsumoAsKo: ceil100(base),
+		ronAsOya: ceil100(base * 6),
+		ronAsKo: ceil100(base * 4),
+	};
+}
+
+export function ceil100(num: number): number {
+	return Math.ceil(num / 100) * 100;
+}
+
+export function makeScore(
+	isOya: boolean,
+	agari: 'tsumo' | 'ron',
+	{
+		tsumoAsFromOya,
+		tsumoAsKo,
+		ronAsOya,
+		ronAsKo,
+	}: { tsumoAsFromOya: number; tsumoAsKo: number; ronAsOya: number; ronAsKo: number },
+): Exclude<CalculatedPoints, { agari: null }> {
+	return agari === 'ron'
+		? {
+				agari: 'ron',
+				points: {
+					total: isOya ? ronAsOya : ronAsKo,
+					oya: { ron: ronAsOya },
+					ko: { ron: ronAsKo },
+				},
+		  }
+		: {
+				agari: 'tsumo',
+				points: {
+					total: isOya ? tsumoAsFromOya * 3 : tsumoAsFromOya + tsumoAsKo * 2,
+					oya: { ko: tsumoAsFromOya },
+					ko: { oya: tsumoAsFromOya, ko: tsumoAsKo },
+				},
+		  };
+}
+
+export type CalculatedValue = CalculatedPoints & {
 	isOya: boolean;
 	yakuman: number;
 	yaku: [string, number | 'y' | 'yy'][];
 	han: number;
 	fu: number;
-	points: {
-		total: number;
-		oya: number[];
-		ko: number[];
-	};
 	name: string | null;
-}
+};
 
 export interface ScoreSettings {
 	noYakuBase: number;
@@ -342,8 +426,30 @@ export function partitionSuits(tiles: TileCode[]): [Suit | Honor, string][] {
 }
 
 export function convertValue(hand: Hand, res: Riichi.Result): CalculatedValue {
+	// eslint-disable-next-line no-negated-condition
+	const points: CalculatedPoints = !res.isAgari
+		? {
+				agari: null,
+		  }
+		: hand.agari === 'ron'
+		? {
+				agari: 'ron',
+				points: {
+					total: res.ten,
+					oya: { ron: res.oya[0] },
+					ko: { ron: res.ko[0] },
+				},
+		  }
+		: {
+				agari: 'tsumo',
+				points: {
+					total: res.ten,
+					oya: { ko: res.oya[0] },
+					ko: { oya: res.ko[0], ko: res.ko[1] },
+				},
+		  };
 	return {
-		agari: res.isAgari ? hand.agari : null,
+		...points,
 		isOya: hand.seatWind === '1',
 		yakuman: res.yakuman,
 		yaku: Object.entries(res.yaku)
@@ -355,11 +461,6 @@ export function convertValue(hand: Hand, res: Riichi.Result): CalculatedValue {
 			}),
 		han: res.han,
 		fu: res.fu,
-		points: {
-			total: res.ten,
-			oya: res.oya,
-			ko: res.ko,
-		},
 		name: res.name ? translateScore(res.name) : null,
 	};
 }
@@ -375,26 +476,14 @@ export function calculate(hand: Hand, settings: ScoreSettings): CalculatedValue 
 	}
 	const res = riichi.calc();
 	if (res.han === 0 && res.yakuman === 0 && res.isAgari) {
-		const oya =
-			hand.agari === 'ron'
-				? [settings.noYakuBase * 6]
-				: [settings.noYakuBase * 2, settings.noYakuBase * 2, settings.noYakuBase * 2];
-		const ko =
-			hand.agari === 'ron'
-				? [settings.noYakuBase * 4]
-				: [settings.noYakuBase * 2, settings.noYakuBase, settings.noYakuBase];
+		const points = makeScore(hand.seatWind === '1', hand.agari, calculateScoreTable(settings.noYakuBase));
 		return {
-			agari: hand.agari,
+			...points,
 			isOya: hand.seatWind === '1',
 			yakuman: 0,
 			yaku: [],
 			han: 0,
 			fu: 0,
-			points: {
-				total: hand.seatWind === '1' ? oya.reduce((a, b) => a + b, 0) : ko.reduce((a, b) => a + b, 0),
-				oya,
-				ko,
-			},
 			name: 'No Yaku',
 		};
 	}

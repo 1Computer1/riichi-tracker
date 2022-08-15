@@ -17,6 +17,7 @@
 		"@typescript-eslint/no-use-before-define": ["off"],
 		"@typescript-eslint/prefer-string-starts-ends-with": ["off"],
     "@typescript-eslint/no-require-imports": ["off"],
+    "@typescript-eslint/prefer-regexp-exec": ["off"],
 		"no-eq-null": ["off"],
 		"eqeqeq": ["error", "always", {"null": "ignore"}]
 	}

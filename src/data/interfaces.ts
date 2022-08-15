@@ -5,7 +5,7 @@ export type RepositoryProvider = () => IRepository;
 export interface IRepository {
 	getGame: (id: string) => Promise<Option<Game>>;
 	setGame: (id: string, game: Game) => Promise<void>;
-	useGame: (id: string) => Option<Game> | null;
+	useGame: (id: string, options?: { enabled: boolean }) => Option<Game> | null;
 }
 
 export type Option<T> = { ok: true; value: T } | { ok: false; value: null };
@@ -22,5 +22,8 @@ export interface Game {
 	bottomWind: Wind;
 	round: number;
 	roundWind: Wind;
+	repeats: number;
 	scores: number[];
+	riichiSticks: number;
+	riichi: boolean[];
 }

@@ -1,10 +1,21 @@
+import clsx from 'clsx';
 import { CalculatedValue } from '../../lib/hand';
 
-export default function ScoreResult({ tileCount, result }: { tileCount: number; result: CalculatedValue | null }) {
+export default function ScoreResult({
+	tileCount,
+	result,
+	transferButton,
+	onTransferClick,
+}: {
+	tileCount: number;
+	result: CalculatedValue | null;
+	transferButton?: boolean;
+	onTransferClick?: () => void;
+}) {
 	return (
 		<div className="w-full h-full flex flex-col justify-center items-center">
 			{tileCount === 14 && result ? (
-				<ScoreResultSheet result={result} />
+				<ScoreResultSheet result={result} transferButton={transferButton} onTransferClick={onTransferClick} />
 			) : (
 				<span className="text-2xl lg:text-4xl text-center">Not enough tiles to form a complete hand.</span>
 			)}
@@ -12,7 +23,15 @@ export default function ScoreResult({ tileCount, result }: { tileCount: number; 
 	);
 }
 
-function ScoreResultSheet({ result }: { result: CalculatedValue }) {
+function ScoreResultSheet({
+	result,
+	transferButton = false,
+	onTransferClick,
+}: {
+	result: CalculatedValue;
+	transferButton?: boolean;
+	onTransferClick?: () => void;
+}) {
 	return (
 		<div className="flex flex-col justify-center items-center w-full h-full gap-y-2 lg:gap-y-4">
 			{result.agari == null ? (
@@ -63,23 +82,35 @@ function ScoreResultSheet({ result }: { result: CalculatedValue }) {
 							{result.isOya ? (
 								result.agari === 'tsumo' ? (
 									<span>
-										<span className="text-amber-700 dark:text-amber-500">{result.points.oya[0]}</span> all
+										<span className="text-amber-700 dark:text-amber-500">{result.points.oya.ko}</span> all
 									</span>
 								) : (
-									<span className="text-amber-700 dark:text-amber-500">{result.points.oya[0]}</span>
+									<span className="text-amber-700 dark:text-amber-500">{result.points.oya.ron}</span>
 								)
-							) : (
+							) : result.agari === 'tsumo' ? (
 								<>
-									<span className="text-amber-700 dark:text-amber-500">{result.points.ko[0]}</span>
-									{result.points.ko[1] && (
-										<span>
-											, <span className="text-amber-700 dark:text-amber-500">{result.points.ko[1]}</span>
-										</span>
-									)}
+									<span className="text-amber-700 dark:text-amber-500">{result.points.ko.oya}</span>,{' '}
+									<span className="text-amber-700 dark:text-amber-500">{result.points.ko.ko}</span>
 								</>
+							) : (
+								<span className="text-amber-700 dark:text-amber-500">{result.points.ko.ron}</span>
 							)}
 						</div>
 					</div>
+					{transferButton && (
+						<div className="flex flex-col container lg:w-[50%]">
+							<button
+								className={clsx(
+									'border border-gray-800 rounded-xl shadow py-1 lg:p-2 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
+									'w-full h-24 text-2xl',
+									'bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-800',
+								)}
+								onClick={onTransferClick}
+							>
+								Transfer Calculated Score
+							</button>
+						</div>
+					)}
 				</>
 			)}
 		</div>

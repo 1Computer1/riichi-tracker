@@ -39,7 +39,13 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 		</div>
 	) : (
 		<button
-			onClick={onClick && (() => onClick(tile))}
+			onClick={
+				onClick &&
+				((e) => {
+					e.preventDefault();
+					onClick(tile);
+				})
+			}
 			disabled={disabled}
 			className={clsx(
 				'disabled:opacity-50 rounded-xl shadow',
@@ -47,12 +53,12 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 					? 'shadow-inner shadow-red-600 dark:shadow-pink-700'
 					: 'shadow-inner shadow-gray-400 dark:shadow-gray-800',
 				red
-					? 'bg-rose-500 hover:bg-rose-600 group-hover:bg-rose-600 dark:bg-red-700 dark:hover:bg-red-800 dark:group-hover:bg-red-800'
+					? 'bg-rose-500 enabled:hover:bg-rose-600 enabled:group-hover:bg-rose-600 dark:bg-red-700 dark:enabled:hover:bg-red-800 dark:enabled:group-hover:bg-red-800'
 					: dora
-					? 'bg-amber-100 hover:bg-amber-200 group-hover:bg-amber-200 dark:bg-emerald-800 dark:hover:bg-emerald-900 dark:group-hover:bg-emerald-900'
+					? 'bg-amber-100 enabled:hover:bg-amber-200 enabled:group-hover:bg-amber-200 dark:bg-emerald-800 dark:enabled:hover:bg-emerald-900 dark:enabled:group-hover:bg-emerald-900'
 					: tile === '00'
-					? 'bg-amber-400 hover:bg-amber-500 group-hover:bg-amber-500 dark:bg-gray-600 dark:hover:bg-gray-700 dark:group-hover:bg-gray-700'
-					: 'bg-gray-50 hover:bg-gray-200 group-hover:bg-gray-200 dark:bg-gray-500 dark:hover:bg-gray-600 dark:group-hover:bg-gray-600',
+					? 'bg-amber-400 enabled:hover:bg-amber-500 enabled:group-hover:bg-amber-500 dark:bg-gray-600 dark:enabled:hover:bg-gray-700 dark:enabled:group-hover:bg-gray-700'
+					: 'bg-gray-50 enabled:hover:bg-gray-200 enabled:group-hover:bg-gray-200 dark:bg-gray-500 dark:enabled:hover:bg-gray-600 dark:enabled:group-hover:bg-gray-600',
 			)}
 		>
 			<Tile tile={tile} />

@@ -1,12 +1,14 @@
+import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useImmer } from 'use-immer';
-import BackButton from '../components/BackButton';
 import Button from '../components/Button';
+import CircleButton from '../components/CircleButton';
 import Counter from '../components/Counter';
 import JumpButton from '../components/JumpButton';
 import Toggle from '../components/Toggle';
 import ToggleOnOff from '../components/ToggleOnOff';
+import HanFu from '../components/calculator/HanFu';
 import ScoreResult from '../components/calculator/ScoreResult';
 import Selected from '../components/calculator/Selected';
 import SelectedDora from '../components/calculator/SelectedDora';
@@ -16,22 +18,32 @@ import Left from '../components/icons/Left';
 import HorizontalRow from '../components/layout/HorizontalRow';
 import VerticalRow from '../components/layout/VerticalRow';
 import { Action, defaultAction } from '../lib/action';
-import { calculate, DefaultSettings, Hand, sortMelds, sortTiles, TileCode, Wind } from '../lib/hand';
+import {
+	calculate,
+	CalculatedPoints,
+	calculateHanFu,
+	DefaultSettings,
+	Hand,
+	makeScore,
+	nextWind,
+	sortMelds,
+	sortTiles,
+	TileCode,
+} from '../lib/hand';
+import { CalculatorState, CompassState } from '../lib/states';
+import { useDb } from '../providers/DbProvider';
 
 export default function Calculator() {
+	const navigate = useNavigate();
 	const location = useLocation();
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	const gameValues: {
-		agari: 'ron' | 'tsumo' | null;
-		roundWind: Wind | null;
-		seatWind: Wind | null;
-	} | null = (location.state ?? null) as any;
+	const locState: CalculatorState | null = (location.state ?? null) as any;
 
 	const initialHand: Hand = {
 		tiles: [],
 		melds: [],
 		agariIndex: -1,
-		agari: gameValues?.agari ?? 'tsumo',
+		agari: locState?.agari ?? 'tsumo',
 		dora: [],
 		uradora: [],
 		nukidora: 0,
@@ -39,8 +51,8 @@ export default function Calculator() {
 		blessing: false,
 		lastTile: false,
 		kan: false,
-		roundWind: gameValues?.roundWind ?? '1',
-		seatWind: gameValues?.seatWind ?? '1',
+		roundWind: locState?.roundWind ?? '1',
+		seatWind: locState?.seatWind ?? '1',
 	};
 	const [hand, updateHand] = useImmer<Hand>(initialHand);
 
@@ -152,14 +164,96 @@ export default function Calculator() {
 	const [scoreResultEl, setScoreResultEl] = useState<Element | null>(null);
 	const scoreResult = tileCount === 14 ? calculate(hand, { ...DefaultSettings, noYakuBase: 100 }) : null;
 
+	const [han, setHan] = useState(1);
+	const [fu, setFu] = useState(30);
+	const hanFuScores = makeScore(hand.seatWind === '1', hand.agari, calculateHanFu(han, fu));
+
+	const db = useDb();
+	const game = db.useGame(locState?.id ?? '$tools', { enabled: locState?.id != null });
+
+	async function transferScores(calcPoints: Exclude<CalculatedPoints, { agari: null }>) {
+		if (game == null || !game.ok || locState?.t !== 'transfer' || locState.agari !== calcPoints.agari) {
+			return;
+		}
+
+		const { bottomWind, roundWind, round, repeats, scores, riichi, riichiSticks } = game.value;
+		const isOya = locState.seatWind === '1';
+
+		const scores_ = scores.slice(0);
+		scores_[locState.winner] += calcPoints.points.total;
+		if (locState.scoreRepeatSticks && riichiSticks) {
+			scores_[locState.winner] += 1000 * riichiSticks;
+		}
+		if (locState.scoreRepeatSticks && !isOya) {
+			scores_[locState.winner] += repeats * 300;
+		}
+
+		// This is technically exhaustive, TS just can't recognize the two values are the same.
+		if (locState.agari === 'ron' && calcPoints.agari === 'ron') {
+			const deltas = isOya ? calcPoints.points.oya : calcPoints.points.ko;
+			scores_[locState.dealtInPlayer] -= deltas.ron;
+			if (locState.scoreRepeatSticks && !isOya) {
+				scores_[locState.dealtInPlayer] -= repeats * 300;
+			}
+		} else if (locState.agari === 'tsumo' && calcPoints.agari === 'tsumo') {
+			for (const loser of [0, 1, 2, 3].filter((i) => i !== locState.winner)) {
+				const delta = isOya
+					? calcPoints.points.oya.ko
+					: nextWind(bottomWind, loser) === '1'
+					? calcPoints.points.ko.oya
+					: calcPoints.points.ko.ko;
+				scores_[loser] -= delta;
+				if (locState.scoreRepeatSticks && !isOya) {
+					scores_[loser] -= repeats * 100;
+				}
+			}
+		}
+
+		const shouldRotate = locState.handleRotation;
+		const shouldRepeat = locState.seatWind === '1' && locState.dealerRepeat;
+		await db.setGame(locState.id, {
+			...game.value,
+			...(shouldRotate || shouldRepeat
+				? {
+						bottomWind: shouldRepeat ? bottomWind : nextWind(bottomWind, -1),
+						roundWind: shouldRepeat ? roundWind : round === 4 ? nextWind(roundWind) : roundWind,
+						round: shouldRepeat ? round : round === 4 ? 1 : round + 1,
+						repeats: shouldRepeat ? repeats + 1 : 0,
+				  }
+				: {}),
+			scores: scores_,
+			riichiSticks: locState.scoreRiichiSticks ? 0 : riichiSticks,
+			riichi: locState.scoreRiichiSticks ? [false, false, false, false] : riichi,
+		});
+
+		const state: CompassState = {
+			t: 'load',
+			id: locState.id,
+		};
+		navigate('/compass', { state, replace: true });
+	}
+
 	return (
 		<div className="min-h-screen bg-slate-200 dark:bg-gray-900 text-black dark:text-white">
 			<div className="flex flex-row justify-center">
 				<div className="w-full h-screen overflow-y-auto">
 					<div className="fixed top-2 left-2 lg:top-4 lg:left-4">
-						<BackButton>
+						<CircleButton
+							onClick={() => {
+								if (locState?.id) {
+									if (locState.id === '$tools') {
+										navigate('/compass', { replace: true });
+									} else {
+										// TODO: When adding games.
+										navigate(`/compass/`, { replace: true });
+									}
+								} else {
+									navigate('/', { replace: true });
+								}
+							}}
+						>
 							<Left />
-						</BackButton>
+						</CircleButton>
 					</div>
 					<div className="fixed bottom-2 right-2 lg:bottom-4 lg:right-8 flex flex-col gap-y-2">
 						<JumpButton element={handBuilderEl}>役</JumpButton>
@@ -170,7 +264,7 @@ export default function Calculator() {
 					<div ref={setHandBuilderEl} className="flex flex-col justify-center items-center w-full gap-y-2 lg:gap-y-4">
 						<div className="flex flex-col justify-center items-center w-full min-h-screen gap-y-2 lg:gap-y-4 px-2 py-2">
 							<div className="flex flex-row gap-x-2 items-end">
-								<h1 className="text-xl lg:text-4xl">Score Calculator</h1>
+								<h1 className="text-2xl lg:text-4xl">Score Calculator</h1>
 								{tileCount > 0 && (
 									<button
 										onClick={() => {
@@ -250,7 +344,7 @@ export default function Calculator() {
 									<div className="flex flex-col justify-center items-center gap-y-1">
 										<span className="text-xl">Round</span>
 										<WindSelect
-											forced={gameValues?.roundWind != null}
+											forced={locState?.roundWind != null}
 											value={hand.roundWind}
 											redEast
 											onChange={(w) => {
@@ -264,7 +358,7 @@ export default function Calculator() {
 									<div className="flex flex-col justify-center items-center gap-y-1">
 										<span className="text-xl">Seat</span>
 										<WindSelect
-											forced={gameValues?.seatWind != null}
+											forced={locState?.seatWind != null}
 											value={hand.seatWind}
 											redEast
 											onChange={(w) => {
@@ -305,7 +399,7 @@ export default function Calculator() {
 							</div>
 							<HorizontalRow>
 								<Toggle
-									forced={gameValues?.agari != null}
+									forced={locState?.agari != null}
 									toggled={hand.agari === 'ron'}
 									onToggle={(b) => {
 										updateAction(null);
@@ -516,7 +610,57 @@ export default function Calculator() {
 							ref={setScoreResultEl}
 							className="w-full min-h-screen flex flex-col justify-center px-4 py-4 lg:py-8 bg-slate-300 dark:bg-sky-900"
 						>
-							<ScoreResult tileCount={tileCount} result={scoreResult} />
+							<ScoreResult
+								tileCount={tileCount}
+								result={scoreResult}
+								transferButton={locState?.t === 'transfer'}
+								onTransferClick={() => {
+									if (scoreResult?.agari != null) {
+										void transferScores(scoreResult);
+									}
+								}}
+							/>
+						</div>
+						<div className="w-full flex flex-col justify-center px-4 py-4 lg:py-8">
+							<div className="w-full flex flex-col justify-center items-center gap-y-4">
+								<h1 className="text-2xl lg:text-4xl">Points Calculator</h1>
+								<div className="flex flex-col gap-y-2 lg:gap-y-4 justify-center items-center">
+									<HanFu han={han} fu={fu} onHanChange={setHan} onFuChange={setFu} />
+									<div className="text-2xl">
+										Points to take:{' '}
+										{hand.seatWind === '1' ? (
+											hanFuScores.agari === 'tsumo' ? (
+												<span>
+													<span className="text-amber-700 dark:text-amber-500">{hanFuScores.points.oya.ko}</span> all
+												</span>
+											) : (
+												<span className="text-amber-700 dark:text-amber-500">{hanFuScores.points.oya.ron}</span>
+											)
+										) : hanFuScores.agari === 'tsumo' ? (
+											<>
+												<span className="text-amber-700 dark:text-amber-500">{hanFuScores.points.ko.oya}</span>,{' '}
+												<span className="text-amber-700 dark:text-amber-500">{hanFuScores.points.ko.ko}</span>
+											</>
+										) : (
+											<span className="text-amber-700 dark:text-amber-500">{hanFuScores.points.ko.ron}</span>
+										)}
+									</div>
+									{locState?.t === 'transfer' && (
+										<button
+											className={clsx(
+												'border border-gray-800 rounded-xl shadow py-1 lg:p-2 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
+												'w-full h-24 text-2xl',
+												'bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-800',
+											)}
+											onClick={() => {
+												void transferScores(hanFuScores);
+											}}
+										>
+											Quick Transfer
+										</button>
+									)}
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
