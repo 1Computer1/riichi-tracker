@@ -55,17 +55,13 @@ function ScoreResultSheet({
 								className="flex flex-row items-center justify-between border-b border-dotted border-black dark:border-gray-50 dark:border-opacity-50 pb-0.5"
 							>
 								<span className="text-sm sm:text-lg md:text-xl lg:text-2xl">{y[0]}</span>
-								{typeof y[1] === 'number' ? (
-									<span className="text-sm sm:text-lg md:text-xl lg:text-2xl">
-										<span className="text-amber-700 dark:text-amber-500">{y[1]}</span> Han
-									</span>
-								) : y[1] === 'y' ? (
+								{y[2] ? (
 									<span className="text-sm sm:text-lg md:text-xl lg:text-2xl text-amber-700 dark:text-amber-500">
-										★
+										{y[1] > 3 ? `${y[1]}★` : '★'.repeat(y[1])}
 									</span>
 								) : (
-									<span className="text-sm sm:text-lg md:text-xl lg:text-2xl text-amber-700 dark:text-amber-500">
-										★★
+									<span className="text-sm sm:text-lg md:text-xl lg:text-2xl">
+										<span className="text-amber-700 dark:text-amber-500">{y[1]}</span> Han
 									</span>
 								)}
 							</li>

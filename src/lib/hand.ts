@@ -98,25 +98,22 @@ export interface Hand {
 	 * Agari tile index within the tiles in hand.
 	 */
 	agariIndex: number;
-
 	agari: 'ron' | 'tsumo';
 
 	dora: TileCode[];
-
 	uradora: TileCode[];
-
 	nukidora: number;
 
+	extraYakuman: number;
+	extraYakuHan: number;
+	extraDoraHan: number;
+
 	riichi: { double: boolean; ippatsu: boolean } | null;
-
 	blessing: boolean;
-
 	lastTile: boolean;
-
 	kan: boolean;
 
 	roundWind: Wind;
-
 	seatWind: Wind;
 }
 
@@ -140,6 +137,9 @@ export const YakuNames: Record<string, string> = {
 	清老頭: 'All Terminals',
 	四槓子: 'Four Quads',
 	大七星: 'Big Seven Stars',
+	紅孔雀: 'Red Peacock',
+	黒一色: 'All Black',
+	百万石: 'One Million Koku',
 	// Riichi & Special
 	ダブル立直: 'Double Riichi',
 	立直: 'Riichi',
@@ -164,19 +164,23 @@ export const YakuNames: Record<string, string> = {
 	平和: 'Pinfu',
 	断么九: 'All Simples',
 	一盃口: 'Pure Double Sequence',
+	十二落抬: 'Twelve Tiles Falling Down',
 	// 1+ Han
 	三色同順: 'Mixed Triple Sequence',
 	一気通貫: 'Pure Straight',
 	混全帯么九: 'Half Outside Hand',
 	// 2 Han
 	七対子: 'Seven Pairs',
+	五門斉: 'All Types',
 	対々和: 'All Triplets',
 	三色同刻: 'Triple Triplets',
 	三暗刻: 'Three Concealed Triplets',
+	三連刻: 'Three Consecutive Triplets',
 	三槓子: 'Three Quads',
 	小三元: 'Three Little Dragons',
 	混老頭: 'All Terminals and Honors',
 	// 2+ Han
+	一色三順: 'Pure Triple Sequence',
 	純全帯么九: 'Fully Outside Hand',
 	混一色: 'Half Flush',
 	// 3 Han
@@ -187,7 +191,11 @@ export const YakuNames: Record<string, string> = {
 	ドラ: 'Dora',
 	裏ドラ: 'Uradora',
 	赤ドラ: 'Red Fives',
-	抜きドラ: 'Extra Han',
+	抜きドラ: 'Kita',
+	// Extra
+	他の役満: 'Other Yakuman',
+	他の役: 'Other Yaku',
+	他のドラ: 'Other Dora',
 } as const;
 
 export const YakuSort = Object.fromEntries(Object.keys(YakuNames).map((x, i) => [x, i]));
@@ -199,7 +207,7 @@ export function translateYaku(yaku: string): string {
 export function translateScore(name: string): string {
 	const n = parseInt(name, 10);
 	if (n && name.endsWith('役満')) {
-		return `${['Double', 'Triple', 'Quadruple', 'Quintuple', 'Sextuple'][n - 2]} Yakuman`;
+		return `${['Double', 'Triple', 'Quadruple', 'Quintuple', 'Sextuple'][n - 2] ?? `${n}x`} Yakuman`;
 	}
 	return {
 		満貫: 'Mangan',
@@ -308,7 +316,7 @@ export function makeScore(
 export type CalculatedValue = CalculatedPoints & {
 	isOya: boolean;
 	yakuman: number;
-	yaku: [string, number | 'y' | 'yy'][];
+	yaku: [string, number, boolean][];
 	noYaku: boolean;
 	han: number;
 	fu: number;
@@ -339,20 +347,17 @@ export const DefaultSettings: ScoreSettings = {
 
 export function convertHand(hand: Hand): string {
 	let s = '';
-
 	const suits = partitionSuits(hand.tiles.filter((t, i) => i !== hand.agariIndex));
 	for (const [suit, tiles] of suits) {
 		s += tiles;
 		s += suit;
 	}
-
 	if (hand.agari === 'ron') {
 		s += '+';
 		s += hand.tiles[hand.agariIndex];
 	} else {
 		s += hand.tiles[hand.agariIndex];
 	}
-
 	for (const meld of hand.melds) {
 		s += '+';
 		if (meld.t === 'chiipon' || !meld.closed) {
@@ -367,7 +372,6 @@ export function convertHand(hand: Hand): string {
 			s += meld.tiles[0][1];
 		}
 	}
-
 	if (hand.dora.length) {
 		s += '+d';
 		const doraSuits = partitionSuits(hand.dora);
@@ -376,7 +380,6 @@ export function convertHand(hand: Hand): string {
 			s += suit;
 		}
 	}
-
 	if (hand.uradora.length) {
 		s += '+u';
 		const doraSuits = partitionSuits(hand.uradora);
@@ -385,14 +388,23 @@ export function convertHand(hand: Hand): string {
 			s += suit;
 		}
 	}
-
 	if (hand.nukidora) {
 		s += '+n';
 		s += hand.nukidora;
 	}
-
+	if (hand.extraYakuHan) {
+		s += '+xy';
+		s += hand.extraYakuHan;
+	}
+	if (hand.extraDoraHan) {
+		s += '+xd';
+		s += hand.extraDoraHan;
+	}
+	if (hand.extraYakuman) {
+		s += '+xm';
+		s += hand.extraYakuman;
+	}
 	s += '+';
-
 	if (hand.riichi) {
 		if (hand.riichi.double) {
 			s += 'w';
@@ -403,22 +415,17 @@ export function convertHand(hand: Hand): string {
 			s += 'i';
 		}
 	}
-
 	if (hand.blessing) {
 		s += 't';
 	}
-
 	if (hand.lastTile) {
 		s += 'h';
 	}
-
 	if (hand.kan) {
 		s += 'k';
 	}
-
 	s += hand.roundWind;
 	s += hand.seatWind;
-
 	return s;
 }
 
@@ -476,8 +483,8 @@ export function convertValue(hand: Hand, res: Riichi.Result): CalculatedValue {
 			.sort((x, y) => YakuSort[x[0]]! - YakuSort[y[0]]!)
 			.map(([name, vs]) => {
 				const trans = translateYaku(name);
-				const value = vs === 'ダブル役満' ? 'yy' : vs === '役満' ? 'y' : Number(/\d+/.exec(vs)?.[0]);
-				return [trans, value];
+				const value = vs.endsWith('役満') ? parseInt(vs, 10) || 1 : Number(/\d+/.exec(vs)?.[0]);
+				return [trans, value, vs.endsWith('役満')];
 			}),
 		noYaku: res.noYaku,
 		han: res.han,

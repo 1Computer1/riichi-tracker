@@ -82,6 +82,9 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 		dora: [],
 		uradora: [],
 		nukidora: 0,
+		extraYakuHan: 0,
+		extraDoraHan: 0,
+		extraYakuman: 0,
 		riichi: null,
 		blessing: false,
 		lastTile: false,
@@ -500,6 +503,8 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 								left="Tsumo"
 								right="Ron"
 							/>
+						</HorizontalRow>
+						<HorizontalRow>
 							<ToggleOnOff
 								toggled={hand.riichi != null}
 								// No riichi if there are melds, except closed kans.
@@ -704,6 +709,59 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 									Kita ({hand.nukidora})
 								</Counter>
 							)}
+						</HorizontalRow>
+						<HorizontalRow>
+							<Counter
+								canDecrement={hand.extraYakuHan > 0}
+								onDecrement={() => {
+									updateAction(null);
+									updateHand((h) => {
+										h.extraYakuHan--;
+									});
+								}}
+								onIncrement={() => {
+									updateAction(null);
+									updateHand((h) => {
+										h.extraYakuHan++;
+									});
+								}}
+							>
+								Yaku ({hand.extraYakuHan})
+							</Counter>
+							<Counter
+								canDecrement={hand.extraDoraHan > 0}
+								onDecrement={() => {
+									updateAction(null);
+									updateHand((h) => {
+										h.extraDoraHan--;
+									});
+								}}
+								onIncrement={() => {
+									updateAction(null);
+									updateHand((h) => {
+										h.extraDoraHan++;
+									});
+								}}
+							>
+								Dora ({hand.extraDoraHan})
+							</Counter>
+							<Counter
+								canDecrement={hand.extraYakuman > 0}
+								onDecrement={() => {
+									updateAction(null);
+									updateHand((h) => {
+										h.extraYakuman--;
+									});
+								}}
+								onIncrement={() => {
+									updateAction(null);
+									updateHand((h) => {
+										h.extraYakuman++;
+									});
+								}}
+							>
+								Yakuman ({hand.extraYakuman})
+							</Counter>
 						</HorizontalRow>
 					</div>
 					<div
