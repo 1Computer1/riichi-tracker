@@ -23,7 +23,8 @@ export function ScoreUpdateDialog({
 }) {
 	const db = useDb();
 
-	const { bottomWind, scores } = game;
+	const { bottomWind, scores, settings } = game;
+	const isSanma = settings.sanma != null;
 
 	const [scoreUpdateMode, setScoreUpdateMode] = useState<0 | 1 | 2>(0);
 	const [scoreUpdateDelta, setScoreUpdateDelta] = useState(0);
@@ -51,8 +52,8 @@ export function ScoreUpdateDialog({
 			<div className="flex flex-col gap-y-2 items-center justify-center">
 				<TileButton
 					forced
-					red={nextWind(bottomWind, scoreUpdater) === '1'}
-					tile={`${nextWind(bottomWind, scoreUpdater)}z`}
+					red={nextWind(bottomWind, scoreUpdater, isSanma) === '1'}
+					tile={`${nextWind(bottomWind, scoreUpdater, isSanma)}z`}
 				/>
 				<div className="flex flex-col justify-center items-center gap-y-2">
 					<ToggleThree

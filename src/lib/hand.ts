@@ -53,13 +53,14 @@ export function sortMelds(melds: Meld[]): Meld[] {
  */
 export type Wind = '1' | '2' | '3' | '4';
 
-export function nextWind(w: Wind, k = 1): Wind {
-	const d = k < 0 ? 4 + k : k;
-	const next = ((Number(w[0]) + d - 1) % 4) + 1;
+export function nextWind(w: Wind, k = 1, sanma: boolean): Wind {
+	const cap = sanma ? 3 : 4;
+	const d = k < 0 ? cap + k : k;
+	const next = ((Number(w[0]) + d - 1) % cap) + 1;
 	return next.toString() as Wind;
 }
 
-export function nextDoraTile(t: TileCode, k = 1): TileCode {
+export function nextDoraTile(t: TileCode, k = 1, sanma: boolean): TileCode {
 	const num = Number(t[0]) || 5;
 	const suit = t[1];
 	if (suit === 'z') {
@@ -69,6 +70,10 @@ export function nextDoraTile(t: TileCode, k = 1): TileCode {
 		}
 		const d = k < 0 ? 3 + k : k;
 		return `${((num + d - 5) % 3) + 5}z` as TileCode;
+	}
+	if (sanma && suit === 'm') {
+		if (num === 1) return '9m';
+		return '1m';
 	}
 	const d = k < 0 ? 9 + k : k;
 	return `${((num + d - 1) % 9) + 1}${suit}` as TileCode;
@@ -181,8 +186,8 @@ export const YakuNames: Record<string, string> = {
 	// Dora
 	ドラ: 'Dora',
 	裏ドラ: 'Uradora',
-	抜きドラ: 'Nukidora',
 	赤ドラ: 'Red Fives',
+	抜きドラ: 'Extra Han',
 } as const;
 
 export const YakuSort = Object.fromEntries(Object.keys(YakuNames).map((x, i) => [x, i]));
@@ -203,7 +208,6 @@ export function translateScore(name: string): string {
 		三倍満: 'Sanbaiman',
 		数え役満: 'Counted Yakuman',
 		役満: 'Yakuman',
-		無役: 'No Yaku',
 	}[name]!;
 }
 
@@ -231,6 +235,7 @@ export type CalculatedPoints =
 export function calculateHanFu(
 	han: number,
 	fu: number,
+	sanma: 'loss' | 'bisection' | null,
 ): { tsumoAsFromOya: number; tsumoAsKo: number; ronAsOya: number; ronAsKo: number } {
 	let base = fu * Math.pow(2, han + 2);
 	if (base > 2000) {
@@ -246,18 +251,21 @@ export function calculateHanFu(
 			base = 2000;
 		}
 	}
-	return calculateScoreTable(base);
+	return calculateScoreTable(base, sanma);
 }
 
-export function calculateScoreTable(base: number): {
+export function calculateScoreTable(
+	base: number,
+	sanma: 'loss' | 'bisection' | null,
+): {
 	tsumoAsFromOya: number;
 	tsumoAsKo: number;
 	ronAsOya: number;
 	ronAsKo: number;
 } {
 	return {
-		tsumoAsFromOya: ceil100(base * 2),
-		tsumoAsKo: ceil100(base),
+		tsumoAsFromOya: ceil100(base * 2) + (sanma === 'bisection' ? ceil100(ceil100(base * 2) / 2) : 0),
+		tsumoAsKo: ceil100(base) + (sanma === 'bisection' ? ceil100(ceil100(base) / 2) : 0),
 		ronAsOya: ceil100(base * 6),
 		ronAsKo: ceil100(base * 4),
 	};
@@ -270,6 +278,7 @@ export function ceil100(num: number): number {
 export function makeScore(
 	isOya: boolean,
 	agari: 'tsumo' | 'ron',
+	sanma: boolean,
 	{
 		tsumoAsFromOya,
 		tsumoAsKo,
@@ -289,7 +298,7 @@ export function makeScore(
 		: {
 				agari: 'tsumo',
 				points: {
-					total: isOya ? tsumoAsFromOya * 3 : tsumoAsFromOya + tsumoAsKo * 2,
+					total: isOya ? tsumoAsFromOya * (sanma ? 2 : 3) : tsumoAsFromOya + tsumoAsKo * (sanma ? 1 : 2),
 					oya: { ko: tsumoAsFromOya },
 					ko: { oya: tsumoAsFromOya, ko: tsumoAsKo },
 				},
@@ -300,21 +309,32 @@ export type CalculatedValue = CalculatedPoints & {
 	isOya: boolean;
 	yakuman: number;
 	yaku: [string, number | 'y' | 'yy'][];
+	noYaku: boolean;
 	han: number;
 	fu: number;
 	name: string | null;
 };
 
 export interface ScoreSettings {
-	noYakuBase: number;
+	noYakuFu: boolean;
+	noYakuDora: boolean;
 	openTanyao: boolean;
 	doubleYakuman: boolean;
+	blessingOfMan: boolean;
+	bigSevenStars: boolean;
+	sanma: 'loss' | 'bisection' | null;
+	akadora: boolean;
 }
 
 export const DefaultSettings: ScoreSettings = {
-	noYakuBase: 0,
+	noYakuFu: false,
+	noYakuDora: false,
 	openTanyao: true,
 	doubleYakuman: true,
+	blessingOfMan: false,
+	bigSevenStars: false,
+	sanma: null,
+	akadora: true,
 };
 
 export function convertHand(hand: Hand): string {
@@ -459,6 +479,7 @@ export function convertValue(hand: Hand, res: Riichi.Result): CalculatedValue {
 				const value = vs === 'ダブル役満' ? 'yy' : vs === '役満' ? 'y' : Number(/\d+/.exec(vs)?.[0]);
 				return [trans, value];
 			}),
+		noYaku: res.noYaku,
 		han: res.han,
 		fu: res.fu,
 		name: res.name ? translateScore(res.name) : null,
@@ -474,19 +495,25 @@ export function calculate(hand: Hand, settings: ScoreSettings): CalculatedValue 
 	if (!settings.openTanyao) {
 		riichi.disableKuitan();
 	}
-	const res = riichi.calc();
-	if (res.han === 0 && res.yakuman === 0 && res.isAgari) {
-		const points = makeScore(hand.seatWind === '1', hand.agari, calculateScoreTable(settings.noYakuBase));
-		return {
-			...points,
-			isOya: hand.seatWind === '1',
-			yakuman: 0,
-			yaku: [],
-			han: 0,
-			fu: 0,
-			name: 'No Yaku',
-		};
+	if (settings.noYakuFu) {
+		riichi.enableNoYakuFu();
 	}
+	if (settings.noYakuDora) {
+		riichi.enableNoYakuDora();
+	}
+	if (settings.blessingOfMan) {
+		riichi.enableLocalYaku('人和');
+	}
+	if (settings.bigSevenStars) {
+		riichi.enableLocalYaku('大七星');
+	}
+	if (settings.sanma) {
+		riichi.enableSanma(settings.sanma === 'bisection');
+	}
+	if (!settings.akadora) {
+		riichi.disableAka();
+	}
+	const res = riichi.calc();
 	if (res.error) {
 		throw new Error('Invalid hand');
 	}

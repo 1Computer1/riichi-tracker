@@ -23,8 +23,9 @@ export function WinnerDialog({
 }) {
 	const navigate = useNavigate();
 
-	const { bottomWind, roundWind } = game;
-	const seatWind = nextWind(bottomWind, winner);
+	const { bottomWind, roundWind, settings } = game;
+	const isSanma = settings.sanma != null;
+	const seatWind = nextWind(bottomWind, winner, isSanma);
 
 	const [agari, setAgari] = useState<{ t: 'tsumo' } | { t: 'ron'; dealIn: number }>({ t: 'tsumo' });
 	const [handleRotation, setHandleRotation] = useState(seatWind !== '1');
@@ -37,7 +38,7 @@ export function WinnerDialog({
 			t: 'transfer',
 			id: gameId,
 			roundWind,
-			seatWind: nextWind(bottomWind, winner),
+			seatWind,
 			winner,
 			handleRotation,
 			dealerRepeat,
@@ -62,7 +63,11 @@ export function WinnerDialog({
 					<Toggle
 						toggled={agari.t === 'ron'}
 						onToggle={(b) => {
-							setAgari(b ? { t: 'ron', dealIn: [0, 1, 2, 3].filter((i) => i !== winner)[0] } : { t: 'tsumo' });
+							setAgari(
+								b
+									? { t: 'ron', dealIn: (isSanma ? [0, 1, 2] : [0, 1, 2, 3]).filter((i) => i !== winner)[0] }
+									: { t: 'tsumo' },
+							);
 						}}
 						left="Tsumo"
 						right="Ron"
@@ -71,12 +76,12 @@ export function WinnerDialog({
 						<>
 							<p className="text-xl lg:text-2xl">Dealt-In Player</p>
 							<HorizontalRow>
-								{[0, 1, 2, 3]
+								{(isSanma ? [0, 1, 2] : [0, 1, 2, 3])
 									.filter((i) => i !== winner)
 									.map((i) => (
 										<TileButton
 											key={i}
-											tile={`${nextWind(bottomWind, i)}z` as TileCode}
+											tile={`${nextWind(bottomWind, i, isSanma)}z` as TileCode}
 											dora={i === agari.dealIn}
 											onClick={() => setAgari({ t: 'ron', dealIn: i })}
 										/>

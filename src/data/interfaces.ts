@@ -1,4 +1,4 @@
-import { Wind } from '../lib/hand';
+import { ScoreSettings, Wind } from '../lib/hand';
 
 export type RepositoryProvider = () => IRepository;
 
@@ -26,4 +26,5 @@ export interface Game {
 	scores: number[];
 	riichiSticks: number;
 	riichi: boolean[];
+	settings: ScoreSettings;
 }

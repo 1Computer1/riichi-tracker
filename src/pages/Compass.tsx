@@ -28,7 +28,7 @@ export default function Compass() {
 	return (
 		<div className="h-screen w-screen bg-slate-200 dark:bg-gray-900 text-black dark:text-white">
 			{game == null ? (
-				<div className="w-full h-full flex flex-col justify-center items-center">
+				<div className="w-screen h-screen flex flex-col justify-center items-center">
 					<div className="fill-black dark:fill-white w-24 h-24">
 						<BlocksShuffleThree />
 					</div>
@@ -36,7 +36,7 @@ export default function Compass() {
 			) : game.ok ? (
 				<CompassWithGame gameId={gameId} game={game.value} />
 			) : (
-				<div className="w-full h-full flex flex-col justify-center items-center">
+				<div className="w-screen h-screen flex flex-col justify-center items-center">
 					<div className="text-red-600 dark:text-red-700 font-mono">Error: Game {gameId} does not exist.</div>
 				</div>
 			)}
@@ -58,7 +58,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 	});
 	const isPortrait = windowSize.width < windowSize.height;
 
-	const { roundWind, round, repeats, scores, riichi, riichiSticks } = game;
+	const { roundWind, round, repeats, scores, riichi, riichiSticks, settings } = game;
 
 	const [scoreUpdater, setScoreUpdater] = useState<number | null>(null);
 	const [winner, setWinner] = useState<number | null>(null);
@@ -117,18 +117,20 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 					/>
 				</div>
 			</div>
-			<div className="fixed left-1 top-1/2 ml-2 lg:ml-4 -translate-y-1/2">
-				<div className="h-[min(70vh,70vw)] w-fit ">
-					<ScoreDisplayInCompass
-						vertical
-						ix={3}
-						game={game}
-						onScoreClick={() => setScoreUpdater(3)}
-						onTileClick={() => setWinner(3)}
-						onRiichiClick={() => void toggleRiichiStick(3)}
-					/>
+			{settings.sanma == null && (
+				<div className="fixed left-1 top-1/2 ml-2 lg:ml-4 -translate-y-1/2">
+					<div className="h-[min(70vh,70vw)] w-fit ">
+						<ScoreDisplayInCompass
+							vertical
+							ix={3}
+							game={game}
+							onScoreClick={() => setScoreUpdater(3)}
+							onTileClick={() => setWinner(3)}
+							onRiichiClick={() => void toggleRiichiStick(3)}
+						/>
+					</div>
 				</div>
-			</div>
+			)}
 			{scoreUpdater != null && (
 				<ScoreUpdateDialog
 					gameId={gameId}
@@ -222,14 +224,14 @@ function ScoreDisplayInCompass({
 	onTileClick?: () => void;
 	onRiichiClick?: () => void;
 }) {
-	const { bottomWind, scores, riichi } = game;
+	const { bottomWind, scores, riichi, settings } = game;
 
 	return (
 		<ScoreDisplay
 			vertical={vertical}
 			score={scores[ix]}
 			riichi={riichi[ix]}
-			seatWind={nextWind(bottomWind, ix)}
+			seatWind={nextWind(bottomWind, ix, settings.sanma != null)}
 			onScoreClick={onScoreClick}
 			onTileClick={onTileClick}
 			onRiichiClick={onRiichiClick}

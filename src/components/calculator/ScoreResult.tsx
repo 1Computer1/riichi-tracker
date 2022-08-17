@@ -72,7 +72,11 @@ function ScoreResultSheet({
 						))}
 					</ul>
 					<div className="flex flex-col justify-center items-center gap-y-2">
-						{result.name && <div className="text-4xl italic">{result.name}</div>}
+						{result.name ? (
+							<div className="text-4xl italic">{result.name}</div>
+						) : result.noYaku ? (
+							<div className="text-4xl italic">No Yaku</div>
+						) : null}
 						<div className="flex flex-row items-end gap-x-2">
 							<span className="text-6xl text-amber-700 dark:text-amber-500">{result.points.total}</span>
 							<span className="text-2xl">Points</span>

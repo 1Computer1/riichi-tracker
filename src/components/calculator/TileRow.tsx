@@ -8,6 +8,8 @@ export function SuitRow({
 	allTiles,
 	action,
 	tileCount,
+	akadora,
+	sanma,
 	onClick,
 }: {
 	suit: 'm' | 'p' | 's';
@@ -15,25 +17,29 @@ export function SuitRow({
 	allTiles: TileCode[];
 	action: Action | null;
 	tileCount: number;
+	akadora: boolean;
+	sanma: boolean;
 	onClick?: (tile: TileCode) => void;
 }) {
 	return (
 		<div className="flex flex-row gap-x-1 lg:gap-x-2 justify-center items-center min-w-min">
-			{Tiles[suit].map((t) => (
+			{(sanma && suit === 'm' ? [Tiles[suit][0], Tiles[suit][8]] : Tiles[suit]).map((t) => (
 				<TileButton
 					key={t}
 					tile={t}
 					onClick={onClick}
 					dora={isDora(t, hand)}
-					disabled={isDisabled(t, action, tileCount, allTiles)}
+					disabled={isDisabled(t, action, tileCount, allTiles, sanma)}
 				/>
 			))}
-			<TileButton
-				tile={`0${suit}`}
-				onClick={onClick}
-				dora={isDora(`0${suit}`, hand)}
-				disabled={isDisabled(`0${suit}`, action, tileCount, allTiles)}
-			/>
+			{akadora && !sanma && (
+				<TileButton
+					tile={`0${suit}`}
+					onClick={onClick}
+					dora={isDora(`0${suit}`, hand)}
+					disabled={isDisabled(`0${suit}`, action, tileCount, allTiles, false)}
+				/>
+			)}
 		</div>
 	);
 }
@@ -58,7 +64,7 @@ export function HonorRow({
 					key={t}
 					tile={t}
 					dora={isDora(t, hand)}
-					disabled={isDisabled(t, action, tileCount, allTiles)}
+					disabled={isDisabled(t, action, tileCount, allTiles, false)}
 					onClick={onClick}
 				/>
 			))}
@@ -66,10 +72,16 @@ export function HonorRow({
 	);
 }
 
-function isDisabled(tile: TileCode, action: Action | null, tileCount: number, allTiles: TileCode[]): boolean {
+function isDisabled(
+	tile: TileCode,
+	action: Action | null,
+	tileCount: number,
+	allTiles: TileCode[],
+	sanma: boolean,
+): boolean {
 	// Cannot add dora if indicator tiles are taken, but otherwise always.
 	if (action?.t === 'dora' || action?.t === 'uradora') {
-		const indicator = nextDoraTile(tile, -1);
+		const indicator = nextDoraTile(tile, -1, sanma);
 		const count =
 			indicator[0] === '0' || indicator[0] === '5'
 				? allTiles.filter((t) => t === `0${indicator[1]}` || t === `5${indicator[1]}`).length
@@ -80,15 +92,15 @@ function isDisabled(tile: TileCode, action: Action | null, tileCount: number, al
 	if (tileCount >= 14) {
 		return true;
 	}
+	// Cannot add more than one red five.
+	if (tile[0] === '0' && allTiles.some((t) => t === tile)) {
+		return true;
+	}
 	// Count 5s and red 5s together.
 	const count =
 		tile[0] === '0' || tile[0] === '5'
 			? allTiles.filter((t) => t === `0${tile[1]}` || t === `5${tile[1]}`).length
 			: allTiles.filter((t) => t === tile).length;
-	// Cannot add more than one red five.
-	if (tile[0] === '0' && allTiles.some((t) => t === tile)) {
-		return true;
-	}
 	// Cannot add more than 4 of a tile.
 	if (count >= 4) {
 		return true;
@@ -96,7 +108,7 @@ function isDisabled(tile: TileCode, action: Action | null, tileCount: number, al
 	if (tile[1] === 'z') {
 		if (action) {
 			// Cannot chii an honor or pon/kan if there's already 2/1.
-			return action.t === 'chii' || (action.t === 'pon' && count >= 2) || count >= 1;
+			return action.t === 'chii' || (action.t === 'pon' ? count >= 2 : count >= 1);
 		}
 	} else if (action) {
 		if (action.t === 'chii') {
@@ -113,7 +125,7 @@ function isDisabled(tile: TileCode, action: Action | null, tileCount: number, al
 			return !adj.includes(n);
 		}
 		// Cannot pon/kan if there's already 2/1.
-		return (action.t === 'pon' && count >= 2) || count >= 1;
+		return action.t === 'pon' ? count >= 2 : count >= 1;
 	}
 	return false;
 }

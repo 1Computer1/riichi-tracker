@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useImmer } from 'use-immer';
 import { Game } from '../../data/interfaces';
 import { nextWind, TileCode } from '../../lib/hand';
+import { replicate } from '../../lib/util';
 import { useDb } from '../../providers/DbProvider';
 import Button from '../Button';
 import Toggle from '../Toggle';
@@ -13,7 +14,10 @@ import HorizontalRow from '../layout/HorizontalRow';
 export function DrawDialog({ gameId, game, onClose }: { gameId: string; game: Game; onClose: () => void }) {
 	const db = useDb();
 
-	const { bottomWind, roundWind, round, repeats } = game;
+	const { bottomWind, roundWind, round, repeats, settings } = game;
+	const isSanma = settings.sanma != null;
+	const roundCap = isSanma ? 3 : 4;
+	const playerIxes = isSanma ? [0, 1, 2] : [0, 1, 2, 3];
 
 	const [drawType, setDrawType] = useState<'exhaustive' | 'abortive'>('exhaustive');
 	const [drawRepeat, setDrawRepeat] = useState(false);
@@ -24,28 +28,29 @@ export function DrawDialog({ gameId, game, onClose }: { gameId: string; game: Ga
 			await db.setGame(gameId, {
 				...game,
 				repeats: game.repeats + 1,
-				riichi: [false, false, false, false],
+				riichi: replicate(false, isSanma ? 3 : 4),
 			});
 		} else {
 			const scores_ = game.scores.slice();
-			const win = [0, 3000, 1500, 1000, 0][tenpaiPlayers.size];
-			const lose = [0, 1000, 1500, 3000, 0][tenpaiPlayers.size];
-			for (const i of [0, 1, 2, 3]) {
+			const win = (isSanma ? [0, 2000, 1000, 0] : [0, 3000, 1500, 1000, 0])[tenpaiPlayers.size];
+			const lose = (isSanma ? [0, 1000, 2000, 0] : [0, 1000, 1500, 3000, 0])[tenpaiPlayers.size];
+			for (const i of isSanma ? [0, 1, 2] : [0, 1, 2, 3]) {
 				if (tenpaiPlayers.has(i)) {
 					scores_[i] += win;
 				} else {
 					scores_[i] -= lose;
 				}
 			}
-			const repeat = drawRepeat && [0, 1, 2, 3].some((i) => tenpaiPlayers.has(i) && nextWind(bottomWind, i) === '1');
+			const repeat =
+				drawRepeat && playerIxes.some((i) => tenpaiPlayers.has(i) && nextWind(bottomWind, i, isSanma) === '1');
 			await db.setGame(gameId, {
 				...game,
-				bottomWind: repeat ? bottomWind : nextWind(bottomWind, -1),
-				roundWind: repeat ? roundWind : round === 4 ? nextWind(roundWind) : roundWind,
-				round: repeat ? round : round === 4 ? 1 : round + 1,
+				bottomWind: repeat ? bottomWind : nextWind(bottomWind, -1, isSanma),
+				roundWind: repeat ? roundWind : round === roundCap ? nextWind(roundWind, 1, isSanma) : roundWind,
+				round: repeat ? round : round === roundCap ? 1 : round + 1,
 				repeats: repeats + 1,
 				scores: scores_,
-				riichi: [false, false, false, false],
+				riichi: replicate(false, isSanma ? 3 : 4),
 			});
 		}
 		onClose();
@@ -72,13 +77,13 @@ export function DrawDialog({ gameId, game, onClose }: { gameId: string; game: Ga
 						<>
 							<p className="text-xl lg:text-2xl">Players in Tenpai</p>
 							<HorizontalRow>
-								{[0, 1, 2, 3].map((i) => (
+								{playerIxes.map((i) => (
 									<TileButton
 										key={i}
-										tile={`${nextWind(bottomWind, i)}z` as TileCode}
+										tile={`${nextWind(bottomWind, i, isSanma)}z` as TileCode}
 										dora={tenpaiPlayers.has(i)}
 										onClick={() => {
-											if (nextWind(bottomWind, i) === '1') {
+											if (nextWind(bottomWind, i, isSanma) === '1') {
 												setDrawRepeat(!tenpaiPlayers.has(i));
 											}
 											updateTenpaiPlayers((s) => {

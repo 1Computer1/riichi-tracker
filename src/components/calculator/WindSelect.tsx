@@ -5,11 +5,13 @@ export default function WindSelect({
 	value,
 	redEast = false,
 	forced = false,
+	sanma,
 	onChange,
 }: {
 	value: Wind;
 	redEast?: boolean;
 	forced?: boolean;
+	sanma: boolean;
 	onChange?: (w: Wind) => void;
 }) {
 	return (
@@ -20,7 +22,7 @@ export default function WindSelect({
 			onClick={
 				onChange &&
 				(() => {
-					onChange(nextWind(value));
+					onChange(nextWind(value, 1, sanma));
 				})
 			}
 		/>

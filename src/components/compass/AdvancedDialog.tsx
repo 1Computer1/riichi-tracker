@@ -8,11 +8,14 @@ import CustomDialog from '../layout/CustomDialog';
 export function AdvancedDialog({ gameId, game, onClose }: { gameId: string; game: Game; onClose: () => void }) {
 	const db = useDb();
 
-	const { bottomWind, roundWind, round, repeats, riichiSticks, riichi } = game;
+	const { bottomWind, roundWind, round, repeats, riichiSticks, riichi, settings } = game;
+
+	const isSanma = settings.sanma != null;
+	const roundCap = isSanma ? 4 : 3;
 
 	return (
 		<CustomDialog onClose={onClose}>
-			<div className="flex flex-col justify-center items-center gap-y-2 w-[232px] lg:w-80">
+			<div className="flex flex-col justify-center items-center gap-y-2">
 				<div className="flex flex-col justify-center items-center gap-y-2">
 					<p className="text-xl lg:text-2xl">Other Actions</p>
 					<Button
@@ -20,7 +23,7 @@ export function AdvancedDialog({ gameId, game, onClose }: { gameId: string; game
 							(async () => {
 								await db.setGame(gameId, {
 									...game,
-									bottomWind: nextWind(bottomWind, -1),
+									bottomWind: nextWind(bottomWind, -1, isSanma),
 								});
 							})();
 						}}
@@ -32,8 +35,8 @@ export function AdvancedDialog({ gameId, game, onClose }: { gameId: string; game
 							(async () => {
 								await db.setGame(gameId, {
 									...game,
-									roundWind: round === 1 ? nextWind(roundWind, -1) : roundWind,
-									round: round === 1 ? 4 : round - 1,
+									roundWind: round === 1 ? nextWind(roundWind, -1, isSanma) : roundWind,
+									round: round === 1 ? roundCap : round - 1,
 								});
 							})();
 						}}
@@ -41,8 +44,8 @@ export function AdvancedDialog({ gameId, game, onClose }: { gameId: string; game
 							(async () => {
 								await db.setGame(gameId, {
 									...game,
-									roundWind: round === 4 ? nextWind(roundWind) : roundWind,
-									round: round === 4 ? 1 : round + 1,
+									roundWind: round === roundCap ? nextWind(roundWind, 1, isSanma) : roundWind,
+									round: round === roundCap ? 1 : round + 1,
 								});
 							})();
 						}}
