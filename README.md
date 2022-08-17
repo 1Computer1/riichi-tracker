@@ -9,6 +9,8 @@ Works on desktop and mobile, including in landscape orientation!
 
 - Interactive meld creation
 - Disallow invalid hands
+- Sanma score distributions
+- Zero or three red fives
 - Han and fu calculator
 
 ### Compass
@@ -16,9 +18,13 @@ Works on desktop and mobile, including in landscape orientation!
 - Automatic score transfers with calculator
 - Riichi sticks and repeat sticks
 - Exhaustive and abortive draws
+- Sanma compass
 
 ### Planned
 
 - House rules configuration
-- Sanma compass and scoring
+  - Local yaku
+  - Scoring variations
+- Pao half-ron distribution
 - Tracking multiple games
+- Game logs
