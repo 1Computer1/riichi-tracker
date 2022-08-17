@@ -243,11 +243,11 @@ export type CalculatedPoints =
 export function calculateHanFu(
 	han: number,
 	fu: number,
-	sanma: 'loss' | 'bisection' | null,
+	settings: ScoreSettings,
 ): { tsumoAsFromOya: number; tsumoAsKo: number; ronAsOya: number; ronAsKo: number } {
 	let base = fu * Math.pow(2, han + 2);
-	if (base > 2000) {
-		if (han >= 13) {
+	if (settings.kiriageMangan ? base >= 1920 : base > 2000) {
+		if (settings.kazoeYakuman && han >= 13) {
 			base = 8000;
 		} else if (han >= 11) {
 			base = 6000;
@@ -259,12 +259,12 @@ export function calculateHanFu(
 			base = 2000;
 		}
 	}
-	return calculateScoreTable(base, sanma);
+	return calculateScoreTable(base, settings);
 }
 
 export function calculateScoreTable(
 	base: number,
-	sanma: 'loss' | 'bisection' | null,
+	settings: ScoreSettings,
 ): {
 	tsumoAsFromOya: number;
 	tsumoAsKo: number;
@@ -272,8 +272,8 @@ export function calculateScoreTable(
 	ronAsKo: number;
 } {
 	return {
-		tsumoAsFromOya: ceil100(base * 2) + (sanma === 'bisection' ? ceil100(ceil100(base * 2) / 2) : 0),
-		tsumoAsKo: ceil100(base) + (sanma === 'bisection' ? ceil100(ceil100(base) / 2) : 0),
+		tsumoAsFromOya: ceil100(base * 2) + (settings.sanma === 'bisection' ? ceil100(ceil100(base * 2) / 2) : 0),
+		tsumoAsKo: ceil100(base) + (settings.sanma === 'bisection' ? ceil100(ceil100(base) / 2) : 0),
 		ronAsOya: ceil100(base * 6),
 		ronAsKo: ceil100(base * 4),
 	};
@@ -327,9 +327,13 @@ export interface ScoreSettings {
 	noYakuFu: boolean;
 	noYakuDora: boolean;
 	openTanyao: boolean;
+	ryuuiisouHatsu: boolean;
+	multiYakuman: boolean;
 	doubleYakuman: boolean;
-	blessingOfMan: boolean;
-	bigSevenStars: boolean;
+	kiriageMangan: boolean;
+	kazoeYakuman: boolean;
+	doubleWindFu: boolean;
+	rinshanFu: boolean;
 	sanma: 'loss' | 'bisection' | null;
 	akadora: boolean;
 }
@@ -338,9 +342,13 @@ export const DefaultSettings: ScoreSettings = {
 	noYakuFu: false,
 	noYakuDora: false,
 	openTanyao: true,
+	ryuuiisouHatsu: false,
+	multiYakuman: true,
 	doubleYakuman: true,
-	blessingOfMan: false,
-	bigSevenStars: false,
+	kiriageMangan: false,
+	kazoeYakuman: true,
+	doubleWindFu: true,
+	rinshanFu: true,
 	sanma: null,
 	akadora: true,
 };
@@ -496,10 +504,16 @@ export function convertValue(hand: Hand, res: Riichi.Result): CalculatedValue {
 export function calculate(hand: Hand, settings: ScoreSettings): CalculatedValue {
 	const conv = convertHand(hand);
 	const riichi = new Riichi(conv, {
+		multiYakuman: settings.multiYakuman,
 		wyakuman: settings.doubleYakuman,
 		kuitan: settings.openTanyao,
+		ryuuiisouHatsu: settings.ryuuiisouHatsu,
 		noYakuFu: settings.noYakuFu,
 		noYakuDora: settings.noYakuDora,
+		kiriageMangan: settings.kiriageMangan,
+		kazoeYakuman: settings.kazoeYakuman,
+		doubleWindFu: settings.doubleWindFu,
+		rinshanFu: settings.rinshanFu,
 		sanma: settings.sanma != null,
 		sanmaBisection: settings.sanma === 'bisection',
 		aka: settings.akadora,

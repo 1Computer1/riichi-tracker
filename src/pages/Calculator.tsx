@@ -226,7 +226,7 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 
 	const [han, setHan] = useState(1);
 	const [fu, setFu] = useState(30);
-	const hanFuScores = makeScore(hand.seatWind === '1', hand.agari, isSanma, calculateHanFu(han, fu, settings.sanma));
+	const hanFuScores = makeScore(hand.seatWind === '1', hand.agari, isSanma, calculateHanFu(han, fu, settings));
 
 	const transferScores = async (calcPoints: Exclude<CalculatedPoints, { agari: null }>) => {
 		if (game == null || locState?.t !== 'transfer' || locState.agari !== calcPoints.agari) {
