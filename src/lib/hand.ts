@@ -339,8 +339,8 @@ export interface ScoreSettings {
 }
 
 export const DefaultSettings: ScoreSettings = {
-	noYakuFu: false,
-	noYakuDora: false,
+	noYakuFu: true,
+	noYakuDora: true,
 	openTanyao: true,
 	ryuuiisouHatsu: false,
 	multiYakuman: true,
