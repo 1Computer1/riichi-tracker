@@ -51,7 +51,7 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 						key="scoreInput"
 						type="text"
 						inputMode="numeric"
-						className="bg-slate-300 dark:bg-sky-900 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl rounded-xl w-36 lg:w-80"
+						className="bg-slate-300 dark:bg-sky-900 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl rounded-xl w-52 lg:w-80"
 						value={newCompassInitialScore}
 						onChange={(e) => {
 							const n = Number(e.target.value.match(/^\d+/)?.[0] ?? 0);

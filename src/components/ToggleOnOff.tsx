@@ -15,10 +15,10 @@ export default function ToggleOnOff({
 	onToggle?: (toggled: boolean) => void;
 }) {
 	return (
-		<div className="flex flex-row w-36 lg:w-80">
+		<div className="flex flex-row w-52 lg:w-80 text-xl lg:text-2xl">
 			<button
 				className={clsx(
-					'flex justify-center items-center rounded-xl w-full border shadow text-sm md:text-lg lg:text-2xl py-1 lg:p-2 border-gray-800 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
+					'flex justify-center items-center rounded-xl w-full border shadow p-1 lg:p-2 border-gray-800 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
 					!toggled && incompatible
 						? 'bg-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-500'
 						: toggled

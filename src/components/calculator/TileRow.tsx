@@ -22,7 +22,7 @@ export function SuitRow({
 	onClick?: (tile: TileCode) => void;
 }) {
 	return (
-		<div className="flex flex-row gap-x-1 lg:gap-x-2 justify-center items-center min-w-min">
+		<div className="flex flex-row gap-1 lg:gap-2 justify-center items-center min-w-min">
 			{(sanma && suit === 'm' ? [Tiles[suit][0], Tiles[suit][8]] : Tiles[suit]).map((t) => (
 				<TileButton
 					key={t}
@@ -58,7 +58,7 @@ export function HonorRow({
 	action: Action | null;
 }) {
 	return (
-		<div className="flex flex-row gap-x-1 lg:gap-x-2 justify-center items-center min-w-min">
+		<div className="flex flex-row gap-1 lg:gap-2 justify-center items-center min-w-min">
 			{Tiles.z.map((t) => (
 				<TileButton
 					key={t}

@@ -19,11 +19,11 @@ export default function ToggleThree({
 	onToggle?: (toggled: 0 | 1 | 2) => void;
 }) {
 	return (
-		<div className="flex flex-row w-36 lg:w-80">
+		<div className="flex flex-row w-52 lg:w-80 text-xl lg:text-2xl">
 			{forced ? (
 				<div
 					className={clsx(
-						'flex justify-center items-center rounded-xl border w-full shadow text-sm md:text-lg lg:text-2xl py-1 lg:p-2 border-gray-800',
+						'flex justify-center items-center rounded-xl border w-full shadow p-1 lg:p-2 border-gray-800',
 						'bg-amber-500 dark:bg-amber-700',
 					)}
 				>
@@ -33,7 +33,7 @@ export default function ToggleThree({
 				<>
 					<button
 						className={clsx(
-							'flex justify-center items-center rounded-xl w-1/3 border rounded-r-none shadow text-sm md:text-lg lg:text-2xl py-1 lg:p-2 border-gray-800 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
+							'flex justify-center items-center rounded-xl w-1/3 border rounded-r-none shadow p-1 lg:p-2 border-gray-800 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
 							toggled === 0
 								? 'bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-800'
 								: 'bg-gray-50 hover:bg-gray-200 dark:bg-gray-500 dark:hover:bg-gray-600',
@@ -51,7 +51,7 @@ export default function ToggleThree({
 					</button>
 					<button
 						className={clsx(
-							'flex justify-center items-center w-1/3 border shadow text-sm md:text-lg lg:text-2xl py-1 lg:p-2 border-gray-800 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
+							'flex justify-center items-center w-1/3 border shadow p-1 lg:p-2 border-gray-800 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
 							toggled === 1
 								? 'bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-800'
 								: 'bg-gray-50 hover:bg-gray-200 dark:bg-gray-500 dark:hover:bg-gray-600',
@@ -69,7 +69,7 @@ export default function ToggleThree({
 					</button>
 					<button
 						className={clsx(
-							'flex justify-center items-center border rounded-l-none w-1/3 rounded-xl shadow text-sm md:text-lg lg:text-2xl py-1 lg:p-2 border-gray-800 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
+							'flex justify-center items-center border rounded-l-none w-1/3 rounded-xl shadow p-1 lg:p-2 border-gray-800 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
 							toggled === 2
 								? 'bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-800'
 								: 'bg-gray-50 hover:bg-gray-200 dark:bg-gray-500 dark:hover:bg-gray-600',

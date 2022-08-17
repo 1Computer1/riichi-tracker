@@ -20,7 +20,7 @@ export default function CircleButton({
 			)}
 			onClick={onClick}
 		>
-			<div className="w-5 h-5 lg:w-12 lg:h-12 text-base lg:text-3xl flex flex-col justify-center items-center">
+			<div className="w-6 h-6 lg:w-12 lg:h-12 text-xl lg:text-3xl flex flex-col justify-center items-center">
 				{children}
 			</div>
 		</button>

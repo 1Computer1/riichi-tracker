@@ -82,8 +82,8 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 	};
 
 	return (
-		<div className="h-screen w-screen">
-			<div className="fixed bottom-1 left-1/2 -translate-x-1/2">
+		<div className="relative h-screen w-screen">
+			<div className="absolute bottom-0 left-1/2 -translate-x-1/2">
 				<div className="h-fit w-[min(70vh,70vw)]">
 					<ScoreDisplayInCompass
 						ix={0}
@@ -94,7 +94,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 					/>
 				</div>
 			</div>
-			<div className="fixed right-1 top-1/2 mr-2 lg:mr-4 -translate-y-1/2">
+			<div className="absolute right-0 top-1/2 -translate-y-1/2">
 				<div className="rotate-180 h-[min(70vh,70vw)] w-fit">
 					<ScoreDisplayInCompass
 						vertical
@@ -106,7 +106,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 					/>
 				</div>
 			</div>
-			<div className="fixed top-1 left-1/2 -translate-x-1/2">
+			<div className="absolute top-0 left-1/2 -translate-x-1/2">
 				<div className="rotate-180 h-fit w-[min(70vh,70vw)]">
 					<ScoreDisplayInCompass
 						ix={2}
@@ -118,8 +118,8 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 				</div>
 			</div>
 			{settings.sanma == null && (
-				<div className="fixed left-1 top-1/2 ml-2 lg:ml-4 -translate-y-1/2">
-					<div className="h-[min(70vh,70vw)] w-fit ">
+				<div className="absolute left-0 top-1/2 -translate-y-1/2">
+					<div className="h-[min(70vh,70vw)] w-fit">
 						<ScoreDisplayInCompass
 							vertical
 							ix={3}
@@ -147,7 +147,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 			<div
 				data-1c1
 				className={clsx(
-					'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-300 dark:bg-sky-900 rounded-xl shadow',
+					'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-300 dark:bg-sky-900 rounded-xl shadow',
 					isPortrait ? '[writing-mode:vertical-lr] p-2 h-[min(70vh,70vw)]' : 'p-2 w-[min(70vh,70vw)]',
 				)}
 			>

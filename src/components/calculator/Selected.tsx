@@ -13,10 +13,10 @@ export default function Selected({
 	onMeldClick?: (meld: Meld, i: number) => void;
 }) {
 	return (
-		<div className="flex flex-row gap-x-2 justify-center items-center min-w-min">
+		<div className="flex flex-row flex-wrap gap-2 justify-center items-center min-w-min">
 			{hand.tiles.length || hand.melds.length ? (
 				<>
-					<div className="flex flex-row gap-x-0.5">
+					<div className="flex flex-row justify-center items-center gap-x-0.5">
 						{hand.tiles.map((t, i) => (
 							<TileButton
 								key={i}
@@ -27,28 +27,15 @@ export default function Selected({
 							/>
 						))}
 					</div>
-					<div className="flex flex-row gap-x-2">
-						{hand.melds.map((m, i) => (
-							<MeldButton key={i} meld={m} hand={hand} onClick={onMeldClick && ((m) => onMeldClick(m, i))} />
-						))}
-					</div>
+					{hand.melds.map((m, i) => (
+						<MeldButton key={i} meld={m} hand={hand} onClick={onMeldClick && ((m) => onMeldClick(m, i))} />
+					))}
 				</>
 			) : (
 				<div className="flex flex-row gap-x-0.5">
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
-					<Placeholder />
+					{Array.from({ length: 14 }, (_, i) => (
+						<Placeholder key={i} />
+					))}
 				</div>
 			)}
 		</div>

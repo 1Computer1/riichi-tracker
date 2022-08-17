@@ -17,7 +17,7 @@ export default function Counter({
 	children?: ReactNode;
 }) {
 	return (
-		<div className={clsx('flex flex-row justify-center items-stretch w-36 lg:w-80 text-sm md:text-lg lg:text-2xl')}>
+		<div className={clsx('flex flex-row justify-center items-stretch w-52 lg:w-80 text-xl lg:text-2xl')}>
 			<button
 				onClick={onDecrement}
 				disabled={!canDecrement}
@@ -27,7 +27,7 @@ export default function Counter({
 					<Minus />
 				</div>
 			</button>
-			<div className="flex justify-center items-center py-1 lg:p-2 w-[70%] border bg-gray-50 dark:bg-gray-500 border-gray-800">
+			<div className="flex justify-center items-center p-1 lg:p-2 w-[70%] border bg-gray-50 dark:bg-gray-500 border-gray-800">
 				{children}
 			</div>
 			<button
