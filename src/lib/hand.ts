@@ -488,31 +488,15 @@ export function convertValue(hand: Hand, res: Riichi.Result): CalculatedValue {
 
 export function calculate(hand: Hand, settings: ScoreSettings): CalculatedValue {
 	const conv = convertHand(hand);
-	const riichi = new Riichi(conv);
-	if (!settings.doubleYakuman) {
-		riichi.disableWyakuman();
-	}
-	if (!settings.openTanyao) {
-		riichi.disableKuitan();
-	}
-	if (settings.noYakuFu) {
-		riichi.enableNoYakuFu();
-	}
-	if (settings.noYakuDora) {
-		riichi.enableNoYakuDora();
-	}
-	if (settings.blessingOfMan) {
-		riichi.enableLocalYaku('人和');
-	}
-	if (settings.bigSevenStars) {
-		riichi.enableLocalYaku('大七星');
-	}
-	if (settings.sanma) {
-		riichi.enableSanma(settings.sanma === 'bisection');
-	}
-	if (!settings.akadora) {
-		riichi.disableAka();
-	}
+	const riichi = new Riichi(conv, {
+		wyakuman: settings.doubleYakuman,
+		kuitan: settings.openTanyao,
+		noYakuFu: settings.noYakuFu,
+		noYakuDora: settings.noYakuDora,
+		sanma: settings.sanma != null,
+		sanmaBisection: settings.sanma === 'bisection',
+		aka: settings.akadora,
+	});
 	const res = riichi.calc();
 	if (res.error) {
 		throw new Error('Invalid hand');
