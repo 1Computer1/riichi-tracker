@@ -29,7 +29,7 @@ export function SuitRow({
 					tile={t}
 					onClick={onClick}
 					dora={isDora(t, hand)}
-					disabled={isDisabled(t, action, tileCount, allTiles, sanma)}
+					disabled={isDisabled(t, action, hand, tileCount, allTiles, sanma)}
 				/>
 			))}
 			{akadora && !sanma && (
@@ -37,7 +37,7 @@ export function SuitRow({
 					tile={`0${suit}`}
 					onClick={onClick}
 					dora={isDora(`0${suit}`, hand)}
-					disabled={isDisabled(`0${suit}`, action, tileCount, allTiles, false)}
+					disabled={isDisabled(`0${suit}`, action, hand, tileCount, allTiles, false)}
 				/>
 			)}
 		</div>
@@ -64,7 +64,7 @@ export function HonorRow({
 					key={t}
 					tile={t}
 					dora={isDora(t, hand)}
-					disabled={isDisabled(t, action, tileCount, allTiles, false)}
+					disabled={isDisabled(t, action, hand, tileCount, allTiles, false)}
 					onClick={onClick}
 				/>
 			))}
@@ -75,6 +75,7 @@ export function HonorRow({
 function isDisabled(
 	tile: TileCode,
 	action: Action | null,
+	hand: Hand,
 	tileCount: number,
 	allTiles: TileCode[],
 	sanma: boolean,
@@ -82,10 +83,7 @@ function isDisabled(
 	// Cannot add dora if indicator tiles are taken, but otherwise always.
 	if (action?.t === 'dora' || action?.t === 'uradora') {
 		const indicator = nextDoraTile(tile, -1, sanma);
-		const count =
-			indicator[0] === '0' || indicator[0] === '5'
-				? allTiles.filter((t) => t === `0${indicator[1]}` || t === `5${indicator[1]}`).length
-				: allTiles.filter((t) => t === indicator).length;
+		const count = countTiles(indicator, hand, allTiles);
 		return count >= 4;
 	}
 	// Cannot add over 14 tiles to hand.
@@ -96,11 +94,7 @@ function isDisabled(
 	if (tile[0] === '0' && allTiles.some((t) => t === tile)) {
 		return true;
 	}
-	// Count 5s and red 5s together.
-	const count =
-		tile[0] === '0' || tile[0] === '5'
-			? allTiles.filter((t) => t === `0${tile[1]}` || t === `5${tile[1]}`).length
-			: allTiles.filter((t) => t === tile).length;
+	const count = countTiles(tile, hand, allTiles);
 	// Cannot add more than 4 of a tile.
 	if (count >= 4) {
 		return true;
@@ -128,4 +122,16 @@ function isDisabled(
 		return action.t === 'pon' ? count >= 2 : count >= 1;
 	}
 	return false;
+}
+
+function countTiles(tile: TileCode, hand: Hand, allTiles: TileCode[]): number {
+	// Count 5s and red 5s together.
+	if (tile[0] === '0' || tile[0] === '5') {
+		return allTiles.filter((t) => t === `0${tile[1]}` || t === `5${tile[1]}`).length;
+	}
+	// Count nukidora as north.
+	if (tile === '4z') {
+		return allTiles.filter((t) => t === tile).length + hand.nukidora;
+	}
+	return allTiles.filter((t) => t === tile).length;
 }

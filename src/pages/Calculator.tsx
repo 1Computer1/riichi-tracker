@@ -648,7 +648,7 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 							</ToggleOnOff>
 							<ToggleOnOff
 								toggled={hand.blessing}
-								disabled={hand.agari === 'ron' || hand.melds.length > 0}
+								disabled={hand.agari === 'ron' || hand.melds.length > 0 || hand.nukidora > 0}
 								incompatible={hand.riichi != null || hand.kan || hand.lastTile}
 								onToggle={(b) => {
 									updateAction(null);
@@ -683,23 +683,26 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 							>
 								Add Uradora
 							</ActionButton>
-							<Counter
-								canDecrement={hand.nukidora > 0}
-								onDecrement={() => {
-									updateAction(null);
-									updateHand((h) => {
-										h.nukidora--;
-									});
-								}}
-								onIncrement={() => {
-									updateAction(null);
-									updateHand((h) => {
-										h.nukidora++;
-									});
-								}}
-							>
-								Extra Han ({hand.nukidora})
-							</Counter>
+							{isSanma && (
+								<Counter
+									canDecrement={hand.nukidora > 0}
+									onDecrement={() => {
+										updateAction(null);
+										updateHand((h) => {
+											h.nukidora--;
+										});
+									}}
+									canIncrement={hand.nukidora + allTiles.filter((t) => t === '4z').length < 4}
+									onIncrement={() => {
+										updateAction(null);
+										updateHand((h) => {
+											h.nukidora++;
+										});
+									}}
+								>
+									Kita ({hand.nukidora})
+								</Counter>
+							)}
 						</HorizontalRow>
 					</div>
 					<div
