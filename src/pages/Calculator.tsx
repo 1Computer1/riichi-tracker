@@ -297,12 +297,8 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 					<CircleButton
 						onClick={() => {
 							if (locState?.id) {
-								if (locState.id === '$tools') {
-									navigate('/compass', { replace: true });
-								} else {
-									// TODO: When adding games.
-									navigate(`/compass/`, { replace: true });
-								}
+								const state: CompassState = { t: 'load', id: locState.id };
+								navigate('/compass', { state, replace: true });
 							} else {
 								navigate('/', { replace: true });
 							}
