@@ -8,7 +8,20 @@ import Compass from './pages/Compass';
 import Home from './pages/Home';
 import DbProvider from './providers/DbProvider';
 
+// @ts-expect-error
+// eslint-disable-next-line import/order
+import { registerSW } from 'virtual:pwa-register';
+
 import './index.css';
+
+registerSW({
+	onRegistered(r: any) {
+		if (r) {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+			r.update();
+		}
+	},
+});
 
 enableMapSet();
 
