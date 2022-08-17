@@ -164,7 +164,7 @@ export const YakuNames: Record<string, string> = {
 	平和: 'Pinfu',
 	断么九: 'All Simples',
 	一盃口: 'Pure Double Sequence',
-	十二落抬: 'Twelve Tiles Falling Down',
+	十二落抬: 'All Calls',
 	// 1+ Han
 	三色同順: 'Mixed Triple Sequence',
 	一気通貫: 'Pure Straight',
