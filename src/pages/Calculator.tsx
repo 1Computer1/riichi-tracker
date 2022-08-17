@@ -317,10 +317,10 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 					</JumpButton>
 					<JumpButton element={pointsCalculatorEl}>点</JumpButton>
 				</div>
-				<div className="flex flex-col justify-center items-center w-full gap-y-2 lg:gap-y-4">
+				<div className="flex flex-col justify-center items-center w-full gap-y-2">
 					<div
 						ref={setHandBuilderEl}
-						className="flex flex-col justify-center items-center w-full min-h-screen gap-y-2 lg:gap-y-4 px-2 py-2"
+						className="flex flex-col justify-center items-center w-full min-h-screen gap-y-2 px-2 py-2"
 					>
 						<div className="flex flex-row gap-x-2 items-end">
 							<h1 className="text-2xl lg:text-4xl">Score Calculator</h1>
@@ -503,6 +503,42 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 								left="Tsumo"
 								right="Ron"
 							/>
+							<ActionButton
+								t="dora"
+								disabled={hand.dora.length >= 5}
+								currentAction={action}
+								onActionChange={updateAction}
+							>
+								Add Dora
+							</ActionButton>
+							<ActionButton
+								t="uradora"
+								disabled={hand.riichi == null || hand.uradora.length >= 5}
+								currentAction={action}
+								onActionChange={updateAction}
+							>
+								Add Uradora
+							</ActionButton>
+							{isSanma && (
+								<Counter
+									canDecrement={hand.nukidora > 0}
+									onDecrement={() => {
+										updateAction(null);
+										updateHand((h) => {
+											h.nukidora--;
+										});
+									}}
+									canIncrement={hand.nukidora + allTiles.filter((t) => t === '4z').length < 4}
+									onIncrement={() => {
+										updateAction(null);
+										updateHand((h) => {
+											h.nukidora++;
+										});
+									}}
+								>
+									Kita ({hand.nukidora})
+								</Counter>
+							)}
 						</HorizontalRow>
 						<HorizontalRow>
 							<ToggleOnOff
@@ -671,44 +707,6 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 							>
 								{hand.seatWind === '1' ? 'Blessing of Heaven' : 'Blessing of Earth'}
 							</ToggleOnOff>
-						</HorizontalRow>
-						<HorizontalRow>
-							<ActionButton
-								t="dora"
-								disabled={hand.dora.length >= 5}
-								currentAction={action}
-								onActionChange={updateAction}
-							>
-								Add Dora
-							</ActionButton>
-							<ActionButton
-								t="uradora"
-								disabled={hand.riichi == null || hand.uradora.length >= 5}
-								currentAction={action}
-								onActionChange={updateAction}
-							>
-								Add Uradora
-							</ActionButton>
-							{isSanma && (
-								<Counter
-									canDecrement={hand.nukidora > 0}
-									onDecrement={() => {
-										updateAction(null);
-										updateHand((h) => {
-											h.nukidora--;
-										});
-									}}
-									canIncrement={hand.nukidora + allTiles.filter((t) => t === '4z').length < 4}
-									onIncrement={() => {
-										updateAction(null);
-										updateHand((h) => {
-											h.nukidora++;
-										});
-									}}
-								>
-									Kita ({hand.nukidora})
-								</Counter>
-							)}
 						</HorizontalRow>
 						<HorizontalRow>
 							<Counter
