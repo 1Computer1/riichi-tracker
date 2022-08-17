@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/riichi-tracker/sw.js', { scope: '/riichi-tracker/' })})}
