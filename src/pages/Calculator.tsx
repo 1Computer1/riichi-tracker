@@ -657,6 +657,7 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 										// Blessing means no call can be made, first title.
 										if (b) {
 											h.riichi = null;
+											h.uradora = [];
 											h.lastTile = false;
 											h.kan = false;
 										}
