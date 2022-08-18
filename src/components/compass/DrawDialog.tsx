@@ -20,8 +20,10 @@ export function DrawDialog({ gameId, game, onClose }: { gameId: string; game: Ga
 	const playerIxes = isSanma ? [0, 1, 2] : [0, 1, 2, 3];
 
 	const [drawType, setDrawType] = useState<'exhaustive' | 'abortive'>('exhaustive');
-	const [drawRepeat, setDrawRepeat] = useState(false);
-	const [tenpaiPlayers, updateTenpaiPlayers] = useImmer(new Set<number>());
+	const [tenpaiPlayers, updateTenpaiPlayers] = useImmer(new Set<number>(game.riichi.flatMap((x, i) => (x ? [i] : []))));
+	const [drawRepeat, setDrawRepeat] = useState(
+		playerIxes.some((i) => tenpaiPlayers.has(i) && nextWind(bottomWind, i, isSanma) === '1'),
+	);
 
 	const submitDraw = async () => {
 		if (drawType === 'abortive') {
@@ -57,8 +59,8 @@ export function DrawDialog({ gameId, game, onClose }: { gameId: string; game: Ga
 	};
 
 	return (
-		<CustomDialog onClose={onClose}>
-			<div className="flex flex-col justify-center items-center gap-y-2 w-[232px] lg:w-80">
+		<CustomDialog onClose={onClose} title="Handle Draws">
+			<div className="flex flex-col justify-center items-center gap-y-8">
 				<form
 					className="flex flex-col justify-center items-center gap-y-2"
 					onSubmit={(e) => {
@@ -66,7 +68,7 @@ export function DrawDialog({ gameId, game, onClose }: { gameId: string; game: Ga
 						void submitDraw();
 					}}
 				>
-					<p className="text-xl lg:text-2xl">Draw</p>
+					<p className="text-xl lg:text-2xl">Draw Type</p>
 					<Toggle
 						left="Exhaustive"
 						right="Abortive"
@@ -75,13 +77,14 @@ export function DrawDialog({ gameId, game, onClose }: { gameId: string; game: Ga
 					/>
 					{drawType === 'exhaustive' && (
 						<>
-							<p className="text-xl lg:text-2xl">Players in Tenpai</p>
+							<p className="text-xl lg:text-2xl">Ready Players</p>
 							<HorizontalRow>
 								{playerIxes.map((i) => (
 									<TileButton
 										key={i}
 										tile={`${nextWind(bottomWind, i, isSanma)}z` as TileCode}
 										dora={tenpaiPlayers.has(i)}
+										forced={game.riichi[i]}
 										onClick={() => {
 											if (nextWind(bottomWind, i, isSanma) === '1') {
 												setDrawRepeat(!tenpaiPlayers.has(i));

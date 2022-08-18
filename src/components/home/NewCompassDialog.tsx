@@ -36,8 +36,8 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 	};
 
 	return (
-		<CustomDialog initialFocus={initialScoreInputRef} onClose={onClose}>
-			<div className="flex flex-col justify-center items-center gap-y-2">
+		<CustomDialog initialFocus={initialScoreInputRef} onClose={onClose} title="New Game">
+			<div className="flex flex-col justify-center items-center gap-y-8">
 				<form
 					className="flex flex-col justify-center items-center gap-y-2"
 					onSubmit={(e) => {
@@ -51,7 +51,7 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 						key="scoreInput"
 						type="text"
 						inputMode="numeric"
-						className="bg-slate-300 dark:bg-sky-900 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl rounded-xl w-52 lg:w-80"
+						className="bg-slate-300 dark:bg-sky-900 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl rounded-xl w-52 lg:w-80 h-10 lg:h-14 p-1"
 						value={newCompassInitialScore}
 						onChange={(e) => {
 							const n = Number(e.target.value.match(/^\d+/)?.[0] ?? 0);

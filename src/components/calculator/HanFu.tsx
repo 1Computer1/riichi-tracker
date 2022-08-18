@@ -18,7 +18,7 @@ export default function HanFu({
 				<input
 					type="text"
 					inputMode="numeric"
-					className="bg-slate-300 dark:bg-sky-900 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl rounded-xl w-20 lg:w-32"
+					className="bg-slate-300 dark:bg-sky-900 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl rounded-xl w-20 lg:w-32 p-1"
 					value={han}
 					onChange={(e) => {
 						const n = Number(e.target.value.match(/^\d+/)?.[0] ?? 0);
@@ -33,7 +33,7 @@ export default function HanFu({
 				<input
 					type="text"
 					inputMode="numeric"
-					className="bg-slate-300 dark:bg-sky-900 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl rounded-xl w-20 lg:w-32"
+					className="bg-slate-300 dark:bg-sky-900 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl rounded-xl w-20 lg:w-32 p-1"
 					value={fu}
 					onChange={(e) => {
 						const n = Number(e.target.value.match(/^\d+/)?.[0] ?? 0);

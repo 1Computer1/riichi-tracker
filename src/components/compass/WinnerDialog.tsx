@@ -50,8 +50,8 @@ export function WinnerDialog({
 	};
 
 	return (
-		<CustomDialog onClose={onClose}>
-			<div className="flex flex-col justify-center items-center gap-y-2 w-44 lg:w-80">
+		<CustomDialog onClose={onClose} title="Transfer Points">
+			<div className="flex flex-col justify-center items-center gap-y-8">
 				<form
 					className="flex flex-col justify-center items-center gap-y-2"
 					onSubmit={(e) => {
@@ -59,7 +59,7 @@ export function WinnerDialog({
 						submitWinner();
 					}}
 				>
-					<p className="text-xl lg:text-2xl">Transfer Points</p>
+					<p className="text-xl lg:text-2xl">Point Distribution</p>
 					<Toggle
 						toggled={agari.t === 'ron'}
 						onToggle={(b) => {
@@ -92,7 +92,13 @@ export function WinnerDialog({
 					<ToggleOnOff toggled={scoreRiichiSticks} onToggle={(b) => setScoreRiichiSticks(b)}>
 						Score Riichi Sticks
 					</ToggleOnOff>
-					{seatWind === '1' ? (
+					{seatWind !== '1' && (
+						<ToggleOnOff toggled={scoreRepeatSticks} onToggle={(b) => setScoreRepeatSticks(b)}>
+							Score Repeat Sticks
+						</ToggleOnOff>
+					)}
+					<p className="text-xl lg:text-2xl">Seat Rotation</p>
+					{seatWind === '1' && (
 						<ToggleOnOff
 							toggled={dealerRepeat}
 							incompatible={handleRotation}
@@ -104,10 +110,6 @@ export function WinnerDialog({
 							}}
 						>
 							Dealer Repeat
-						</ToggleOnOff>
-					) : (
-						<ToggleOnOff toggled={scoreRepeatSticks} onToggle={(b) => setScoreRepeatSticks(b)}>
-							Score Repeat Sticks
 						</ToggleOnOff>
 					)}
 					<ToggleOnOff
@@ -122,16 +124,16 @@ export function WinnerDialog({
 							}
 						}}
 					>
-						Seat Rotation
+						Rotate Seats
 					</ToggleOnOff>
-					<Button
-						onClick={() => {
-							void submitWinner();
-						}}
-					>
-						Calculate Hand
-					</Button>
 				</form>
+				<Button
+					onClick={() => {
+						void submitWinner();
+					}}
+				>
+					Calculate Hand
+				</Button>
 			</div>
 		</CustomDialog>
 	);

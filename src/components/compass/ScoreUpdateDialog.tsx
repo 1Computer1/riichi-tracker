@@ -48,7 +48,7 @@ export function ScoreUpdateDialog({
 	};
 
 	return (
-		<CustomDialog initialFocus={scoreDeltaInputRef} onClose={onClose}>
+		<CustomDialog initialFocus={scoreDeltaInputRef} onClose={onClose} title="Edit Score">
 			<div className="flex flex-col gap-y-2 items-center justify-center">
 				<TileButton
 					forced
@@ -58,17 +58,17 @@ export function ScoreUpdateDialog({
 				<div className="flex flex-col justify-center items-center gap-y-2">
 					<ToggleThree
 						left={
-							<div className="w-3 h-3 lg:w-6 lg:h-6">
+							<div className="w-4 h-4 lg:w-6 lg:h-6">
 								<Minus />
 							</div>
 						}
 						middle={
-							<div className="w-3 h-3 lg:w-6 lg:h-6">
+							<div className="w-4 h-4 lg:w-6 lg:h-6">
 								<Hashtag />
 							</div>
 						}
 						right={
-							<div className="w-3 h-3 lg:w-6 lg:h-6">
+							<div className="w-4 h-4 lg:w-6 lg:h-6">
 								<Plus />
 							</div>
 						}
@@ -85,7 +85,7 @@ export function ScoreUpdateDialog({
 							ref={scoreDeltaInputRef}
 							type="text"
 							inputMode="numeric"
-							className="bg-slate-300 dark:bg-sky-900 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl rounded-xl w-52 lg:w-80"
+							className="bg-slate-300 dark:bg-sky-900 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl rounded-xl w-52 lg:w-80 h-10 lg:h-14 p-1"
 							value={scoreUpdateDelta}
 							onChange={(e) => {
 								const n = Number(e.target.value.match(/^\d+/)?.[0] ?? 0);

@@ -17,7 +17,7 @@ export default function ToggleOnOff({
 	onToggle?: (toggled: boolean) => void;
 }) {
 	return (
-		<div className="flex flex-row w-52 lg:w-80 text-xl lg:text-2xl">
+		<div className="flex flex-row w-52 lg:w-80 h-10 lg:h-14 text-xl lg:text-2xl">
 			{forced ? (
 				<button
 					disabled
