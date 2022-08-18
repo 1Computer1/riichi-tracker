@@ -22,7 +22,7 @@ export default function ScoreDisplay({
 	return (
 		<div
 			className={clsx(
-				vertical ? 'flex h-full w-32 lg:w-40 flex-row-reverse' : 'flex flex-col w-full h-32 lg:h-40',
+				vertical ? 'flex h-full w-[7.5rem] lg:w-40 flex-row-reverse' : 'flex flex-col w-full h-[7.5rem] lg:h-40',
 				'justify-center items-center gap-1',
 			)}
 		>
@@ -30,7 +30,7 @@ export default function ScoreDisplay({
 				onClick={onRiichiClick}
 				className={clsx(
 					'text-center border border-gray-800 rounded-xl shadow text-sm md:text-lg lg:text-2xl',
-					vertical ? '[writing-mode:vertical-lr] py-8 h-36 lg:h-80' : 'px-8 w-52 lg:w-80',
+					vertical ? '[writing-mode:vertical-lr] py-8 px-1 h-40 lg:h-80' : 'px-8 py-1 w-40 lg:w-80',
 					riichi
 						? 'bg-amber-500 enabled:hover:bg-amber-600 dark:bg-amber-700 dark:enabled:hover:bg-amber-800'
 						: 'bg-gray-50 enabled:hover:bg-gray-200 dark:bg-gray-500 dark:enabled:hover:bg-gray-600',
