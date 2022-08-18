@@ -85,7 +85,7 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 		extraYakuHan: 0,
 		extraDoraHan: 0,
 		extraYakuman: 0,
-		riichi: null,
+		riichi: game && locState && game.riichi[locState.winner] ? { double: false, ippatsu: false } : null,
 		blessing: false,
 		lastTile: false,
 		kan: false,
@@ -543,6 +543,7 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 						<HorizontalRow>
 							<ToggleOnOff
 								toggled={hand.riichi != null}
+								forced={game != null && locState != null}
 								// No riichi if there are melds, except closed kans.
 								disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
 								// Can swap between riichi and blessings.
@@ -564,6 +565,7 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 							</ToggleOnOff>
 							<ToggleOnOff
 								toggled={hand.riichi?.double ?? false}
+								forced={game != null && locState != null && hand.riichi == null}
 								disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
 								incompatible={
 									hand.riichi == null ||
@@ -593,6 +595,7 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 							</ToggleOnOff>
 							<ToggleOnOff
 								toggled={hand.riichi?.ippatsu ?? false}
+								forced={game != null && locState != null && hand.riichi == null}
 								disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
 								incompatible={
 									hand.riichi == null ||

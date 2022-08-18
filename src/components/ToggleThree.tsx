@@ -21,14 +21,15 @@ export default function ToggleThree({
 	return (
 		<div className="flex flex-row w-52 lg:w-80 text-xl lg:text-2xl">
 			{forced ? (
-				<div
+				<button
+					disabled
 					className={clsx(
 						'flex justify-center items-center rounded-xl border w-full shadow p-1 lg:p-2 border-gray-800',
 						'bg-amber-500 dark:bg-amber-700',
 					)}
 				>
 					{[left, middle, right][toggled]}
-				</div>
+				</button>
 			) : (
 				<>
 					<button
