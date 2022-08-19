@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import CircleButton from '../components/CircleButton';
 import Counter from '../components/Counter';
 import JumpButton from '../components/JumpButton';
+import Settings from '../components/Settings';
 import Toggle from '../components/Toggle';
 import ToggleOnOff from '../components/ToggleOnOff';
 import HanFu from '../components/calculator/HanFu';
@@ -14,7 +15,9 @@ import Selected from '../components/calculator/Selected';
 import SelectedDora from '../components/calculator/SelectedDora';
 import { SuitRow, HonorRow } from '../components/calculator/TileRow';
 import WindSelect from '../components/calculator/WindSelect';
+import Cog from '../components/icons/heroicons/Cog';
 import Left from '../components/icons/heroicons/Left';
+import CustomDialog from '../components/layout/CustomDialog';
 import HorizontalRow from '../components/layout/HorizontalRow';
 import VerticalRow from '../components/layout/VerticalRow';
 import BlocksShuffleThree from '../components/loading/react-svg-spinners/BlocksShuffleThree';
@@ -71,7 +74,8 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 	const navigate = useNavigate();
 	const db = useDb();
 
-	const settings = game?.settings ?? DefaultSettings;
+	const [settings, setSettings] = useState(game?.settings ?? DefaultSettings);
+	const [openedSettings, setOpenedSettings] = useState(false);
 	const isSanma = settings.sanma != null;
 
 	const initialHand: Hand = {
@@ -296,7 +300,7 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 	return (
 		<div className="flex flex-row justify-center">
 			<div className="w-full h-screen overflow-y-auto">
-				<div className="fixed top-2 left-2 lg:top-4 lg:left-4">
+				<div className="fixed top-2 left-2 lg:top-4 lg:left-4 flex flex-col gap-y-2">
 					<CircleButton
 						onClick={() => {
 							if (locState?.id) {
@@ -310,6 +314,17 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 						<Left />
 					</CircleButton>
 				</div>
+				{game == null && (
+					<div className="fixed top-2 right-2 lg:top-4 lg:right-8 flex flex-col gap-y-2">
+						<CircleButton
+							onClick={() => {
+								setOpenedSettings(true);
+							}}
+						>
+							<Cog />
+						</CircleButton>
+					</div>
+				)}
 				<div className="invisible sm:visible fixed bottom-2 right-2 lg:bottom-4 lg:right-8 flex flex-col gap-y-2">
 					<JumpButton element={handBuilderEl}>牌</JumpButton>
 					<JumpButton element={scoreResultEl} highlight={scoreResult?.agari != null}>
@@ -317,6 +332,17 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 					</JumpButton>
 					<JumpButton element={pointsCalculatorEl}>点</JumpButton>
 				</div>
+				{openedSettings && (
+					<CustomDialog title="Settings" onClose={() => setOpenedSettings(false)}>
+						<Settings
+							settings={settings}
+							onSettingsChange={(s) => {
+								setSettings(s);
+								updateHand(initialHand);
+							}}
+						/>
+					</CustomDialog>
+				)}
 				<div className="flex flex-col justify-center items-center w-full gap-y-2">
 					<div
 						ref={setHandBuilderEl}

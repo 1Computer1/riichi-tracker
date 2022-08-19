@@ -1,12 +1,11 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useImmer } from 'use-immer';
 import { DefaultSettings, Wind } from '../../lib/hand';
 import { CompassState } from '../../lib/states';
 import { replicate } from '../../lib/util';
 import { useDb } from '../../providers/DbProvider';
 import Button from '../Button';
-import Toggle from '../Toggle';
+import Settings from '../Settings';
 import ToggleOnOff from '../ToggleOnOff';
 import WindSelect from '../calculator/WindSelect';
 import CustomDialog from '../layout/CustomDialog';
@@ -15,9 +14,10 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 	const navigate = useNavigate();
 	const db = useDb();
 
+	const [openedSettings, setOpenedSettings] = useState(false);
 	const [newCompassInitialScore, setNewCompassInitialScore] = useState(25000);
 	const [newCompassBottomWind, setNewCompassBottomWind] = useState<Wind>('1');
-	const [newCompassSettings, updateNewCompassSettings] = useImmer(DefaultSettings);
+	const [newCompassSettings, setNewCompassSettings] = useState(DefaultSettings);
 	const initialScoreInputRef = useRef<HTMLInputElement | null>(null);
 
 	const submitNewCompass = async () => {
@@ -69,41 +69,20 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 							onChange={(w) => setNewCompassBottomWind(w)}
 						/>
 					</div>
-					<ToggleOnOff
-						toggled={newCompassSettings.akadora}
-						onToggle={(b) =>
-							updateNewCompassSettings((s) => {
-								s.akadora = b;
-							})
-						}
-					>
-						Red Fives
+					<ToggleOnOff toggled={openedSettings} onToggle={() => setOpenedSettings(!openedSettings)}>
+						Settings
 					</ToggleOnOff>
-					<ToggleOnOff
-						toggled={newCompassSettings.sanma != null}
-						onToggle={(b) => {
-							updateNewCompassSettings((s) => {
-								s.sanma = b ? 'loss' : null;
-							});
-							if (b) {
-								setNewCompassInitialScore(35000);
-							} else {
-								setNewCompassInitialScore(25000);
-							}
-						}}
-					>
-						Three Player
-					</ToggleOnOff>
-					{newCompassSettings.sanma != null && (
-						<Toggle
-							left="Loss"
-							right="Bisection"
-							toggled={newCompassSettings.sanma === 'bisection'}
-							onToggle={(b) =>
-								updateNewCompassSettings((s) => {
-									s.sanma = b ? 'bisection' : 'loss';
-								})
-							}
+					{openedSettings && (
+						<Settings
+							settings={newCompassSettings}
+							onSettingsChange={(s) => {
+								setNewCompassSettings(s);
+								if (s.sanma == null) {
+									setNewCompassInitialScore(25000);
+								} else {
+									setNewCompassInitialScore(35000);
+								}
+							}}
 						/>
 					)}
 				</form>

@@ -21,7 +21,10 @@ export default function Button({
 					? 'bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-800'
 					: 'bg-gray-50 hover:bg-gray-200 dark:bg-gray-500 dark:hover:bg-gray-600',
 			)}
-			onClick={onClick}
+			onClick={(e) => {
+				e.preventDefault();
+				onClick?.();
+			}}
 			disabled={disabled}
 		>
 			{children}
