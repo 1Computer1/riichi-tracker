@@ -378,6 +378,9 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 									updateAction(null);
 									updateHand((h) => {
 										h.melds.splice(i, 1);
+										if (m.t === 'kan' && h.agari === 'tsumo' && !h.melds.some((m) => m.t === 'kan') && !h.nukidora) {
+											h.kan = false;
+										}
 									});
 								}}
 							/>
@@ -666,7 +669,7 @@ function CalculatorWithGame({ locState, game }: { locState: CalculatorState | nu
 								// No after a kan if no kan melds.
 								// No robbing a kan if all 4 kans in hand.
 								disabled={
-									(hand.agari === 'tsumo' && !hand.melds.some((m) => m.t === 'kan')) ||
+									(hand.agari === 'tsumo' && !hand.melds.some((m) => m.t === 'kan') && !hand.nukidora) ||
 									(hand.agari === 'ron' && hand.melds.filter((m) => m.t === 'kan').length === 4) ||
 									(hand.agari === 'ron' && hand.tiles.filter((t) => hand.tiles[hand.agariIndex] === t).length > 1)
 								}
