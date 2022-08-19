@@ -14,10 +14,9 @@ export function AdvancedDialog({ gameId, game, onClose }: { gameId: string; game
 	const roundCap = isSanma ? 4 : 3;
 
 	return (
-		<CustomDialog onClose={onClose}>
+		<CustomDialog title="Other Actions" onClose={onClose}>
 			<div className="flex flex-col justify-center items-center gap-y-2">
 				<div className="flex flex-col justify-center items-center gap-y-2">
-					<p className="text-xl lg:text-2xl">Other Actions</p>
 					<Button
 						onClick={() => {
 							(async () => {
