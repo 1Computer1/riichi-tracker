@@ -23,7 +23,7 @@ export default function SettingsDialog({
 	const db = useDb();
 	const globalSettings = db.useSettings('$global', { enabled: allowCopy });
 
-	const [standardYakuOpened, setStandardYakuOpened] = useState(false);
+	const [optionalYakuOpened, setOptionalYakuOpened] = useState(false);
 	const [localYakuOpened, setLocalYakuOpened] = useState(false);
 
 	function change(f: DraftFunction<ScoreSettings>) {
@@ -133,14 +133,15 @@ export default function SettingsDialog({
 						help={
 							<span>
 								Toggle the yaku available in the calculator. <br />
-								<Highlight>Standard Yaku</Highlight> are enabled by default. <br />
+								<Highlight>Optional Yaku</Highlight> are some of the usual yaku, enabled by default. They may be
+								disabled if needed. <br />
 								<Highlight>Local Yaku</Highlight> are generally less common and are disabled by default. <br />
 							</span>
 						}
 					>
-						<Button onClick={() => setStandardYakuOpened(true)}>Standard Yaku (-{settings.disabledYaku.length})</Button>
+						<Button onClick={() => setOptionalYakuOpened(true)}>Optional Yaku (-{settings.disabledYaku.length})</Button>
 						<Button onClick={() => setLocalYakuOpened(true)}>Local Yaku (+{settings.enabledLocalYaku.length})</Button>
-						{standardYakuOpened && (
+						{optionalYakuOpened && (
 							<YakuDialog
 								yakuList={new Set(settings.disabledYaku)}
 								onChange={(y) =>
@@ -150,7 +151,7 @@ export default function SettingsDialog({
 								}
 								inverted
 								local={false}
-								onClose={() => setStandardYakuOpened(false)}
+								onClose={() => setOptionalYakuOpened(false)}
 							/>
 						)}
 						{localYakuOpened && (

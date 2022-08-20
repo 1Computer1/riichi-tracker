@@ -120,8 +120,8 @@ export const YakuList: Record<string, Yaku> = {
 	役牌白: yaku({ id: '役牌白', name: 'White Dragon' }),
 	役牌発: yaku({ id: '役牌発', name: 'Green Dragon' }),
 	役牌中: yaku({ id: '役牌中', name: 'Red Dragon' }),
-	平和: yaku({ id: '平和', name: 'Pinfu' }),
-	断么九: yaku({ id: '断么九', name: 'All Simples' }),
+	平和: yaku({ id: '平和', name: 'Pinfu', type: 'optional' }),
+	断么九: yaku({ id: '断么九', name: 'All Simples', type: 'optional' }),
 	一盃口: yaku({ id: '一盃口', name: 'Pure Double Sequence' }),
 	十二落抬: yaku({
 		id: '十二落抬',
