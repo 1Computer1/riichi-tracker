@@ -1,18 +1,21 @@
 import TileButton from './calculator/TileButton';
+import HorizontalRow from './layout/HorizontalRow';
 import { Meld, TileCode } from '../lib/hand';
 
 export default function Tiles({ tiles, melds = [] }: { tiles: TileCode[]; melds?: Meld[] }) {
 	return (
-		<div className="flex flex-row gap-2 justify-center items-center min-w-min">
-			<div className="flex flex-row justify-center items-center gap-x-0.5">
-				{tiles.map((t, i) => (
-					<TileButton key={i} tile={t} forced />
+		<HorizontalRow>
+			<div className="flex flex-row gap-2 justify-center items-center min-w-min">
+				<div className="flex flex-row justify-center items-center gap-x-0.5">
+					{tiles.map((t, i) => (
+						<TileButton key={i} tile={t} forced />
+					))}
+				</div>
+				{melds.map((m, i) => (
+					<MeldButton key={i} meld={m} />
 				))}
 			</div>
-			{melds.map((m, i) => (
-				<MeldButton key={i} meld={m} />
-			))}
-		</div>
+		</HorizontalRow>
 	);
 }
 
