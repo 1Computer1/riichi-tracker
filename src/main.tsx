@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { dexieRepository } from './data/db';
+import { updateTheme } from './lib/util';
 import Calculator from './pages/Calculator';
 import Compass from './pages/Compass';
 import Home from './pages/Home';
@@ -13,6 +14,8 @@ import DbProvider from './providers/DbProvider';
 import { registerSW } from 'virtual:pwa-register';
 
 import './index.css';
+
+updateTheme();
 
 registerSW({
 	onRegistered(r: any) {
