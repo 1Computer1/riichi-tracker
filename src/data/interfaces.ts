@@ -1,4 +1,5 @@
 import { ScoreSettings, Wind } from '../lib/hand';
+import { Option } from '../lib/option';
 
 export type RepositoryProvider = () => IRepository;
 
@@ -10,16 +11,6 @@ export interface IRepository {
 	getSettings: (id: string) => Promise<Option<ScoreSettings>>;
 	setSettings: (id: string, settings: ScoreSettings) => Promise<void>;
 	useSettings: (id: string, options?: { enabled: boolean }) => Option<ScoreSettings> | null;
-}
-
-export type Option<T> = { ok: true; value: T } | { ok: false; value: null };
-
-export function some<T>(t: T): Option<T> {
-	return { ok: true, value: t };
-}
-
-export function none<T>(): Option<T> {
-	return { ok: false, value: null };
 }
 
 export interface Game {

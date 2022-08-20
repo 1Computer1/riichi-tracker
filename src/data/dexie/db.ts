@@ -1,7 +1,8 @@
 import Dexie, { Table } from 'dexie';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { DefaultSettings, ScoreSettings } from '../../lib/hand';
-import { Game, IRepository, none, Option, some } from '../interfaces';
+import { none, Option, some } from '../../lib/option';
+import { Game, IRepository } from '../interfaces';
 
 type Game_ = Game & {
 	id: string;
