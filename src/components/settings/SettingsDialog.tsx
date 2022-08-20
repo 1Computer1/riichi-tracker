@@ -510,22 +510,24 @@ export default function SettingsDialog({
 						</Button>
 					</SettingRow>
 				</div>
-				{allowCopy && globalSettings?.ok && (
+				<div className="flex flex-col justify-center items-center gap-y-2">
+					{allowCopy && globalSettings?.ok && (
+						<Button
+							onClick={() => {
+								change(() => globalSettings.value);
+							}}
+						>
+							Copy From Calculator
+						</Button>
+					)}
 					<Button
 						onClick={() => {
-							change(() => globalSettings.value);
+							onClose();
 						}}
 					>
-						Copy From Calculator
+						Close
 					</Button>
-				)}
-				<Button
-					onClick={() => {
-						onClose();
-					}}
-				>
-					Close
-				</Button>
+				</div>
 			</div>
 		</CustomDialog>
 	);
