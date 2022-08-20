@@ -1,21 +1,24 @@
 import clsx from 'clsx';
+import PointsResult from './PointsResult';
 import { CalculatedValue } from '../../lib/hand';
 
 export default function ScoreResult({
 	tileCount,
 	result,
 	transferButton,
+	pao,
 	onTransferClick,
 }: {
 	tileCount: number;
 	result: CalculatedValue | null;
 	transferButton?: boolean;
+	pao?: boolean;
 	onTransferClick?: () => void;
 }) {
 	return (
 		<div className="w-full h-full flex flex-col justify-center items-center">
 			{tileCount === 14 && result ? (
-				<ScoreResultSheet result={result} transferButton={transferButton} onTransferClick={onTransferClick} />
+				<ScoreResultSheet result={result} transferButton={transferButton} pao={pao} onTransferClick={onTransferClick} />
 			) : (
 				<span className="text-2xl lg:text-4xl text-center">Not enough tiles to form a complete hand.</span>
 			)}
@@ -26,10 +29,12 @@ export default function ScoreResult({
 function ScoreResultSheet({
 	result,
 	transferButton = false,
+	pao = false,
 	onTransferClick,
 }: {
 	result: CalculatedValue;
 	transferButton?: boolean;
+	pao?: boolean;
 	onTransferClick?: () => void;
 }) {
 	return (
@@ -67,36 +72,7 @@ function ScoreResultSheet({
 							</li>
 						))}
 					</ul>
-					<div className="flex flex-col justify-center items-center gap-y-2">
-						{result.name ? (
-							<div className="text-4xl italic">{result.name}</div>
-						) : result.noYaku ? (
-							<div className="text-4xl italic">No Yaku</div>
-						) : null}
-						<div className="flex flex-row items-end gap-x-2">
-							<span className="text-6xl text-amber-700 dark:text-amber-500">{result.points.total}</span>
-							<span className="text-2xl">Points</span>
-						</div>
-						<div className="text-2xl">
-							Points to take:{' '}
-							{result.isOya ? (
-								result.agari === 'tsumo' ? (
-									<span>
-										<span className="text-amber-700 dark:text-amber-500">{result.points.oya.ko}</span> all
-									</span>
-								) : (
-									<span className="text-amber-700 dark:text-amber-500">{result.points.oya.ron}</span>
-								)
-							) : result.agari === 'tsumo' ? (
-								<>
-									<span className="text-amber-700 dark:text-amber-500">{result.points.ko.oya}</span>,{' '}
-									<span className="text-amber-700 dark:text-amber-500">{result.points.ko.ko}</span>
-								</>
-							) : (
-								<span className="text-amber-700 dark:text-amber-500">{result.points.ko.ron}</span>
-							)}
-						</div>
-					</div>
+					<PointsResult result={result} pao={pao} />
 					{transferButton && (
 						<div className="flex flex-col container lg:w-[50%]">
 							<button

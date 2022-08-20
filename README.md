@@ -10,8 +10,12 @@ Works on desktop and mobile, including in landscape orientation!
 - Interactive meld creation
 - Disallow invalid hands
 - Sanma score distributions
-- Zero or three red fives
 - Han and fu calculator
+- House rules configuration
+  - Pao points distribution
+  - Zero or three red fives
+  - Optional and local yaku
+  - Other scoring variations
 
 ### Compass
 
@@ -22,9 +26,5 @@ Works on desktop and mobile, including in landscape orientation!
 
 ### Planned
 
-- House rules configuration
-  - Local yaku
-  - Scoring variations
-- Pao half-ron distribution
 - Tracking multiple games
 - Game logs

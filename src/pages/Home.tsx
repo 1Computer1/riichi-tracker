@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import GithubLogo from '../assets/github/github-corner-right.svg';
 import Button from '../components/Button';
 import { NewCompassDialog } from '../components/home/NewCompassDialog';
-import { CompassState } from '../lib/states';
+import { DefaultSettings } from '../lib/hand';
+import { CalculatorState, CompassState } from '../lib/states';
 import { useDb } from '../providers/DbProvider';
 
 export default function App() {
@@ -37,7 +38,20 @@ export default function App() {
 							>
 								Continue
 							</Button>
-							<Button onClick={() => navigate('/calculator', { replace: true })}>Calculator</Button>
+							<Button
+								onClick={() => {
+									(async () => {
+										const res = await db.getSettings('$global');
+										if (!res.ok) {
+											await db.setSettings('$global', DefaultSettings);
+										}
+										const state: CalculatorState = { t: 'load', id: '$global' };
+										navigate('/calculator', { state, replace: true });
+									})();
+								}}
+							>
+								Calculator
+							</Button>
 						</div>
 					</div>
 				</div>

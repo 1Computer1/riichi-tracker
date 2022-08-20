@@ -6,6 +6,10 @@ export interface IRepository {
 	getGame: (id: string) => Promise<Option<Game>>;
 	setGame: (id: string, game: Game) => Promise<void>;
 	useGame: (id: string, options?: { enabled: boolean }) => Option<Game> | null;
+
+	getSettings: (id: string) => Promise<Option<ScoreSettings>>;
+	setSettings: (id: string, settings: ScoreSettings) => Promise<void>;
+	useSettings: (id: string, options?: { enabled: boolean }) => Option<ScoreSettings> | null;
 }
 
 export type Option<T> = { ok: true; value: T } | { ok: false; value: null };

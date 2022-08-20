@@ -32,6 +32,8 @@ export function WinnerDialog({
 	const [dealerRepeat, setDealerRepeat] = useState(seatWind === '1');
 	const [scoreRiichiSticks, setScoreRiichiSticks] = useState(true);
 	const [scoreRepeatSticks, setScoreRepeatSticks] = useState(true);
+	const [isPao, setIsPao] = useState(false);
+	const [paoPlayer, setPaoPlayer] = useState<number | null>(null);
 
 	const submitWinner = () => {
 		const state: CalculatorState = {
@@ -44,6 +46,7 @@ export function WinnerDialog({
 			dealerRepeat,
 			scoreRiichiSticks,
 			scoreRepeatSticks,
+			pao: isPao ? paoPlayer : null,
 			...(agari.t === 'tsumo' ? { agari: 'tsumo' } : { agari: 'ron', dealtInPlayer: agari.dealIn }),
 		};
 		navigate('/calculator', { state, replace: true });
@@ -83,7 +86,12 @@ export function WinnerDialog({
 											key={i}
 											tile={`${nextWind(bottomWind, i, isSanma)}z` as TileCode}
 											dora={i === agari.dealIn}
-											onClick={() => setAgari({ t: 'ron', dealIn: i })}
+											onClick={() => {
+												setAgari({ t: 'ron', dealIn: i });
+												if (paoPlayer === i) {
+													setPaoPlayer((isSanma ? [0, 1, 2] : [0, 1, 2, 3]).filter((j) => j !== winner && j !== i)[0]);
+												}
+											}}
 										/>
 									))}
 							</HorizontalRow>
@@ -96,6 +104,44 @@ export function WinnerDialog({
 						<ToggleOnOff toggled={scoreRepeatSticks} onToggle={(b) => setScoreRepeatSticks(b)}>
 							Score Repeat Sticks
 						</ToggleOnOff>
+					)}
+					{settings.usePao && (
+						<>
+							<ToggleOnOff
+								toggled={isPao}
+								onToggle={(b) => {
+									setIsPao(b);
+									if (b) {
+										setPaoPlayer(
+											(isSanma ? [0, 1, 2] : [0, 1, 2, 3]).filter(
+												(i) => i !== winner && (agari.t === 'ron' ? i !== agari.dealIn : true),
+											)[0],
+										);
+									} else {
+										setPaoPlayer(null);
+									}
+								}}
+							>
+								Pao
+							</ToggleOnOff>
+							{isPao && (
+								<>
+									<p className="text-xl lg:text-2xl">Responsible Player</p>
+									<HorizontalRow>
+										{(isSanma ? [0, 1, 2] : [0, 1, 2, 3])
+											.filter((i) => i !== winner && (agari.t === 'ron' ? i !== agari.dealIn : true))
+											.map((i) => (
+												<TileButton
+													key={i}
+													tile={`${nextWind(bottomWind, i, isSanma)}z` as TileCode}
+													dora={i === paoPlayer}
+													onClick={() => setPaoPlayer(i)}
+												/>
+											))}
+									</HorizontalRow>
+								</>
+							)}
+						</>
 					)}
 					<p className="text-xl lg:text-2xl">Seat Rotation</p>
 					{seatWind === '1' && (

@@ -1,4 +1,5 @@
 import Riichi from 'riichi';
+import { YakuList, YakuSort } from './yaku';
 
 export type Suit = 'm' | 'p' | 's';
 
@@ -117,91 +118,8 @@ export interface Hand {
 	seatWind: Wind;
 }
 
-export const YakuNames: Record<string, string> = {
-	// Double Yakuman
-	国士無双十三面待ち: 'Thirteen-Wait Thirteen Orphans',
-	純正九蓮宝燈: 'True Nine Gates',
-	四暗刻単騎待ち: 'Single-Wait Four Concealed Triplets',
-	大四喜: 'Four Big Winds',
-	// Yakuman
-	天和: 'Blessing of Heaven',
-	地和: 'Blessing of Earth',
-	人和: 'Blessing of Man',
-	国士無双: 'Thirteen Orphans',
-	九蓮宝燈: 'Nine Gates',
-	四暗刻: 'Four Concealed Triplets',
-	小四喜: 'Four Little Winds',
-	大三元: 'Three Big Dragons',
-	字一色: 'All Honors',
-	緑一色: 'All Green',
-	清老頭: 'All Terminals',
-	四槓子: 'Four Quads',
-	大七星: 'Big Seven Stars',
-	紅孔雀: 'Red Peacock',
-	黒一色: 'All Black',
-	百万石: 'One Million Koku',
-	// Riichi & Special
-	ダブル立直: 'Double Riichi',
-	立直: 'Riichi',
-	一発: 'Ippatsu',
-	門前清自摸和: 'Fully Concealed Hand',
-	嶺上開花: 'After a Kan',
-	搶槓: 'Robbing a Kan',
-	海底摸月: 'Under the Sea',
-	河底撈魚: 'Under the River',
-	// 1 Han
-	場風東: 'Prevalent Wind (East)',
-	場風南: 'Prevalent Wind (South)',
-	場風西: 'Prevalent Wind (West)',
-	場風北: 'Prevalent Wind (North)',
-	自風東: 'Seat Wind (East)',
-	自風南: 'Seat Wind (South)',
-	自風西: 'Seat Wind (West)',
-	自風北: 'Seat Wind (North)',
-	役牌白: 'White Dragon',
-	役牌発: 'Green Dragon',
-	役牌中: 'Red Dragon',
-	平和: 'Pinfu',
-	断么九: 'All Simples',
-	一盃口: 'Pure Double Sequence',
-	十二落抬: 'All Calls',
-	// 1+ Han
-	三色同順: 'Mixed Triple Sequence',
-	一気通貫: 'Pure Straight',
-	混全帯么九: 'Half Outside Hand',
-	// 2 Han
-	七対子: 'Seven Pairs',
-	五門斉: 'All Types',
-	対々和: 'All Triplets',
-	三色同刻: 'Triple Triplets',
-	三暗刻: 'Three Concealed Triplets',
-	三連刻: 'Three Consecutive Triplets',
-	三槓子: 'Three Quads',
-	小三元: 'Three Little Dragons',
-	混老頭: 'All Terminals and Honors',
-	// 2+ Han
-	一色三順: 'Pure Triple Sequence',
-	純全帯么九: 'Fully Outside Hand',
-	混一色: 'Half Flush',
-	// 3 Han
-	二盃口: 'Twice Pure Double Sequence',
-	// 5+ Han
-	清一色: 'Full Flush',
-	// Dora
-	ドラ: 'Dora',
-	裏ドラ: 'Uradora',
-	赤ドラ: 'Red Fives',
-	抜きドラ: 'Kita',
-	// Extra
-	他の役満: 'Other Yakuman',
-	他の役: 'Other Yaku',
-	他のドラ: 'Other Dora',
-} as const;
-
-export const YakuSort = Object.fromEntries(Object.keys(YakuNames).map((x, i) => [x, i]));
-
 export function translateYaku(yaku: string): string {
-	return YakuNames[yaku];
+	return YakuList[yaku].name;
 }
 
 export function translateScore(name: string): string {
@@ -336,11 +254,15 @@ export interface ScoreSettings {
 	rinshanFu: boolean;
 	sanma: 'loss' | 'bisection' | null;
 	akadora: boolean;
+	usePao: boolean;
+	otherScoring: boolean;
+	disabledYaku: string[];
+	enabledLocalYaku: string[];
 }
 
 export const DefaultSettings: ScoreSettings = {
-	noYakuFu: true,
-	noYakuDora: true,
+	noYakuFu: false,
+	noYakuDora: false,
 	openTanyao: true,
 	ryuuiisouHatsu: false,
 	multiYakuman: true,
@@ -351,6 +273,10 @@ export const DefaultSettings: ScoreSettings = {
 	rinshanFu: true,
 	sanma: null,
 	akadora: true,
+	usePao: false,
+	otherScoring: false,
+	disabledYaku: [],
+	enabledLocalYaku: [],
 };
 
 export function convertHand(hand: Hand): string {
@@ -517,6 +443,8 @@ export function calculate(hand: Hand, settings: ScoreSettings): CalculatedValue 
 		sanma: settings.sanma != null,
 		sanmaBisection: settings.sanma === 'bisection',
 		aka: settings.akadora,
+		disabledYaku: settings.disabledYaku,
+		localYaku: settings.enabledLocalYaku,
 	});
 	const res = riichi.calc();
 	if (res.error) {

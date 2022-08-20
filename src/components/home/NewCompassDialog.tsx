@@ -5,10 +5,10 @@ import { CompassState } from '../../lib/states';
 import { replicate } from '../../lib/util';
 import { useDb } from '../../providers/DbProvider';
 import Button from '../Button';
-import Settings from '../Settings';
 import ToggleOnOff from '../ToggleOnOff';
 import WindSelect from '../calculator/WindSelect';
 import CustomDialog from '../layout/CustomDialog';
+import SettingsDialog from '../settings/SettingsDialog';
 
 export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 	const navigate = useNavigate();
@@ -69,11 +69,12 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 							onChange={(w) => setNewCompassBottomWind(w)}
 						/>
 					</div>
-					<ToggleOnOff toggled={openedSettings} onToggle={() => setOpenedSettings(!openedSettings)}>
+					<ToggleOnOff toggled={openedSettings} onToggle={() => setOpenedSettings(true)}>
 						Settings
 					</ToggleOnOff>
 					{openedSettings && (
-						<Settings
+						<SettingsDialog
+							allowCopy
 							settings={newCompassSettings}
 							onSettingsChange={(s) => {
 								setNewCompassSettings(s);
@@ -82,6 +83,9 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 								} else {
 									setNewCompassInitialScore(35000);
 								}
+							}}
+							onClose={() => {
+								setOpenedSettings(false);
 							}}
 						/>
 					)}

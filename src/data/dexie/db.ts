@@ -1,21 +1,13 @@
 import Dexie, { Table } from 'dexie';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { DefaultSettings, ScoreSettings, Wind } from '../../lib/hand';
+import { DefaultSettings, ScoreSettings } from '../../lib/hand';
 import { Game, IRepository, none, Option, some } from '../interfaces';
 
-interface Game_ {
+type Game_ = Game & {
 	id: string;
-	roundWind: Wind;
-	round: number;
-	repeats: number;
-	bottomWind: Wind;
-	scores: number[];
-	riichiSticks: number;
-	riichi: boolean[];
-	settings: ScoreSettings;
-}
+};
 
-function to(game: Game_): Game {
+function toGame(game: Game_): Game {
 	return {
 		roundWind: game.roundWind,
 		round: game.round,
@@ -28,7 +20,7 @@ function to(game: Game_): Game {
 	};
 }
 
-function from(id: string, game: Game): Game_ {
+function fromGame(id: string, game: Game): Game_ {
 	return {
 		id,
 		roundWind: game.roundWind,
@@ -42,8 +34,54 @@ function from(id: string, game: Game): Game_ {
 	};
 }
 
+type ScoreSettings_ = ScoreSettings & { id: string };
+
+function toSettings(settings: ScoreSettings_) {
+	return {
+		noYakuFu: settings.noYakuFu,
+		noYakuDora: settings.noYakuDora,
+		openTanyao: settings.openTanyao,
+		ryuuiisouHatsu: settings.ryuuiisouHatsu,
+		multiYakuman: settings.multiYakuman,
+		doubleYakuman: settings.doubleYakuman,
+		kiriageMangan: settings.kiriageMangan,
+		kazoeYakuman: settings.kazoeYakuman,
+		doubleWindFu: settings.doubleWindFu,
+		rinshanFu: settings.rinshanFu,
+		sanma: settings.sanma,
+		akadora: settings.akadora,
+		usePao: settings.usePao,
+		otherScoring: settings.otherScoring,
+		disabledYaku: settings.disabledYaku,
+		enabledLocalYaku: settings.enabledLocalYaku,
+	};
+}
+
+function fromSettings(id: string, settings: ScoreSettings) {
+	return {
+		id,
+		noYakuFu: settings.noYakuFu,
+		noYakuDora: settings.noYakuDora,
+		openTanyao: settings.openTanyao,
+		ryuuiisouHatsu: settings.ryuuiisouHatsu,
+		multiYakuman: settings.multiYakuman,
+		doubleYakuman: settings.doubleYakuman,
+		kiriageMangan: settings.kiriageMangan,
+		kazoeYakuman: settings.kazoeYakuman,
+		doubleWindFu: settings.doubleWindFu,
+		rinshanFu: settings.rinshanFu,
+		sanma: settings.sanma,
+		akadora: settings.akadora,
+		usePao: settings.usePao,
+		otherScoring: settings.otherScoring,
+		disabledYaku: settings.disabledYaku,
+		enabledLocalYaku: settings.enabledLocalYaku,
+	};
+}
+
 class Db extends Dexie {
 	public games!: Table<Game_>;
+	public settings!: Table<ScoreSettings_>;
 }
 
 const db = new Db('riichi-tracker');
@@ -69,7 +107,8 @@ db.version(2)
 			}),
 	);
 
-// From here onward, database updates may include settings changes.
+// From here onwards, database updates may include settings changes.
+// Only use this if new fields were added. If old fields were changed, we need to be more specific.
 function updateSettings(old: any) {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 	old.settings = { ...DefaultSettings, ...(old.settings ?? {}) };
@@ -88,6 +127,20 @@ db.version(3)
 			}),
 	);
 
+db.version(4)
+	.stores({
+		games: '++id', // id, roundWind, round, repeats, bottomWind, scores, riichiSticks, riichi, settings(..., disabledYaku, enabledLocaledYaku)
+		settings: '++id', // id, ...settings
+	})
+	.upgrade((tx) =>
+		tx
+			.table('games')
+			.toCollection()
+			.modify((old) => {
+				updateSettings(old);
+			}),
+	);
+
 export const repository: IRepository = {
 	async getGame(id): Promise<Option<Game>> {
 		const games = await db.games.where('id').equals(id).toArray();
@@ -95,7 +148,7 @@ export const repository: IRepository = {
 			return none();
 		}
 		const [game] = games;
-		return some(to(game));
+		return some(toGame(game));
 	},
 	useGame(id, options = { enabled: true }): Option<Game> | null {
 		const games = useLiveQuery<Game_[] | null>(
@@ -109,9 +162,33 @@ export const repository: IRepository = {
 			return none();
 		}
 		const [game] = games;
-		return some(to(game));
+		return some(toGame(game));
 	},
 	async setGame(id: string, game: Game): Promise<void> {
-		await db.games.put(from(id, game));
+		await db.games.put(fromGame(id, game));
+	},
+	async getSettings(id: string): Promise<Option<ScoreSettings>> {
+		const settings = await db.settings.where('id').equals(id).toArray();
+		if (!settings.length) {
+			return none();
+		}
+		const [s] = settings;
+		return some(toSettings(s));
+	},
+	async setSettings(id: string, settings: ScoreSettings): Promise<void> {
+		await db.settings.put(fromSettings(id, settings));
+	},
+	useSettings(id: string, options = { enabled: true }): Option<ScoreSettings> | null {
+		const settings = useLiveQuery<ScoreSettings_[] | null>(() =>
+			options.enabled ? db.settings.where('id').equals(id).toArray() : null,
+		);
+		if (settings == null) {
+			return null;
+		}
+		if (!settings.length) {
+			return none();
+		}
+		const [s] = settings;
+		return some(toSettings(s));
 	},
 };
