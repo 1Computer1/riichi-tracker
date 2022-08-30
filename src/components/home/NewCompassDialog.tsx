@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DefaultSettings, Wind } from '../../lib/hand';
+import { Wind } from '../../lib/hand';
+import { DefaultSettings } from '../../lib/settings';
 import { CompassState } from '../../lib/states';
 import { replicate } from '../../lib/util';
 import { useDb } from '../../providers/DbProvider';
@@ -75,6 +76,7 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 					{openedSettings && (
 						<SettingsDialog
 							allowCopy
+							inCalculator={false}
 							settings={newCompassSettings}
 							onSettingsChange={(s) => {
 								setNewCompassSettings(s);

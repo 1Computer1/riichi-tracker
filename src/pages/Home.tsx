@@ -9,7 +9,7 @@ import Ban from '../components/icons/heroicons/Ban';
 import Moon from '../components/icons/heroicons/Moon';
 import Sun from '../components/icons/heroicons/Sun';
 import useLocalStorage from '../hooks/useLocalStorage';
-import { DefaultSettings } from '../lib/hand';
+import { DefaultSettings } from '../lib/settings';
 import { CalculatorState, CompassState } from '../lib/states';
 import { updateTheme } from '../lib/util';
 import { useDb } from '../providers/DbProvider';

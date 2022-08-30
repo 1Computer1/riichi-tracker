@@ -1,5 +1,6 @@
-import { ScoreSettings, Wind } from '../lib/hand';
+import { Wind } from '../lib/hand';
 import { Option } from '../lib/option';
+import { ScoreSettings } from '../lib/settings';
 
 export type RepositoryProvider = () => IRepository;
 

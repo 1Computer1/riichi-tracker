@@ -3,19 +3,22 @@ import produce from 'immer';
 import { ReactNode, useState } from 'react';
 import { DraftFunction } from 'use-immer';
 import YakuDialog from './YakuDialog';
-import { ScoreSettings } from '../../lib/hand';
+import { ScoreSettings } from '../../lib/settings';
 import { useDb } from '../../providers/DbProvider';
 import Button from '../Button';
+import Chip from '../icons/heroicons/Chip';
 import Question from '../icons/heroicons/Question';
 import CustomDialog from '../layout/CustomDialog';
 
 export default function SettingsDialog({
 	settings,
+	inCalculator,
 	allowCopy = false,
 	onSettingsChange,
 	onClose,
 }: {
 	settings: ScoreSettings;
+	inCalculator: boolean;
 	allowCopy?: boolean;
 	onSettingsChange?: (s: ScoreSettings) => void;
 	onClose: () => void;
@@ -198,38 +201,41 @@ export default function SettingsDialog({
 							Hide
 						</Button>
 					</SettingRow>
-					<SettingRow
-						name="Pao Payment"
-						help={
-							<span>
-								Whether to show the ability to distribute points using pao. <br />
-								This is used when a player aids in the creation of a Yakuman. <br />
-								With tsumo, the responsible player will pay full amount. <br />
-								With ron, the responsible player and the player who dealt in will each pay half.
-							</span>
-						}
-					>
-						<Button
-							active={settings.usePao}
-							onClick={() =>
-								change((s) => {
-									s.usePao = true;
-								})
+					{!inCalculator && (
+						<SettingRow
+							name="Pao Payment"
+							compass
+							help={
+								<span>
+									Whether to show the ability to distribute points using pao. <br />
+									This is used when a player aids in the creation of a Yakuman. <br />
+									With tsumo, the responsible player will pay full amount. <br />
+									With ron, the responsible player and the player who dealt in will each pay half.
+								</span>
 							}
 						>
-							Show
-						</Button>
-						<Button
-							active={!settings.usePao}
-							onClick={() =>
-								change((s) => {
-									s.usePao = false;
-								})
-							}
-						>
-							Hide
-						</Button>
-					</SettingRow>
+							<Button
+								active={settings.usePao}
+								onClick={() =>
+									change((s) => {
+										s.usePao = true;
+									})
+								}
+							>
+								Show
+							</Button>
+							<Button
+								active={!settings.usePao}
+								onClick={() =>
+									change((s) => {
+										s.usePao = false;
+									})
+								}
+							>
+								Hide
+							</Button>
+						</SettingRow>
+					)}
 					<SettingRow
 						name="Rounded Mangan"
 						help={
@@ -536,11 +542,13 @@ export default function SettingsDialog({
 function SettingRow({
 	name,
 	help,
+	compass = false,
 	last = false,
 	children,
 }: {
 	name: string;
 	help: ReactNode;
+	compass?: boolean;
 	last?: boolean;
 	children?: ReactNode;
 }) {
@@ -553,7 +561,14 @@ function SettingRow({
 			)}
 		>
 			<div className="flex flex-row justify-between items-center gap-2 w-[15rem] lg:w-[20rem]">
-				<span className="text-xl lg:text-2xl">{name}</span>
+				<span className="relative text-xl lg:text-2xl">
+					{name}
+					{compass && (
+						<span className="absolute mx-1 h-4 w-4">
+							<Chip />
+						</span>
+					)}
+				</span>
 				<HelpButton highlight={helpOpened} onClick={() => setHelpOpened(!helpOpened)} />
 			</div>
 			<div className="flex flex-row flex-wrap gap-2 justify-center items-start w-[14rem] md:w-[27rem] lg:w-[41rem]">

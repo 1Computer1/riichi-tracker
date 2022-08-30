@@ -31,11 +31,11 @@ import {
 	Hand,
 	makeScore,
 	nextWind,
-	ScoreSettings,
 	sortMelds,
 	sortTiles,
 	TileCode,
 } from '../lib/hand';
+import { ScoreSettings } from '../lib/settings';
 import { CalculatorState, CompassState } from '../lib/states';
 import { replicate } from '../lib/util';
 import { useDb } from '../providers/DbProvider';
@@ -381,6 +381,7 @@ function CalculatorWithGame({
 				</div>
 				{openedSettings && (
 					<SettingsDialog
+						inCalculator
 						settings={settings}
 						onSettingsChange={(s) => {
 							(async () => {
