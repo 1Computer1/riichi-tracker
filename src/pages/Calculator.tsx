@@ -623,7 +623,6 @@ function CalculatorWithGame({
 						<HorizontalRow>
 							<ToggleOnOff
 								toggled={hand.riichi != null}
-								forced={game != null && locState != null}
 								// No riichi if there are melds, except closed kans.
 								disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
 								// Can swap between riichi and blessings.
@@ -646,7 +645,6 @@ function CalculatorWithGame({
 							{!settings.disabledYaku.includes('ダブル立直') && (
 								<ToggleOnOff
 									toggled={hand.riichi?.double ?? false}
-									forced={game != null && locState != null && hand.riichi == null}
 									disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
 									incompatible={
 										hand.riichi == null ||
@@ -678,7 +676,6 @@ function CalculatorWithGame({
 							{!settings.disabledYaku.includes('一発') && (
 								<ToggleOnOff
 									toggled={hand.riichi?.ippatsu ?? false}
-									forced={game != null && locState != null && hand.riichi == null}
 									disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
 									incompatible={
 										hand.riichi == null ||
