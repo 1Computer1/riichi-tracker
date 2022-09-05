@@ -27,6 +27,24 @@ export default function YakuDialog({
 	return (
 		<CustomDialog title={local ? 'Toggle Local Yaku' : 'Toggle Yaku'} onClose={onClose}>
 			<div className="flex flex-col justify-center items-center gap-y-8">
+				{local && !inverted && (
+					<Button
+						onClick={() => {
+							if (onChange) {
+								const all = Object.values(YakuList)
+									.filter((y) => y.type === 'local')
+									.map((y) => y.id);
+								if (yakuList.size === all.length) {
+									onChange(new Set());
+								} else {
+									onChange(new Set(all));
+								}
+							}
+						}}
+					>
+						Toggle All
+					</Button>
+				)}
 				<div className="flex flex-col gap-2">
 					{Object.values(YakuList)
 						.filter((y) => (local ? y.type === 'local' : y.type === 'optional'))
