@@ -36,7 +36,7 @@ export default function App() {
 						flushSync(() => {
 							if (theme === 'dark') {
 								setTheme(null);
-							} else if (localStorage.theme === 'light') {
+							} else if (theme === 'light') {
 								setTheme('dark');
 							} else {
 								setTheme('light');
