@@ -306,67 +306,82 @@ function ScoreReference() {
 			</div>
 			<ul className="flex flex-col justify-center items-center gap-2">
 				<li>
-					<Han han={1} settings={settings} />
+					<Han han={1} fus={[20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110]} settings={settings} />
 				</li>
 				<li>
-					<Han han={2} settings={settings} />
+					<Han han={2} fus={[20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110]} settings={settings} />
 				</li>
 				<li>
-					<Han han={3} settings={settings} />
+					<Han han={3} fus={[20, 25, 30, 40, 50, 60]} settings={settings} />
 				</li>
 				<li>
-					<Han han={4} settings={settings} />
+					<Han han={4} fus={[20, 25, 30]} settings={settings} />
 				</li>
 				<li>
-					<div className="flex flex-col justify-center items-center gap-2">
-						<span className="text-xl lg:text-2xl font-bold">
-							<span className="text-amber-700 dark:text-amber-500">3</span> Han{' '}
-							<span className="text-amber-700 dark:text-amber-500">70</span> Fu /{' '}
-							<span className="text-amber-700 dark:text-amber-500">4</span> Han{' '}
-							<span className="text-amber-700 dark:text-amber-500">40</span> Fu /{' '}
-							<span className="text-amber-700 dark:text-amber-500">5</span> Han
-						</span>
+					<ScoreSection
+						title={
+							<span>
+								<span className="text-amber-700 dark:text-amber-500">3</span> Han{' '}
+								<span className="text-amber-700 dark:text-amber-500">70</span> Fu /{' '}
+								<span className="text-amber-700 dark:text-amber-500">4</span> Han{' '}
+								<span className="text-amber-700 dark:text-amber-500">40</span> Fu /{' '}
+								<span className="text-amber-700 dark:text-amber-500">5</span> Han
+							</span>
+						}
+					>
 						<ScoreCard title={<span className="text-amber-700 dark:text-amber-500">Mangan</span>} points={mangan} />
-					</div>
+					</ScoreSection>
 				</li>
 				<li>
-					<div className="flex flex-col justify-center items-center gap-2">
-						<span className="text-xl lg:text-2xl font-bold">
-							<span className="text-amber-700 dark:text-amber-500">6</span> Han /{' '}
-							<span className="text-amber-700 dark:text-amber-500">7</span> Han
-						</span>
+					<ScoreSection
+						title={
+							<span>
+								<span className="text-amber-700 dark:text-amber-500">6</span> Han /{' '}
+								<span className="text-amber-700 dark:text-amber-500">7</span> Han
+							</span>
+						}
+					>
 						<ScoreCard title={<span className="text-amber-700 dark:text-amber-500">Haneman</span>} points={haneman} />
-					</div>
+					</ScoreSection>
 				</li>
 				<li>
-					<div className="flex flex-col justify-center items-center gap-2">
-						<span className="text-xl lg:text-2xl font-bold">
-							<span className="text-amber-700 dark:text-amber-500">8</span> Han /{' '}
-							<span className="text-amber-700 dark:text-amber-500">9</span> Han /{' '}
-							<span className="text-amber-700 dark:text-amber-500">10</span> Han
-						</span>
+					<ScoreSection
+						title={
+							<span>
+								<span className="text-amber-700 dark:text-amber-500">8</span> Han /{' '}
+								<span className="text-amber-700 dark:text-amber-500">9</span> Han /{' '}
+								<span className="text-amber-700 dark:text-amber-500">10</span> Han
+							</span>
+						}
+					>
 						<ScoreCard title={<span className="text-amber-700 dark:text-amber-500">Baiman</span>} points={baiman} />
-					</div>
+					</ScoreSection>
 				</li>
 				<li>
-					<div className="flex flex-col justify-center items-center gap-2">
-						<span className="text-xl lg:text-2xl font-bold">
-							<span className="text-amber-700 dark:text-amber-500">11</span> Han /{' '}
-							<span className="text-amber-700 dark:text-amber-500">12</span> Han
-						</span>
+					<ScoreSection
+						title={
+							<span>
+								<span className="text-amber-700 dark:text-amber-500">11</span> Han /{' '}
+								<span className="text-amber-700 dark:text-amber-500">12</span> Han
+							</span>
+						}
+					>
 						<ScoreCard
 							title={<span className="text-amber-700 dark:text-amber-500">Sanbaiman</span>}
 							points={sanbaiman}
 						/>
-					</div>
+					</ScoreSection>
 				</li>
 				<li>
-					<div className="flex flex-col justify-center items-center gap-2">
-						<span className="text-xl lg:text-2xl font-bold">
-							<span className="text-amber-700 dark:text-amber-500">13+</span> Han
-						</span>
+					<ScoreSection
+						title={
+							<span>
+								<span className="text-amber-700 dark:text-amber-500">13+</span> Han
+							</span>
+						}
+					>
 						<ScoreCard title={<span className="text-amber-700 dark:text-amber-500">Yakuman</span>} points={yakuman} />
-					</div>
+					</ScoreSection>
 				</li>
 			</ul>
 			<ul className="text-base lg:text-xl flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc px-6">
@@ -386,20 +401,15 @@ function ScoreReference() {
 	);
 }
 
-function Han({ han, settings }: { han: number; settings: ScoreSettings }) {
-	const fus =
-		han < 3
-			? [20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110]
-			: han === 3
-			? [20, 25, 30, 40, 50, 60]
-			: han === 4
-			? [20, 25, 30]
-			: [];
+function Han({ han, fus, settings }: { han: number; fus: number[]; settings: ScoreSettings }) {
 	return (
-		<div className="flex flex-col justify-center items-center gap-2">
-			<span className="text-xl lg:text-2xl font-bold">
-				<span className="text-amber-700 dark:text-amber-500">{han}</span> Han
-			</span>
+		<ScoreSection
+			title={
+				<span>
+					<span className="text-amber-700 dark:text-amber-500">{han}</span> Han
+				</span>
+			}
+		>
 			<ul className="flex flex-row flex-wrap gap-1 justify-center items-center">
 				{fus.map((fu) => (
 					<li key={fu}>
@@ -407,7 +417,7 @@ function Han({ han, settings }: { han: number; settings: ScoreSettings }) {
 					</li>
 				))}
 			</ul>
-		</div>
+		</ScoreSection>
 	);
 }
 
@@ -431,6 +441,15 @@ function Fu({ han, fu, settings }: { han: number; fu: number; settings: ScoreSet
 			noRon={noRon}
 			points={res}
 		/>
+	);
+}
+
+function ScoreSection({ title, children }: { title: ReactNode; children: ReactNode }) {
+	return (
+		<div className="flex flex-col justify-center items-center gap-2">
+			<span className="text-xl lg:text-2xl font-bold">{title}</span>
+			{children}
+		</div>
 	);
 }
 
