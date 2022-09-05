@@ -217,6 +217,7 @@ export const YakuList = {
 		type: 'local',
 		yakuman: true,
 		value: 1,
+		closedOnly: true,
 		help: <span>A seven pairs hand containing all seven types of honor tiles.</span>,
 		example: { tiles: ['1z', '1z', '2z', '2z', '3z', '3z', '4z', '4z', '5z', '5z', '6z', '6z', '7z', '7z'] },
 	}),
