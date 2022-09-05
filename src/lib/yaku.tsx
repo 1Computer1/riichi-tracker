@@ -218,7 +218,7 @@ export const YakuList = {
 	}),
 	大数隣: yaku({
 		id: '大数隣',
-		name: 'Numberous Neighbors',
+		name: 'Numerous Neighbors',
 		type: 'local',
 		yakuman: true,
 		value: 1,
