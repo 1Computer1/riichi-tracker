@@ -26,7 +26,7 @@ export default function App() {
 		<div className="min-h-screen bg-slate-200 dark:bg-gray-900 text-black dark:text-white">
 			<div className="fixed top-0 right-0">
 				<a href="https://github.com/1Computer1/riichi-tracker">
-					<img src="/github/github-corner-right.svg" />
+					<img src={`${import.meta.env.BASE_URL}github/github-corner-right.svg`} />
 				</a>
 			</div>
 			<div className="fixed top-2 left-2 lg:top-4 lg:left-4 flex flex-col gap-y-2">

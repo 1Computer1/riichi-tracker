@@ -3,7 +3,8 @@ import { useTheme } from '../hooks/useTheme';
 import { TileCode } from '../lib/hand';
 
 export function svgForTile(tile: TileCode): readonly [string, string] {
-	const t = (name: string) => [`/tiles/light/${name}.svg`, `/tiles/dark/${name}.svg`] as const;
+	const base = import.meta.env.BASE_URL;
+	const t = (name: string) => [`${base}tiles/light/${name}.svg`, `${base}tiles/dark/${name}.svg`] as const;
 	switch (tile) {
 		case '1z':
 			return t('Ton');
