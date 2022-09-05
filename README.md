@@ -1,9 +1,13 @@
 # Riichi Tracker
 
-Includes a riichi mahjong hand calculator and a mahjong compass.  
-Works on desktop and mobile, including in landscape orientation!
+A riichi mahjong hand calculator and interactive compass.  
+Also includes a reference for yaku and scoring.  
 
 ## Features
+
+- Works on desktop and mobile!
+- Offline-usable progressive web app.
+- Theme (light and dark) switcher.
 
 ### Calculator
 
@@ -24,7 +28,14 @@ Works on desktop and mobile, including in landscape orientation!
 - Exhaustive and abortive draws
 - Sanma compass
 
+### Reference
+
+- Tile reference
+- Yaku reference with examples and filters
+- Scoring table and scoring formula
+
 ### Planned
 
-- Tracking multiple games
-- Game logs
+- Language switcher (English, English w/ Romaji, Japanese, other?).
+- Tracking multiple games?
+- Game history?
