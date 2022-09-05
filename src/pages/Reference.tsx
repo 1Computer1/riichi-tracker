@@ -143,7 +143,7 @@ function YakuReference() {
 	};
 
 	return (
-		<div className="flex flex-col gap-y-2">
+		<div className="flex flex-col gap-y-4 lg:gap-y-8">
 			<div className="flex flex-row flex-wrap gap-2 justify-center items-center">
 				<Button active={showLocal} onClick={() => setShowLocal(!showLocal)}>
 					Show Local
