@@ -43,17 +43,17 @@ import { useDb } from '../providers/DbProvider';
 export default function Calculator() {
 	const location = useLocation();
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	const locState: CalculatorState | null = (location.state ?? null) as any;
+	const locState: CalculatorState = (location.state ?? { t: 'load', id: '$global' }) as any;
 
 	const db = useDb();
-	const globalSettings = db.useSettings('$global', { enabled: locState?.t === 'load' });
+	const globalSettings = db.useSettings('$global', { enabled: locState.t === 'load' });
 
 	// The id is only used if we're transferring, in which case it will exist.
-	const game = db.useGame(locState?.id ?? '', { enabled: locState?.t === 'transfer' });
+	const game = db.useGame(locState.id, { enabled: locState.t === 'transfer' });
 
 	return (
 		<div className="min-h-screen bg-slate-200 dark:bg-gray-900 text-black dark:text-white">
-			{locState?.t === 'transfer' ? (
+			{locState.t === 'transfer' ? (
 				game == null ? (
 					<div className="w-screen h-screen flex flex-col justify-center items-center">
 						<div className="fill-black dark:fill-white w-24 h-24">
@@ -67,24 +67,18 @@ export default function Calculator() {
 						<div className="text-red-600 dark:text-red-700 font-mono">Error: Game {locState.id} does not exist.</div>
 					</div>
 				)
-			) : locState?.t === 'load' ? (
-				globalSettings == null ? (
-					<div className="w-screen h-screen flex flex-col justify-center items-center">
-						<div className="fill-black dark:fill-white w-24 h-24">
-							<BlocksShuffleThree />
-						</div>
+			) : globalSettings == null ? (
+				<div className="w-screen h-screen flex flex-col justify-center items-center">
+					<div className="fill-black dark:fill-white w-24 h-24">
+						<BlocksShuffleThree />
 					</div>
-				) : globalSettings.ok ? (
-					<CalculatorWithGame locState={locState} globalSettings={globalSettings.value} game={null} />
-				) : (
-					<div className="w-screen h-screen flex flex-col justify-center items-center">
-						<div className="text-red-600 dark:text-red-700 font-mono">
-							Error: Settings {locState.id} does not exist.
-						</div>
-					</div>
-				)
+				</div>
+			) : globalSettings.ok ? (
+				<CalculatorWithGame locState={locState} globalSettings={globalSettings.value} game={null} />
 			) : (
-				<CalculatorWithGame locState={locState} globalSettings={null} game={null} />
+				<div className="w-screen h-screen flex flex-col justify-center items-center">
+					<div className="text-red-600 dark:text-red-700 font-mono">Error: Settings {locState.id} does not exist.</div>
+				</div>
 			)}
 		</div>
 	);
@@ -95,7 +89,7 @@ function CalculatorWithGame({
 	globalSettings,
 	game,
 }: {
-	locState: CalculatorState | null;
+	locState: CalculatorState;
 	globalSettings: ScoreSettings | null;
 	game: Game | null;
 }) {
@@ -111,7 +105,7 @@ function CalculatorWithGame({
 		tiles: [],
 		melds: [],
 		agariIndex: -1,
-		agari: locState?.t === 'transfer' ? locState.agari : 'tsumo',
+		agari: locState.t === 'transfer' ? locState.agari : 'tsumo',
 		dora: [],
 		uradora: [],
 		nukidora: 0,
@@ -119,12 +113,12 @@ function CalculatorWithGame({
 		extraDoraHan: 0,
 		extraYakuman: 0,
 		riichi:
-			game && locState?.t === 'transfer' && game.riichi[locState.winner] ? { double: false, ippatsu: false } : null,
+			game && locState.t === 'transfer' && game.riichi[locState.winner] ? { double: false, ippatsu: false } : null,
 		blessing: false,
 		lastTile: false,
 		kan: false,
-		roundWind: locState?.t === 'transfer' ? locState.roundWind : '1',
-		seatWind: locState?.t === 'transfer' ? locState.seatWind : '1',
+		roundWind: locState.t === 'transfer' ? locState.roundWind : '1',
+		seatWind: locState.t === 'transfer' ? locState.seatWind : '1',
 	};
 	const [hand, updateHand] = useImmer<Hand>(initialHand);
 
@@ -263,7 +257,7 @@ function CalculatorWithGame({
 	const hanFuScores = makeScore(hand.seatWind === '1', hand.agari, isSanma, calculateHanFu(han, fu, settings));
 
 	const transferScores = async (calcPoints: Exclude<CalculatedPoints, { agari: null }>) => {
-		if (game == null || locState?.t !== 'transfer' || locState.agari !== calcPoints.agari) {
+		if (game == null || locState.t !== 'transfer' || locState.agari !== calcPoints.agari) {
 			return;
 		}
 
@@ -350,7 +344,7 @@ function CalculatorWithGame({
 				<div className="fixed top-2 left-2 lg:top-4 lg:left-4 flex flex-col gap-y-2">
 					<CircleButton
 						onClick={() => {
-							if (locState?.t === 'transfer') {
+							if (locState.t === 'transfer') {
 								const state: CompassState = { t: 'load', id: locState.id };
 								navigate('/compass', { state, replace: true });
 							} else {
@@ -511,7 +505,7 @@ function CalculatorWithGame({
 								<div className="flex flex-col justify-center items-center gap-y-1">
 									<span className="text-xl">Round</span>
 									<WindSelect
-										forced={locState?.t === 'transfer'}
+										forced={locState.t === 'transfer'}
 										value={hand.roundWind}
 										redEast
 										sanma={isSanma}
@@ -526,7 +520,7 @@ function CalculatorWithGame({
 								<div className="flex flex-col justify-center items-center gap-y-1">
 									<span className="text-xl">Seat</span>
 									<WindSelect
-										forced={locState?.t === 'transfer'}
+										forced={locState.t === 'transfer'}
 										value={hand.seatWind}
 										redEast
 										sanma={isSanma}
@@ -568,7 +562,7 @@ function CalculatorWithGame({
 						</div>
 						<HorizontalRow>
 							<Toggle
-								forced={locState?.t === 'transfer'}
+								forced={locState.t === 'transfer'}
 								toggled={hand.agari === 'ron'}
 								onToggle={(b) => {
 									updateAction(null);
@@ -870,7 +864,7 @@ function CalculatorWithGame({
 						<ScoreResult
 							tileCount={tileCount}
 							result={scoreResult}
-							transferButton={locState?.t === 'transfer'}
+							transferButton={locState.t === 'transfer'}
 							onTransferClick={() => {
 								if (scoreResult?.agari != null) {
 									void transferScores(scoreResult);
@@ -896,9 +890,9 @@ function CalculatorWithGame({
 									fu,
 									name: null,
 								}}
-								pao={locState?.t === 'transfer' && locState.pao != null}
+								pao={locState.t === 'transfer' && locState.pao != null}
 							/>
-							{locState?.t === 'transfer' && (
+							{locState.t === 'transfer' && (
 								<div className="flex flex-col container lg:w-[50%]">
 									<button
 										className={clsx(

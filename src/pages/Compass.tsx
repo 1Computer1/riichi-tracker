@@ -21,9 +21,8 @@ export default function Compass() {
 	const db = useDb();
 	const location = useLocation();
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	const locState: CompassState | null = (location.state ?? null) as any;
-	const gameId = locState?.t === 'load' ? locState.id : '$tools';
-	const game = db.useGame(gameId);
+	const locState: CompassState = (location.state ?? { t: 'load', id: '$tools' }) as any;
+	const game = db.useGame(locState.id);
 
 	return (
 		<div className="h-screen w-screen bg-slate-200 dark:bg-gray-900 text-black dark:text-white">
@@ -34,10 +33,10 @@ export default function Compass() {
 					</div>
 				</div>
 			) : game.ok ? (
-				<CompassWithGame gameId={gameId} game={game.value} />
+				<CompassWithGame gameId={locState.id} game={game.value} />
 			) : (
 				<div className="w-screen h-screen flex flex-col justify-center items-center">
-					<div className="text-red-600 dark:text-red-700 font-mono">Error: Game {gameId} does not exist.</div>
+					<div className="text-red-600 dark:text-red-700 font-mono">Error: Game {locState.id} does not exist.</div>
 				</div>
 			)}
 		</div>
