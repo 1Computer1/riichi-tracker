@@ -4,11 +4,13 @@ import { ReactNode, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Button from '../components/Button';
 import CircleButton from '../components/CircleButton';
+import JumpButton from '../components/JumpButton';
 import Tiles from '../components/Tiles';
 import Toggle from '../components/Toggle';
 import TileButton from '../components/calculator/TileButton';
 import Left from '../components/icons/heroicons/Left';
 import Right from '../components/icons/heroicons/Right';
+import Up from '../components/icons/heroicons/Up';
 import HorizontalRow from '../components/layout/HorizontalRow';
 import VerticalRow from '../components/layout/VerticalRow';
 import H from '../components/text/H';
@@ -20,6 +22,7 @@ export default function Reference() {
 	const navigate = useNavigate();
 	const tabs = ['tiles', 'yaku', 'scoring'];
 	const [params, setSearchParams] = useSearchParams();
+	const [tabsEl, setTabsEl] = useState<Element | null>(null);
 
 	return (
 		<div className="min-h-screen bg-slate-200 dark:bg-gray-900 text-black dark:text-white">
@@ -34,7 +37,12 @@ export default function Reference() {
 							<Left />
 						</CircleButton>
 					</div>
-					<div className="flex flex-col justify-center items-center w-full gap-y-2">
+					<div className="invisible sm:visible z-10 fixed bottom-2 right-2 lg:bottom-4 lg:right-8 flex flex-col gap-y-2">
+						<JumpButton element={tabsEl}>
+							<Up />
+						</JumpButton>
+					</div>
+					<div ref={setTabsEl} className="flex flex-col justify-center items-center w-full gap-y-2">
 						<div className="flex flex-col justify-center items-center w-full gap-y-2 px-2 py-2">
 							<h1 className="text-2xl lg:text-4xl">Reference</h1>
 						</div>
@@ -121,7 +129,7 @@ function LabeledTiles({ tiles }: { tiles: [TileCode, string][] }) {
 		<div className="flex flex-row flex-wrap justify-center items-center gap-x-1 lg:gap-x-2">
 			{tiles.map((t, i) => (
 				<div key={i} className="flex flex-col justify-center items-center">
-					<span className="text-sm lg:text-lg">{t[1]}</span>
+					<span className="text-base lg:text-lg">{t[1]}</span>
 					<TileButton tile={t[0]} forced />
 				</div>
 			))}
@@ -240,7 +248,7 @@ function YakuItem({ yaku }: { yaku: Omit<Yaku, 'id'> }) {
 				{yaku.help && <div className="text-base lg:text-lg">{yaku.help}</div>}
 				{yaku.example && (
 					<HorizontalRow>
-						<Tiles tiles={yaku.example.tiles} melds={yaku.example.melds} small />
+						<Tiles sets={yaku.example} small />
 					</HorizontalRow>
 				)}
 			</div>
@@ -260,7 +268,7 @@ function ScoreReference() {
 
 	return (
 		<div className="flex flex-col justify-center items-center gap-2">
-			<div className="flex flex-row flex-wrap gap-4 justify-center items-center">
+			<div className="flex flex-row flex-wrap gap-4 lg:gap-6 justify-center items-center">
 				<div className="w-40 h-40 lg:w-48 lg:h-48 flex flex-col justify-center items-center gap-2 lg:gap-4 p-0.5 rounded shadow bg-slate-200 dark:bg-gray-900">
 					<span className="text-lg font-semibold">
 						<H>Legend</H>
@@ -391,12 +399,116 @@ function ScoreReference() {
 			</ul>
 			<ul className="text-base lg:text-xl flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc px-6">
 				<li>
-					<H>3</H> Han <H>60</H> Fu and <H>4</H> Han <H>30</H> Fu can be rounded up to a <H>Mangan</H> in certain rule
+					<H>3</H> han <H>60</H> fu and <H>4</H> han <H>30</H> fu can be rounded up to a <H>mangan</H> in certain rule
 					variations.
 				</li>
 				<li>
 					Scoring table in three-player is the same as four-player unless north bisection is used. In that case, points
 					that would have been lost from the north player is redistributed.
+				</li>
+				<li>
+					The general formula is as follows:
+					<ol className="flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-decimal ml-4 lg:ml-8 mt-1">
+						<li>
+							If the hand is a <H>yakuman</H>, score 8000 basic points per <H>yakuman</H>. Skip to step 8.
+						</li>
+						<li>Determine yaku and dora to count up the han value.</li>
+						<li>
+							For han of <H>5</H> or more, counting fu is not necessary, skip to step 8:
+							<ul className="flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc ml-4 lg:ml-8 mt-1">
+								<li>
+									<H>5</H> = <H>mangan</H> worth 2000 basic points.
+								</li>
+								<li>
+									<H>6-7</H> = <H>haneman</H> worth 3000 basic points.
+								</li>
+								<li>
+									<H>8-10</H> = <H>baiman</H> worth 4000 basic points.
+								</li>
+								<li>
+									<H>11-12</H> = <H>sanbaiman</H> worth 6000 basic points.
+								</li>
+								<li>
+									<H>13+</H> = <H>yakuman</H> worth 8000 basic points.
+								</li>
+							</ul>
+						</li>
+						<li>
+							Determine fu value using hand composition, rounded up to the nearest 10:
+							<ul className="flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc ml-4 lg:ml-8 mt-1">
+								<li>
+									<H>20</H> base fu
+									<ul className="flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc ml-4 lg:ml-8 mt-1">
+										<li>
+											<H>+2</H> for winning with tsumo
+										</li>
+										<li>
+											<H>+10</H> for winning with closed ron
+										</li>
+										<li>
+											<H>+2</H> for having non-open waits
+										</li>
+										<li>
+											<H>+2</H> per yakuhai pair
+										</li>
+									</ul>
+								</li>
+								<li>
+									<H>2</H> base fu per triplet
+									<ul className="flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc ml-4 lg:ml-8 mt-1">
+										<li>
+											<H>x2</H> if concealed
+										</li>
+										<li>
+											<H>x2</H> if terminals or honors
+										</li>
+										<li>
+											<H>x4</H> if kan
+										</li>
+									</ul>
+								</li>
+								<li>
+									Seven pairs is always <H>25</H> fu.
+								</li>
+								<li>
+									Pinfu tsumo is always <H>20</H> fu.
+								</li>
+								<li>
+									Open hands are always worth at least <H>30</H> fu.
+								</li>
+							</ul>
+						</li>
+						<li>
+							Calculate basic points with{' '}
+							<span className="font-mono">
+								fu×2<sup>2+han</sup>
+							</span>
+							.
+						</li>
+						<li>
+							If using rounded <H>mangan</H> rules, round 1920 basic points to 2000.
+						</li>
+						<li>
+							If above 2000 basic points but at <H>4</H> or fewer han, fix at a <H>mangan</H> of 2000 points.
+						</li>
+						<li>
+							On a win, transfer basic points rounded up to the nearest 100:
+							<ul className="flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc ml-4 lg:ml-8 mt-1">
+								<li>
+									Non-dealer tsumo: <H>1x</H> from other non-dealers, <H>2x</H> from dealer.
+								</li>
+								<li>
+									Non-dealer ron: <H>4x</H> from dealt-in player.
+								</li>
+								<li>
+									Dealer tsumo: <H>2x</H> from all other players.
+								</li>
+								<li>
+									Dealer ron: <H>6x</H> from dealt-in player.
+								</li>
+							</ul>
+						</li>
+					</ol>
 				</li>
 			</ul>
 		</div>

@@ -44,7 +44,8 @@ export default function SettingsDialog({
 						help={
 							<span>
 								The number of players in the game. <br />
-								<H>Three-Player</H> mahjong uses the sanma rules, which includes no chii, no 2 to 8 of Man, and Kita.
+								<H.B>Three-player</H.B> mahjong uses the sanma rules, which includes no chii, no 2 to 8 of characters,
+								and kita.
 							</span>
 						}
 					>
@@ -76,10 +77,10 @@ export default function SettingsDialog({
 								<span>
 									The distribution of points when a player wins with tsumo.
 									<br />
-									If <H>Loss</H> is enabled, the base points are the same as in four player. In effect, the winning
-									player loses the points from the missing North player.
+									If <H.B>Loss</H.B> is enabled, the base points are the same as in four player. In effect, the winning
+									player loses the points from the missing north player.
 									<br />
-									If <H>Bisection</H> is enabled, the base points will include the points from the North player that
+									If <H.B>Bisection</H.B> is enabled, the base points will include the points from the north player that
 									should have been paid. In effect, the other two players will pay more.
 								</span>
 							}
@@ -136,9 +137,9 @@ export default function SettingsDialog({
 						help={
 							<span>
 								Toggle the yaku available in the calculator. <br />
-								<H>Optional Yaku</H> are some of the usual yaku, enabled by default. They may be disabled if needed.{' '}
+								<H.B>Optional yaku</H.B> are some of the usual yaku, enabled by default. They may be disabled if needed.{' '}
 								<br />
-								<H>Local Yaku</H> are generally less common and are disabled by default. <br />
+								<H.B>Local yaku</H.B> are generally less common and are disabled by default. <br />
 							</span>
 						}
 					>
@@ -175,8 +176,8 @@ export default function SettingsDialog({
 						name="Other Scoring"
 						help={
 							<span>
-								Whether to show counters to add in extra Yaku, Dora, and Yakuman. <br />
-								These can be used for purposes such as extra red fives and other dora, and unsupported local yaku.
+								Whether to show counters to add in extra yaku han, dora, and yakuman. <br />
+								These can be used for purposes such as extra red fives, other dora, and unsupported local yaku.
 							</span>
 						}
 					>
@@ -208,7 +209,7 @@ export default function SettingsDialog({
 							help={
 								<span>
 									Whether to show the ability to distribute points using pao. <br />
-									This is used when a player aids in the creation of a Yakuman. <br />
+									This is used when a player aids in the creation of a <H>yakuman</H>. <br />
 									With tsumo, the responsible player will pay full amount. <br />
 									With ron, the responsible player and the player who dealt in will each pay half.
 								</span>
@@ -240,7 +241,8 @@ export default function SettingsDialog({
 						name="Rounded Mangan"
 						help={
 							<span>
-								Whether to round up hands worth 4 Han 30 Fu or 3 Han 60 Fu to a Mangan. <br />
+								Whether to round up hands worth <H>4</H> han <H>30</H> fu or <H>3</H> han <H>60</H> fu to a{' '}
+								<H>mangan</H>. <br />
 								Otherwise, they are worth the usual 2000/3900 and 7700 (non-dealer) or 3900 and 11600 (dealer).
 							</span>
 						}
@@ -270,7 +272,7 @@ export default function SettingsDialog({
 						name="Counted Yakuman"
 						help={
 							<span>
-								Whether to count a hand worth at least 13 Han as <H>Yakuman</H> or as <H>Sanbaiman</H>.
+								Whether to count a hand worth at least <H>13</H> han as <H.B>yakuman</H.B> or as <H.B>sanbaiman</H.B>.
 							</span>
 						}
 					>
@@ -297,7 +299,13 @@ export default function SettingsDialog({
 					</SettingRow>
 					<SettingRow
 						name="Yakuman Stacking"
-						help={<span>Whether to allow stacking multiple Yakuman together or cap the max at a single Yakuman.</span>}
+						help={
+							<span>
+								Whether to allow stacking multiple <H>yakuman</H> together or cap the max at a single <H>yakuman</H>.{' '}
+								<br />
+								<H>Double yakuman</H> are also disabled if this is disabled.
+							</span>
+						}
 					>
 						<Button
 							active={settings.multiYakuman}
@@ -325,7 +333,7 @@ export default function SettingsDialog({
 							name="Double Yakuman"
 							help={
 								<span>
-									Whether to count certain special yaku as being worth a double Yakuman. <br />
+									Whether to count certain special yaku as being worth a <H>double yakuman</H>. <br />
 									These include: <br />
 									<ul className="list-disc list-inside">
 										<li className="list-item">Big Four Winds</li>
@@ -360,7 +368,7 @@ export default function SettingsDialog({
 					)}
 					<SettingRow
 						name="Open All Simples"
-						help={<span>Whether to allow the All Simples yaku to be counted if the hand has open melds.</span>}
+						help={<span>Whether to allow the all simples yaku to be counted if the hand has open sets.</span>}
 					>
 						<Button
 							active={settings.openTanyao}
@@ -385,7 +393,7 @@ export default function SettingsDialog({
 					</SettingRow>
 					<SettingRow
 						name="All Green's Dragon"
-						help={<span>Whether to require the Green Dragon to count the All Green yaku.</span>}
+						help={<span>Whether to require the green dragon to count the all green yaku.</span>}
 					>
 						<Button
 							active={settings.ryuuiisouHatsu}
@@ -412,8 +420,15 @@ export default function SettingsDialog({
 						name="Double Wind Fu"
 						help={
 							<span>
-								Whether to count a wind pair that is both the Prevalent Wind and the Seat Wind as <H>4 Fu</H> or{' '}
-								<H>2 Fu</H>.
+								Whether to count a wind pair that is both the round wind and the seat wind as{' '}
+								<H.B>
+									<H>4</H> fu
+								</H.B>{' '}
+								or{' '}
+								<H.B>
+									<H>2</H> fu
+								</H.B>
+								.
 							</span>
 						}
 					>
@@ -442,7 +457,11 @@ export default function SettingsDialog({
 						name="After a Kan Fu"
 						help={
 							<span>
-								Whether to count the <H>2 Fu</H> granted by tsumo if the hand won with After a Kan.
+								Whether to count the{' '}
+								<H.B>
+									<H>2</H> fu
+								</H.B>{' '}
+								granted by tsumo if the hand won with after a kan.
 							</span>
 						}
 					>
@@ -469,7 +488,11 @@ export default function SettingsDialog({
 					</SettingRow>
 					<SettingRow
 						name="No Yaku Fu"
-						help={<span>Whether to calculate Fu even when with No Yaku. Hands will have 0 Han.</span>}
+						help={
+							<span>
+								Whether to calculate fu even when with no yaku. Hands will have <H>0</H> han.
+							</span>
+						}
 					>
 						<Button
 							active={settings.noYakuFu}
@@ -492,7 +515,7 @@ export default function SettingsDialog({
 							Disallow
 						</Button>
 					</SettingRow>
-					<SettingRow last name="No Yaku Dora" help={<span>Whether to calculate Dora even when with No Yaku.</span>}>
+					<SettingRow last name="No Yaku Dora" help={<span>Whether to calculate dora even when with no yaku.</span>}>
 						<Button
 							active={settings.noYakuDora}
 							onClick={() =>
