@@ -1,6 +1,6 @@
 import TileButton from './TileButton';
 import { Action } from '../../lib/action';
-import { Hand, isDora, nextDoraTile, TileCode, Tiles } from '../../lib/hand';
+import { Hand, isDora, nextDoraTile, TileCode, TilesBySuit } from '../../lib/hand';
 
 export function SuitRow({
 	suit,
@@ -23,7 +23,7 @@ export function SuitRow({
 }) {
 	return (
 		<div className="flex flex-row gap-1 lg:gap-2 justify-center items-center min-w-min">
-			{(sanma && suit === 'm' ? [Tiles[suit][0], Tiles[suit][8]] : Tiles[suit]).map((t) => (
+			{(sanma && suit === 'm' ? [TilesBySuit[suit][0], TilesBySuit[suit][8]] : TilesBySuit[suit]).map((t) => (
 				<TileButton
 					key={t}
 					tile={t}
@@ -59,7 +59,7 @@ export function HonorRow({
 }) {
 	return (
 		<div className="flex flex-row gap-1 lg:gap-2 justify-center items-center min-w-min">
-			{Tiles.z.map((t) => (
+			{TilesBySuit.z.map((t) => (
 				<TileButton
 					key={t}
 					tile={t}

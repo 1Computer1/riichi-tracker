@@ -77,6 +77,13 @@ export default function App() {
 							>
 								Calculator
 							</Button>
+							<Button
+								onClick={() => {
+									navigate('/reference', { replace: true });
+								}}
+							>
+								Reference
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -110,6 +117,10 @@ export default function App() {
 					<li>
 						You can also use the <span className="text-amber-700 dark:text-amber-500">Calculator</span> by itself
 						outside of a game.
+					</li>
+					<li>
+						Learn the tiles, yaku, and the scoring table in the{' '}
+						<span className="text-amber-700 dark:text-amber-500">Reference</span>.
 					</li>
 				</ul>
 			</div>

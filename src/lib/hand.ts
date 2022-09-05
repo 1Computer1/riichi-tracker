@@ -17,7 +17,7 @@ export type TileCode = `${SuitNumber}${Suit}` | `${HonorNumber}${Honor}`;
 
 export type Meld = { t: 'chiipon'; tiles: TileCode[] } | { t: 'kan'; closed: boolean; tiles: TileCode[] };
 
-export const Tiles = {
+export const TilesBySuit = {
 	m: ['1m', '2m', '3m', '4m', '5m', '6m', '7m', '8m', '9m'],
 	p: ['1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p'],
 	s: ['1s', '2s', '3s', '4s', '5s', '6s', '7s', '8s', '9s'],
@@ -119,7 +119,7 @@ export interface Hand {
 	seatWind: Wind;
 }
 
-export function translateYaku(yaku: string): string {
+export function translateYaku(yaku: keyof typeof YakuList): string {
 	return YakuList[yaku].name;
 }
 
@@ -379,7 +379,7 @@ export function convertValue(hand: Hand, res: Riichi.Result): CalculatedValue {
 		yaku: Object.entries(res.yaku)
 			.sort((x, y) => YakuSort[x[0]]! - YakuSort[y[0]]!)
 			.map(([name, vs]) => {
-				const trans = translateYaku(name);
+				const trans = translateYaku(name as keyof typeof YakuList);
 				const value = vs.endsWith('役満') ? parseInt(vs, 10) || 1 : Number(/\d+/.exec(vs)?.[0]);
 				return [trans, value, vs.endsWith('役満')];
 			}),

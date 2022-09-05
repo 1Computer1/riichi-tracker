@@ -7,6 +7,7 @@ import { updateTheme } from './lib/util';
 import Calculator from './pages/Calculator';
 import Compass from './pages/Compass';
 import Home from './pages/Home';
+import Reference from './pages/Reference';
 import DbProvider from './providers/DbProvider';
 
 // @ts-expect-error
@@ -36,6 +37,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 					<Route path="/" element={<Home />}></Route>
 					<Route path="/calculator" element={<Calculator />}></Route>
 					<Route path="/compass" element={<Compass />}></Route>
+					<Route path="/reference" element={<Reference />}></Route>
 				</Routes>
 			</HashRouter>
 		</DbProvider>

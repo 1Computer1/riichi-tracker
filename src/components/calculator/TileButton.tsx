@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useMediaQuery } from 'react-responsive';
 import { TileCode } from '../../lib/hand';
 import Tile from '../Tile';
 
@@ -9,6 +10,7 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 	red = false,
 	disabled = false,
 	forced = false,
+	small = false,
 	onClick,
 }: {
 	tile: T;
@@ -17,12 +19,16 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 	red?: boolean;
 	disabled?: boolean;
 	forced?: boolean;
+	small?: boolean;
 	onClick?: (tile: T) => void;
 }) {
+	const isLg = useMediaQuery({ query: '(min-width: 1024px)' });
+
 	return forced ? (
 		<div
 			className={clsx(
-				'rounded-xl shadow shadow-gray-400 dark:shadow-gray-800',
+				small && !isLg ? 'rounded-md' : 'rounded-xl',
+				'shadow shadow-gray-400 dark:shadow-gray-800',
 				agari ? 'animate-pulse' : '',
 				red
 					? 'bg-rose-500 dark:bg-red-700'
@@ -33,7 +39,7 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 					: 'bg-gray-50 dark:bg-gray-500',
 			)}
 		>
-			<Tile tile={tile} />
+			<Tile tile={tile} small={small} />
 		</div>
 	) : (
 		<button
@@ -46,7 +52,8 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 			}
 			disabled={disabled}
 			className={clsx(
-				'disabled:opacity-50 rounded-xl shadow shadow-gray-400 dark:shadow-gray-800',
+				small && !isLg ? 'rounded-md' : 'rounded-xl',
+				'disabled:opacity-50 shadow shadow-gray-400 dark:shadow-gray-800',
 				agari ? 'animate-pulse' : '',
 				red
 					? 'bg-rose-500 enabled:hover:bg-rose-600 enabled:group-hover:bg-rose-600 dark:bg-red-700 dark:enabled:hover:bg-red-800 dark:enabled:group-hover:bg-red-800'
@@ -57,7 +64,7 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 					: 'bg-gray-50 enabled:hover:bg-gray-200 enabled:group-hover:bg-gray-200 dark:bg-gray-500 dark:enabled:hover:bg-gray-600 dark:enabled:group-hover:bg-gray-600',
 			)}
 		>
-			<Tile tile={tile} />
+			<Tile tile={tile} small={small} />
 		</button>
 	);
 }

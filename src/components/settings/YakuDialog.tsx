@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { DraftFunction } from 'use-immer';
 import { Yaku, YakuList } from '../../lib/yaku';
 import Button from '../Button';
+import Tiles from '../Tiles';
 import Question from '../icons/heroicons/Question';
 import CustomDialog from '../layout/CustomDialog';
 
@@ -123,7 +124,30 @@ function YakuToggle({
 			{yaku.help && <HelpButton highlight={helpOpened} onClick={() => setHelpOpened(true)} />}
 			{helpOpened && (
 				<CustomDialog title={yaku.name} onClose={() => setHelpOpened(false)}>
-					<div className="text-lg lg:text-xl">{yaku.help}</div>
+					<div className="flex flex-col gap-2">
+						<div className="w-full flex flex-row justify-between items-center">
+							{yaku.yakuman ? (
+								<span className="text-lg lg:text-xl text-amber-700 dark:text-amber-500">
+									{['', 'Double', 'Triple', 'Quadruple', 'Quintuple', 'Sextuple'][yaku.value - 1] ?? `${yaku.value}x`}{' '}
+									Yakuman
+								</span>
+							) : (
+								<span className="text-lg lg:text-xl">
+									<span className=" text-amber-700 dark:text-amber-500">{yaku.value}</span> Han
+								</span>
+							)}
+							<div className="flex flex-row justify-end items-center">
+								{yaku.closedOnly && (
+									<span className="text-lg lg:text-xl text-red-600 dark:text-red-700">Closed only</span>
+								)}
+								{yaku.openMinus && (
+									<span className="text-lg lg:text-xl text-red-600 dark:text-red-700">-1 if open</span>
+								)}
+							</div>
+						</div>
+						<div className="text-lg lg:text-xl">{yaku.help}</div>
+						{yaku.example && <Tiles tiles={yaku.example.tiles} melds={yaku.example.melds} small />}
+					</div>
 				</CustomDialog>
 			)}
 		</div>
