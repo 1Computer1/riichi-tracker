@@ -7,6 +7,7 @@ import Button from '../Button';
 import Tiles from '../Tiles';
 import Question from '../icons/heroicons/Question';
 import CustomDialog from '../layout/CustomDialog';
+import H from '../text/H';
 
 export default function YakuDialog({
 	yakuList,
@@ -127,21 +128,27 @@ function YakuToggle({
 					<div className="flex flex-col gap-2">
 						<div className="w-full flex flex-row justify-between items-center">
 							{yaku.yakuman ? (
-								<span className="text-lg lg:text-xl text-amber-700 dark:text-amber-500">
-									{['', 'Double', 'Triple', 'Quadruple', 'Quintuple', 'Sextuple'][yaku.value - 1] ?? `${yaku.value}x`}{' '}
-									Yakuman
+								<span className="text-lg lg:text-xl">
+									<H>
+										{['', 'Double', 'Triple', 'Quadruple', 'Quintuple', 'Sextuple'][yaku.value - 1] ?? `${yaku.value}x`}{' '}
+										Yakuman
+									</H>
 								</span>
 							) : (
 								<span className="text-lg lg:text-xl">
-									<span className=" text-amber-700 dark:text-amber-500">{yaku.value}</span> Han
+									<H>{yaku.value}</H> Han
 								</span>
 							)}
 							<div className="flex flex-row justify-end items-center">
 								{yaku.closedOnly && (
-									<span className="text-lg lg:text-xl text-red-600 dark:text-red-700">Closed only</span>
+									<span className="text-lg lg:text-xl">
+										<H.Red>Closed only</H.Red>
+									</span>
 								)}
 								{yaku.openMinus && (
-									<span className="text-lg lg:text-xl text-red-600 dark:text-red-700">-1 if open</span>
+									<span className="text-lg lg:text-xl">
+										<H.Red>-1 if open</H.Red>
+									</span>
 								)}
 							</div>
 						</div>

@@ -36,7 +36,7 @@ export default function Compass() {
 				<CompassWithGame gameId={locState.id} game={game.value} />
 			) : (
 				<div className="w-screen h-screen flex flex-col justify-center items-center">
-					<div className="text-red-600 dark:text-red-700 font-mono">Error: Game {locState.id} does not exist.</div>
+					<div className="font-mono">Error: Game {locState.id} does not exist.</div>
 				</div>
 			)}
 		</div>

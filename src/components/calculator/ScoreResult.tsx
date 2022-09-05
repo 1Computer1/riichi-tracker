@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import PointsResult from './PointsResult';
 import { CalculatedValue } from '../../lib/hand';
+import H from '../text/H';
 
 export default function ScoreResult({
 	tileCount,
@@ -45,11 +46,12 @@ function ScoreResultSheet({
 				<>
 					<div>
 						{result.yakuman ? (
-							<span className="text-4xl text-amber-700 dark:text-amber-500">Yakuman</span>
+							<span className="text-4xl">
+								<H>Yakuman</H>
+							</span>
 						) : (
 							<span className="text-4xl">
-								<span className="text-amber-700 dark:text-amber-500">{result.han}</span> Han{' '}
-								<span className="text-amber-700 dark:text-amber-500">{result.fu}</span> Fu
+								<H>{result.han}</H> Han <H>{result.fu}</H> Fu
 							</span>
 						)}
 					</div>
@@ -61,12 +63,12 @@ function ScoreResultSheet({
 							>
 								<span className="text-sm sm:text-lg md:text-xl lg:text-2xl">{y[0]}</span>
 								{y[2] ? (
-									<span className="text-sm sm:text-lg md:text-xl lg:text-2xl text-amber-700 dark:text-amber-500">
-										{y[1] > 3 ? `${y[1]}★` : '★'.repeat(y[1])}
+									<span className="text-sm sm:text-lg md:text-xl lg:text-2xl">
+										<H>{y[1] > 3 ? `${y[1]}★` : '★'.repeat(y[1])}</H>
 									</span>
 								) : (
 									<span className="text-sm sm:text-lg md:text-xl lg:text-2xl">
-										<span className="text-amber-700 dark:text-amber-500">{y[1]}</span> Han
+										<H>{y[1]}</H> Han
 									</span>
 								)}
 							</li>

@@ -11,6 +11,7 @@ import Left from '../components/icons/heroicons/Left';
 import Right from '../components/icons/heroicons/Right';
 import HorizontalRow from '../components/layout/HorizontalRow';
 import VerticalRow from '../components/layout/VerticalRow';
+import H from '../components/text/H';
 import { calculateHanFu, TileCode, TilesBySuit } from '../lib/hand';
 import { DefaultSettings, ScoreSettings } from '../lib/settings';
 import { referenceToYaku, Yaku, YakuReferenceNode, YakuReferenceSort } from '../lib/yaku';
@@ -189,23 +190,36 @@ function YakuItem({ yaku }: { yaku: Omit<Yaku, 'id'> }) {
 		<div className="w-full p-2 lg:p-4 rounded shadow bg-slate-200 dark:bg-gray-900">
 			<div className="w-full flex flex-row justify-between items-center">
 				{yaku.yakuman ? (
-					<span className="text-base lg:text-xl text-amber-700 dark:text-amber-500">
-						{['', 'Double', 'Triple', 'Quadruple', 'Quintuple', 'Sextuple'][yaku.value - 1] ?? `${yaku.value}x`} Yakuman
+					<span className="text-base lg:text-xl">
+						<H>
+							{['', 'Double', 'Triple', 'Quadruple', 'Quintuple', 'Sextuple'][yaku.value - 1] ?? `${yaku.value}x`}{' '}
+							Yakuman
+						</H>
 					</span>
 				) : (
 					<span className="text-base lg:text-xl">
-						<span className="text-amber-700 dark:text-amber-500">
+						<H>
 							{yaku.value}
-							{yaku.per && 'x'}
-						</span>{' '}
+							{yaku.per && 'x'}{' '}
+						</H>
 						Han
 					</span>
 				)}
 				<div className="flex flex-row justify-end items-center">
-					{yaku.closedOnly && <span className="text-base lg:text-xl text-red-600 dark:text-red-700">Closed only</span>}
-					{yaku.openMinus && <span className="text-base lg:text-xl text-red-600 dark:text-red-700">-1 if open</span>}
+					{yaku.closedOnly && (
+						<span className="text-base lg:text-xl">
+							<H.Red>Closed only</H.Red>
+						</span>
+					)}
+					{yaku.openMinus && (
+						<span className="text-base lg:text-xl">
+							<H.Red>-1 if open</H.Red>
+						</span>
+					)}
 					{yaku.type === 'extra' && (
-						<span className="text-base lg:text-xl text-red-600 dark:text-red-700">Not yaku</span>
+						<span className="text-base lg:text-xl">
+							<H.Red>Not yaku</H.Red>
+						</span>
 					)}
 				</div>
 			</div>
@@ -213,12 +227,14 @@ function YakuItem({ yaku }: { yaku: Omit<Yaku, 'id'> }) {
 				<h2 className="flex flex-row text-lg lg:text-2xl font-medium gap-x-2">
 					{yaku.name}{' '}
 					{(yaku.basic || yaku.type === 'local') && (
-						<span className="flex flex-row gap-x-2 text-sm lg:text-base text-amber-700 dark:text-amber-500 justify-center items-center">
-							{yaku.basic && <span className="bg-slate-300 dark:bg-sky-900 rounded shadow p-0.5 lg:p-1">Easy</span>}
-							{yaku.type === 'local' && (
-								<span className="bg-slate-300 dark:bg-sky-900 rounded shadow p-0.5 lg:p-1">Local</span>
-							)}
-						</span>
+						<H>
+							<span className="flex flex-row gap-x-2 text-sm lg:text-base justify-center items-center">
+								{yaku.basic && <span className="bg-slate-300 dark:bg-sky-900 rounded shadow p-0.5 lg:p-1">Easy</span>}
+								{yaku.type === 'local' && (
+									<span className="bg-slate-300 dark:bg-sky-900 rounded shadow p-0.5 lg:p-1">Local</span>
+								)}
+							</span>
+						</H>
 					)}
 				</h2>
 				{yaku.help && <div className="text-base lg:text-lg">{yaku.help}</div>}
@@ -247,7 +263,7 @@ function ScoreReference() {
 			<div className="flex flex-row flex-wrap gap-4 justify-center items-center">
 				<div className="w-40 h-40 lg:w-48 lg:h-48 flex flex-col justify-center items-center gap-2 lg:gap-4 p-0.5 rounded shadow bg-slate-200 dark:bg-gray-900">
 					<span className="text-lg font-semibold">
-						<span className="text-amber-700 dark:text-amber-500">Legend</span>
+						<H>Legend</H>
 					</span>
 					<div className="w-full flex flex-row justify-center items-center text-xs lg:text-sm italic">
 						<span className="w-1/2 flex flex-row justify-center items-center">Dealer</span>
@@ -321,76 +337,62 @@ function ScoreReference() {
 					<ScoreSection
 						title={
 							<span>
-								<span className="text-amber-700 dark:text-amber-500">3</span> Han{' '}
-								<span className="text-amber-700 dark:text-amber-500">70</span> Fu /{' '}
-								<span className="text-amber-700 dark:text-amber-500">4</span> Han{' '}
-								<span className="text-amber-700 dark:text-amber-500">40</span> Fu /{' '}
-								<span className="text-amber-700 dark:text-amber-500">5</span> Han
+								<H>3</H> Han <H>70</H> Fu / <H>4</H> Han <H>40</H> Fu / <H>5</H> Han
 							</span>
 						}
 					>
-						<ScoreCard title={<span className="text-amber-700 dark:text-amber-500">Mangan</span>} points={mangan} />
+						<ScoreCard title={<H>Mangan</H>} points={mangan} />
 					</ScoreSection>
 				</li>
 				<li>
 					<ScoreSection
 						title={
 							<span>
-								<span className="text-amber-700 dark:text-amber-500">6</span> Han /{' '}
-								<span className="text-amber-700 dark:text-amber-500">7</span> Han
+								<H>6</H> Han / <H>7</H> Han
 							</span>
 						}
 					>
-						<ScoreCard title={<span className="text-amber-700 dark:text-amber-500">Haneman</span>} points={haneman} />
+						<ScoreCard title={<H>Haneman</H>} points={haneman} />
 					</ScoreSection>
 				</li>
 				<li>
 					<ScoreSection
 						title={
 							<span>
-								<span className="text-amber-700 dark:text-amber-500">8</span> Han /{' '}
-								<span className="text-amber-700 dark:text-amber-500">9</span> Han /{' '}
-								<span className="text-amber-700 dark:text-amber-500">10</span> Han
+								<H>8</H> Han / <H>9</H> Han / <H>10</H> Han
 							</span>
 						}
 					>
-						<ScoreCard title={<span className="text-amber-700 dark:text-amber-500">Baiman</span>} points={baiman} />
+						<ScoreCard title={<H>Baiman</H>} points={baiman} />
 					</ScoreSection>
 				</li>
 				<li>
 					<ScoreSection
 						title={
 							<span>
-								<span className="text-amber-700 dark:text-amber-500">11</span> Han /{' '}
-								<span className="text-amber-700 dark:text-amber-500">12</span> Han
+								<H>11</H> Han / <H>12</H> Han
 							</span>
 						}
 					>
-						<ScoreCard
-							title={<span className="text-amber-700 dark:text-amber-500">Sanbaiman</span>}
-							points={sanbaiman}
-						/>
+						<ScoreCard title={<H>Sanbaiman</H>} points={sanbaiman} />
 					</ScoreSection>
 				</li>
 				<li>
 					<ScoreSection
 						title={
 							<span>
-								<span className="text-amber-700 dark:text-amber-500">13+</span> Han
+								<H>13+</H> Han
 							</span>
 						}
 					>
-						<ScoreCard title={<span className="text-amber-700 dark:text-amber-500">Yakuman</span>} points={yakuman} />
+						<ScoreCard title={<H>Yakuman</H>} points={yakuman} />
 					</ScoreSection>
 				</li>
 			</ul>
 			<ul className="text-base lg:text-xl flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc px-6">
 				<li>
-					<span className="text-amber-700 dark:text-amber-500">3</span> Han{' '}
-					<span className="text-amber-700 dark:text-amber-500">60</span> Fu and{' '}
-					<span className="text-amber-700 dark:text-amber-500">4</span> Han{' '}
-					<span className="text-amber-700 dark:text-amber-500">30</span> Fu can be rounded up to a{' '}
-					<span className="text-amber-700 dark:text-amber-500">Mangan</span> in certain rule variations.
+					<H>3</H> Han <H>60</H> Fu and <H>4</H> Han <H>30</H> Fu can be rounded up to a <H>Mangan</H> in certain rule
+					variations.
 				</li>
 				<li>
 					Scoring table in three-player is the same as four-player unless north bisection is used. In that case, points
@@ -406,7 +408,7 @@ function Han({ han, fus, settings }: { han: number; fus: number[]; settings: Sco
 		<ScoreSection
 			title={
 				<span>
-					<span className="text-amber-700 dark:text-amber-500">{han}</span> Han
+					<H>{han}</H> Han
 				</span>
 			}
 		>
@@ -434,7 +436,7 @@ function Fu({ han, fu, settings }: { han: number; fu: number; settings: ScoreSet
 		<ScoreCard
 			title={
 				<span>
-					<span className="text-amber-700 dark:text-amber-500">{fu}</span> Fu
+					<H>{fu}</H> Fu
 				</span>
 			}
 			noTsumo={noTsumo}

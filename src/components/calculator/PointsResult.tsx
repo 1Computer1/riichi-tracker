@@ -1,4 +1,5 @@
 import { CalculatedValue, ceil100 } from '../../lib/hand';
+import H from '../text/H';
 
 export default function PointsResult({
 	result,
@@ -15,7 +16,9 @@ export default function PointsResult({
 				<div className="text-4xl italic">No Yaku</div>
 			) : null}
 			<div className="flex flex-row items-end gap-x-2">
-				<span className="text-6xl text-amber-700 dark:text-amber-500">{result.points.total}</span>
+				<span className="text-6xl">
+					<H>{result.points.total}</H>
+				</span>
 				<span className="text-2xl">Points</span>
 			</div>
 			<div className="text-2xl">
@@ -24,37 +27,36 @@ export default function PointsResult({
 					result.agari === 'tsumo' ? (
 						pao ? (
 							<span>
-								<span className="text-amber-700 dark:text-amber-500">{result.points.total}</span> from liable
+								<H>{result.points.total}</H> from liable
 							</span>
 						) : (
 							<span>
-								<span className="text-amber-700 dark:text-amber-500">{result.points.oya.ko}</span> all
+								<H>{result.points.oya.ko}</H> all
 							</span>
 						)
 					) : pao ? (
 						<span>
-							<span className="text-amber-700 dark:text-amber-500">{ceil100(result.points.oya.ron / 2)}</span> from both
+							<H>{ceil100(result.points.oya.ron / 2)}</H> from both
 						</span>
 					) : (
-						<span className="text-amber-700 dark:text-amber-500">{result.points.oya.ron}</span>
+						<H>{result.points.oya.ron}</H>
 					)
 				) : result.agari === 'tsumo' ? (
 					pao ? (
 						<span>
-							<span className="text-amber-700 dark:text-amber-500">{result.points.total}</span> from liable
+							<H>{result.points.total}</H> from liable
 						</span>
 					) : (
 						<>
-							<span className="text-amber-700 dark:text-amber-500">{result.points.ko.oya}</span>,{' '}
-							<span className="text-amber-700 dark:text-amber-500">{result.points.ko.ko}</span>
+							<H>{result.points.ko.oya}</H>, <H>{result.points.ko.ko}</H>
 						</>
 					)
 				) : pao ? (
 					<span>
-						<span className="text-amber-700 dark:text-amber-500">{ceil100(result.points.ko.ron / 2)}</span> from both
+						<H>{ceil100(result.points.ko.ron / 2)}</H> from both
 					</span>
 				) : (
-					<span className="text-amber-700 dark:text-amber-500">{result.points.ko.ron}</span>
+					<H>{result.points.ko.ron}</H>
 				)}
 			</div>
 		</div>

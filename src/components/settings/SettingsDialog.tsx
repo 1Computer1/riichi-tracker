@@ -9,6 +9,7 @@ import Button from '../Button';
 import Chip from '../icons/heroicons/Chip';
 import Question from '../icons/heroicons/Question';
 import CustomDialog from '../layout/CustomDialog';
+import H from '../text/H';
 
 export default function SettingsDialog({
 	settings,
@@ -43,8 +44,7 @@ export default function SettingsDialog({
 						help={
 							<span>
 								The number of players in the game. <br />
-								<Highlight>Three-Player</Highlight> mahjong uses the sanma rules, which includes no chii, no 2 to 8 of
-								Man, and Kita.
+								<H>Three-Player</H> mahjong uses the sanma rules, which includes no chii, no 2 to 8 of Man, and Kita.
 							</span>
 						}
 					>
@@ -76,11 +76,11 @@ export default function SettingsDialog({
 								<span>
 									The distribution of points when a player wins with tsumo.
 									<br />
-									If <Highlight>Loss</Highlight> is enabled, the base points are the same as in four player. In effect,
-									the winning player loses the points from the missing North player.
+									If <H>Loss</H> is enabled, the base points are the same as in four player. In effect, the winning
+									player loses the points from the missing North player.
 									<br />
-									If <Highlight>Bisection</Highlight> is enabled, the base points will include the points from the North
-									player that should have been paid. In effect, the other two players will pay more.
+									If <H>Bisection</H> is enabled, the base points will include the points from the North player that
+									should have been paid. In effect, the other two players will pay more.
 								</span>
 							}
 						>
@@ -136,9 +136,9 @@ export default function SettingsDialog({
 						help={
 							<span>
 								Toggle the yaku available in the calculator. <br />
-								<Highlight>Optional Yaku</Highlight> are some of the usual yaku, enabled by default. They may be
-								disabled if needed. <br />
-								<Highlight>Local Yaku</Highlight> are generally less common and are disabled by default. <br />
+								<H>Optional Yaku</H> are some of the usual yaku, enabled by default. They may be disabled if needed.{' '}
+								<br />
+								<H>Local Yaku</H> are generally less common and are disabled by default. <br />
 							</span>
 						}
 					>
@@ -270,8 +270,7 @@ export default function SettingsDialog({
 						name="Counted Yakuman"
 						help={
 							<span>
-								Whether to count a hand worth at least 13 Han as <Highlight>Yakuman</Highlight> or as{' '}
-								<Highlight>Sanbaiman</Highlight>.
+								Whether to count a hand worth at least 13 Han as <H>Yakuman</H> or as <H>Sanbaiman</H>.
 							</span>
 						}
 					>
@@ -413,8 +412,8 @@ export default function SettingsDialog({
 						name="Double Wind Fu"
 						help={
 							<span>
-								Whether to count a wind pair that is both the Prevalent Wind and the Seat Wind as{' '}
-								<Highlight>4 Fu</Highlight> or <Highlight>2 Fu</Highlight>.
+								Whether to count a wind pair that is both the Prevalent Wind and the Seat Wind as <H>4 Fu</H> or{' '}
+								<H>2 Fu</H>.
 							</span>
 						}
 					>
@@ -443,7 +442,7 @@ export default function SettingsDialog({
 						name="After a Kan Fu"
 						help={
 							<span>
-								Whether to count the <Highlight>2 Fu</Highlight> granted by tsumo if the hand won with After a Kan.
+								Whether to count the <H>2 Fu</H> granted by tsumo if the hand won with After a Kan.
 							</span>
 						}
 					>
@@ -602,8 +601,4 @@ function HelpButton({ highlight, onClick }: { highlight?: boolean; onClick?: () 
 			</div>
 		</button>
 	);
-}
-
-function Highlight({ children }: { children: ReactNode }) {
-	return <span className="text-amber-700 dark:text-amber-500">{children}</span>;
 }

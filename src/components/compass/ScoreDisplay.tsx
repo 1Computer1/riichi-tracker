@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { Wind } from '../../lib/hand';
 import TileButton from '../calculator/TileButton';
+import H from '../text/H';
 
 export default function ScoreDisplay({
 	score,
@@ -45,13 +46,10 @@ export default function ScoreDisplay({
 				)}
 			>
 				<button
-					className={clsx(
-						'text-4xl lg:text-6xl text-amber-700 dark:text-amber-500 font-bold',
-						vertical ? '[writing-mode:vertical-lr] h-48' : 'w-52',
-					)}
+					className={clsx('text-4xl lg:text-6xl font-bold', vertical ? '[writing-mode:vertical-lr] h-48' : 'w-52')}
 					onClick={onScoreClick}
 				>
-					{score}
+					<H>{score}</H>
 				</button>
 				<div
 					className={clsx(

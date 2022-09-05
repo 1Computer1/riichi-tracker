@@ -21,6 +21,7 @@ import HorizontalRow from '../components/layout/HorizontalRow';
 import VerticalRow from '../components/layout/VerticalRow';
 import BlocksShuffleThree from '../components/loading/react-svg-spinners/BlocksShuffleThree';
 import SettingsDialog from '../components/settings/SettingsDialog';
+import H from '../components/text/H';
 import { Game } from '../data/interfaces';
 import { Action, defaultAction } from '../lib/action';
 import {
@@ -64,7 +65,9 @@ export default function Calculator() {
 					<CalculatorWithGame locState={locState} globalSettings={null} game={game.value} />
 				) : (
 					<div className="w-screen h-screen flex flex-col justify-center items-center">
-						<div className="text-red-600 dark:text-red-700 font-mono">Error: Game {locState.id} does not exist.</div>
+						<div className="font-mono">
+							<H.Red>Error: Game {locState.id} does not exist.</H.Red>
+						</div>
 					</div>
 				)
 			) : globalSettings == null ? (
@@ -77,7 +80,9 @@ export default function Calculator() {
 				<CalculatorWithGame locState={locState} globalSettings={globalSettings.value} game={null} />
 			) : (
 				<div className="w-screen h-screen flex flex-col justify-center items-center">
-					<div className="text-red-600 dark:text-red-700 font-mono">Error: Settings {locState.id} does not exist.</div>
+					<div className="font-mono">
+						<H.Red>Error: Settings {locState.id} does not exist.</H.Red>
+					</div>
 				</div>
 			)}
 		</div>

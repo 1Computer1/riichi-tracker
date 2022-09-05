@@ -7,6 +7,7 @@ import { NewCompassDialog } from '../components/home/NewCompassDialog';
 import Ban from '../components/icons/heroicons/Ban';
 import Moon from '../components/icons/heroicons/Moon';
 import Sun from '../components/icons/heroicons/Sun';
+import H from '../components/text/H';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { DefaultSettings } from '../lib/settings';
 import { CalculatorState, CompassState } from '../lib/states';
@@ -89,38 +90,29 @@ export default function App() {
 				</div>
 				<ul className="text-base lg:text-xl flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc px-6">
 					<li>
-						Create a <span className="text-amber-700 dark:text-amber-500">Compass</span> by using the{' '}
-						<span className="text-amber-700 dark:text-amber-500">New Game</span> button.
+						Create a <H>Compass</H> by using the <H>New Game</H> button.
 					</li>
 					<li>
-						Add riichi sticks by tapping on the <span className="text-amber-700 dark:text-amber-500">Riichi</span>{' '}
-						button.
+						Add riichi sticks by tapping on the <H>Riichi</H> button.
 					</li>
 					<li>
-						Transfer scores by tapping on the{' '}
-						<span className="text-amber-700 dark:text-amber-500">winning player&apos;s wind tile</span> and using the{' '}
-						<span className="text-amber-700 dark:text-amber-500">Calculator</span>.
+						Transfer scores by tapping on the <H>winning player&apos;s wind tile</H> and using the <H>Calculator</H>.
 					</li>
 					<li>
-						Handle draws and repeats by tapping on the{' '}
-						<span className="text-amber-700 dark:text-amber-500">center wind tile</span>.
+						Handle draws and repeats by tapping on the <H>center wind tile</H>.
 					</li>
 					<li>
-						Manually edit scores by tapping on a{' '}
-						<span className="text-amber-700 dark:text-amber-500">player&apos;s score display</span>.
+						Manually edit scores by tapping on a <H>player&apos;s score display</H>.
 					</li>
 					<li>
-						Manually edit seats, rounds, and sticks by tapping on the{' '}
-						<span className="text-amber-700 dark:text-amber-500">gear button</span>.
+						Manually edit seats, rounds, and sticks by tapping on the <H>gear button</H>.
 					</li>
 					<li>Place your phone at the center of the table and enjoy!</li>
 					<li>
-						You can also use the <span className="text-amber-700 dark:text-amber-500">Calculator</span> by itself
-						outside of a game.
+						You can also use the <H>Calculator</H> by itself outside of a game.
 					</li>
 					<li>
-						Learn the tiles, yaku, and the scoring table in the{' '}
-						<span className="text-amber-700 dark:text-amber-500">Reference</span>.
+						Learn the tiles, yaku, and the scoring table in the <H>Reference</H>.
 					</li>
 				</ul>
 			</div>
