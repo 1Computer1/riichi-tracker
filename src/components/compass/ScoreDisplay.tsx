@@ -48,13 +48,13 @@ export default function ScoreDisplay({
 			<div
 				className={clsx(
 					vertical ? 'flex flex-col h-full w-fit py-2 px-2 lg:px-4' : 'flex flex-row w-full h-fit px-2 py-2 lg:py-4',
-					'justify-center items-center bg-slate-300 dark:bg-sky-900 rounded-xl shadow',
+					'justify-between items-center bg-slate-300 dark:bg-sky-900 rounded-xl shadow',
 				)}
 			>
 				<span
 					className={clsx(
-						vertical ? '[writing-mode:vertical-rl] h-4' : 'w-4',
-						'text-sm lg:text-lg text-center text-slate-900 dark:text-slate-400 font-semibold',
+						vertical ? '[writing-mode:vertical-rl] h-4 lg:h-5 w-12 lg:w-20' : 'w-4 lg:w-5 h-12 lg:h-20',
+						'text-xs lg:text-lg text-center  text-slate-900 dark:text-slate-400 font-semibold',
 					)}
 				>
 					{dices[0]}
@@ -69,12 +69,7 @@ export default function ScoreDisplay({
 				>
 					<H>{score}</H>
 				</button>
-				<div
-					className={clsx(
-						vertical ? 'rotate-90 mx-2 -my-2 mt-auto' : 'ml-auto',
-						'flex flex-col justify-center items-center',
-					)}
-				>
+				<div className={clsx(vertical ? 'rotate-90 mx-2 -my-2' : '', 'flex flex-col justify-center items-center')}>
 					<TileButton onClick={onTileClick} red={seatWind === '1'} tile={`${seatWind}z`}></TileButton>
 				</div>
 			</div>
