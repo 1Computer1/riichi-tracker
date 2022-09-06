@@ -20,6 +20,12 @@ export default function ScoreDisplay({
 	onTileClick?: () => void;
 	onRiichiClick?: () => void;
 }) {
+	const dices = [
+		[1, 5, 9],
+		[2, 6, 10],
+		[3, 7, 11],
+		[4, 8, 12],
+	][Number(seatWind) - 1];
 	return (
 		<div
 			className={clsx(
@@ -45,6 +51,18 @@ export default function ScoreDisplay({
 					'justify-center items-center bg-slate-300 dark:bg-sky-900 rounded-xl shadow',
 				)}
 			>
+				<span
+					className={clsx(
+						vertical ? '[writing-mode:vertical-rl] h-4' : 'w-4',
+						'text-sm lg:text-lg text-center text-slate-900 dark:text-slate-400 font-semibold',
+					)}
+				>
+					{dices[0]}
+					<br />
+					{dices[1]}
+					<br />
+					{dices[2]}
+				</span>
 				<button
 					className={clsx('text-4xl lg:text-6xl font-bold', vertical ? '[writing-mode:vertical-lr] h-48' : 'w-52')}
 					onClick={onScoreClick}
