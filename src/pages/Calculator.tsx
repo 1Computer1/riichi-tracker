@@ -174,7 +174,7 @@ function CalculatorWithGame({
 				return [t, tx, tx, tx];
 			}
 			// Clicked kan on the 5, so must have red 5.
-			if (settings.akadora && t[0] === '5') {
+			if (settings.akadora && t[0] === '5' && t[1] !== 'z') {
 				const tx = `0${t[1]}` as TileCode;
 				return [tx, t, t, t];
 			}
