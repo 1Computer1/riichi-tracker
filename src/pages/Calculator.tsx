@@ -526,6 +526,7 @@ function CalculatorWithGame({
 		const state: CompassState = {
 			t: 'load',
 			id: locState.id,
+			oldScores: scores,
 		};
 		navigate('/compass', { state, replace: true });
 	};

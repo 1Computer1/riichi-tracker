@@ -33,7 +33,7 @@ export default function Compass() {
 					</div>
 				</div>
 			) : game.ok ? (
-				<CompassWithGame gameId={locState.id} game={game.value} />
+				<CompassWithGame locState={locState} game={game.value} />
 			) : (
 				<div className="w-screen h-screen flex flex-col justify-center items-center">
 					<div className="font-mono">Error: Game {locState.id} does not exist.</div>
@@ -43,7 +43,7 @@ export default function Compass() {
 	);
 }
 
-function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
+function CompassWithGame({ locState, game }: { locState: CompassState; game: Game }) {
 	const db = useDb();
 	const navigate = useNavigate();
 
@@ -70,13 +70,13 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 			scores_[ix] = scores[ix] + 1000;
 			const riichi_ = riichi.slice();
 			riichi_[ix] = false;
-			await db.setGame(gameId, { ...game, scores: scores_, riichiSticks: riichiSticks - 1, riichi: riichi_ });
+			await db.setGame(locState.id, { ...game, scores: scores_, riichiSticks: riichiSticks - 1, riichi: riichi_ });
 		} else {
 			const scores_ = scores.slice();
 			scores_[ix] = scores[ix] - 1000;
 			const riichi_ = riichi.slice();
 			riichi_[ix] = true;
-			await db.setGame(gameId, { ...game, scores: scores_, riichiSticks: riichiSticks + 1, riichi: riichi_ });
+			await db.setGame(locState.id, { ...game, scores: scores_, riichiSticks: riichiSticks + 1, riichi: riichi_ });
 		}
 	};
 
@@ -86,6 +86,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 				<div className="h-fit w-[min(70vh,70vw)]">
 					<ScoreDisplayInCompass
 						ix={0}
+						oldScores={locState.oldScores}
 						game={game}
 						onScoreClick={() => setScoreUpdater(0)}
 						onTileClick={() => setWinner(0)}
@@ -98,6 +99,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 					<ScoreDisplayInCompass
 						vertical
 						ix={1}
+						oldScores={locState.oldScores}
 						game={game}
 						onScoreClick={() => setScoreUpdater(1)}
 						onTileClick={() => setWinner(1)}
@@ -109,6 +111,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 				<div className="rotate-180 h-fit w-[min(70vh,70vw)]">
 					<ScoreDisplayInCompass
 						ix={2}
+						oldScores={locState.oldScores}
 						game={game}
 						onScoreClick={() => setScoreUpdater(2)}
 						onTileClick={() => setWinner(2)}
@@ -122,6 +125,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 						<ScoreDisplayInCompass
 							vertical
 							ix={3}
+							oldScores={locState.oldScores}
 							game={game}
 							onScoreClick={() => setScoreUpdater(3)}
 							onTileClick={() => setWinner(3)}
@@ -132,16 +136,18 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 			)}
 			{scoreUpdater != null && (
 				<ScoreUpdateDialog
-					gameId={gameId}
+					gameId={locState.id}
 					game={game}
 					scoreUpdater={scoreUpdater}
 					onClose={() => setScoreUpdater(null)}
 				/>
 			)}
-			{winner != null && <WinnerDialog gameId={gameId} game={game} winner={winner} onClose={() => setWinner(null)} />}
-			{openDrawDialog && <DrawDialog gameId={gameId} game={game} onClose={() => setOpenDrawDialog(false)} />}
+			{winner != null && (
+				<WinnerDialog gameId={locState.id} game={game} winner={winner} onClose={() => setWinner(null)} />
+			)}
+			{openDrawDialog && <DrawDialog gameId={locState.id} game={game} onClose={() => setOpenDrawDialog(false)} />}
 			{openAdvancedDialog && (
-				<AdvancedDialog gameId={gameId} game={game} onClose={() => setOpenAdvancedDialog(false)} />
+				<AdvancedDialog gameId={locState.id} game={game} onClose={() => setOpenAdvancedDialog(false)} />
 			)}
 			<div
 				data-1c1
@@ -213,6 +219,7 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 function ScoreDisplayInCompass({
 	game,
 	ix,
+	oldScores,
 	vertical = false,
 	onScoreClick,
 	onTileClick,
@@ -220,17 +227,18 @@ function ScoreDisplayInCompass({
 }: {
 	game: Game;
 	ix: number;
+	oldScores?: number[];
 	vertical?: boolean;
 	onScoreClick?: () => void;
 	onTileClick?: () => void;
 	onRiichiClick?: () => void;
 }) {
 	const { bottomWind, scores, riichi, settings } = game;
-
 	return (
 		<ScoreDisplay
 			vertical={vertical}
 			score={scores[ix]}
+			oldScore={oldScores?.[ix]}
 			riichi={riichi[ix]}
 			isSanma={settings.sanma != null}
 			seatWind={nextWind(bottomWind, ix, settings.sanma != null)}

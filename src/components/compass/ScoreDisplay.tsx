@@ -1,10 +1,12 @@
 import clsx from 'clsx';
+import { useRef, useState } from 'react';
 import { Wind } from '../../lib/hand';
 import TileButton from '../calculator/TileButton';
 import H from '../text/H';
 
 export default function ScoreDisplay({
 	score,
+	oldScore = score,
 	seatWind,
 	isSanma,
 	vertical = false,
@@ -14,6 +16,7 @@ export default function ScoreDisplay({
 	onRiichiClick,
 }: {
 	score: number;
+	oldScore?: number;
 	seatWind: Wind;
 	isSanma: boolean;
 	vertical?: boolean;
@@ -22,6 +25,7 @@ export default function ScoreDisplay({
 	onTileClick?: () => void;
 	onRiichiClick?: () => void;
 }) {
+	const [animDone, setAnimDone] = useState(false);
 	const dices = [
 		[1, 5, 9],
 		[2, 6, 10],
@@ -75,7 +79,29 @@ export default function ScoreDisplay({
 					onClick={onScoreClick}
 				>
 					<span className={clsx(vertical ? '[writing-mode:vertical-rl]' : '')}>
-						<H>{score}</H>
+						{animDone || oldScore === score ? (
+							<H>{score}</H>
+						) : oldScore > score ? (
+							<H.Red>
+								<AnimatedIncrement
+									start={oldScore / 100}
+									end={score / 100}
+									map={(x) => x * 100}
+									duration={1000}
+									onDone={() => setAnimDone(true)}
+								/>
+							</H.Red>
+						) : (
+							<H>
+								<AnimatedIncrement
+									start={oldScore / 100}
+									end={score / 100}
+									map={(x) => x * 100}
+									duration={1000}
+									onDone={() => setAnimDone(true)}
+								/>
+							</H>
+						)}
 					</span>
 				</button>
 				<div className={clsx(vertical ? 'rotate-90 mx-2 -my-2' : '', 'flex flex-col justify-center items-center')}>
@@ -84,4 +110,33 @@ export default function ScoreDisplay({
 			</div>
 		</div>
 	);
+}
+
+function AnimatedIncrement({
+	start,
+	end,
+	map = (x) => x,
+	duration,
+	onDone,
+}: {
+	start: number;
+	end: number;
+	map?: (n: number) => number;
+	duration: number;
+	onDone?: () => void;
+}) {
+	const [value, setValue] = useState(start);
+	const startTimestamp = useRef<number | null>(null);
+	const step = (timestamp: number) => {
+		if (!startTimestamp.current) startTimestamp.current = timestamp;
+		const progress = Math.min((timestamp - startTimestamp.current) / duration, 1);
+		setValue(map(Math.floor(progress * (end - start) + start)));
+		if (progress < 1) {
+			window.requestAnimationFrame(step);
+		} else {
+			onDone?.();
+		}
+	};
+	window.requestAnimationFrame(step);
+	return <span>{value}</span>;
 }

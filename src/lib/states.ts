@@ -1,7 +1,7 @@
 import { Wind } from './hand';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type CompassState = { t: 'load'; id: string };
+export type CompassState = { t: 'load'; id: string; oldScores?: number[] };
 
 export type CalculatorState =
 	| ({
