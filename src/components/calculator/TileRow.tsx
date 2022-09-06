@@ -23,23 +23,38 @@ export function SuitRow({
 }) {
 	return (
 		<div className="flex flex-row flex-wrap gap-1 lg:gap-2 justify-center items-center min-w-min">
-			{(sanma && suit === 'm' ? [TilesBySuit[suit][0], TilesBySuit[suit][8]] : TilesBySuit[suit]).map((t) => (
-				<TileButton
-					key={t}
-					tile={t}
-					onClick={onClick}
-					dora={isDora(t, hand)}
-					disabled={isDisabled(t, action, hand, tileCount, allTiles, sanma)}
-				/>
-			))}
-			{akadora && !sanma && (
-				<TileButton
-					tile={`0${suit}`}
-					onClick={onClick}
-					dora={isDora(`0${suit}`, hand)}
-					disabled={isDisabled(`0${suit}`, action, hand, tileCount, allTiles, false)}
-				/>
-			)}
+			<div className="flex flex-row flex-wrap gap-1 lg:gap-2 justify-center items-center min-w-min">
+				{(sanma && suit === 'm' ? [TilesBySuit[suit][0], TilesBySuit[suit][8]] : TilesBySuit[suit].slice(0, 5)).map(
+					(t) => (
+						<TileButton
+							key={t}
+							tile={t}
+							onClick={onClick}
+							dora={isDora(t, hand)}
+							disabled={isDisabled(t, action, hand, tileCount, allTiles, sanma)}
+						/>
+					),
+				)}
+			</div>
+			<div className="flex flex-row flex-wrap gap-1 lg:gap-2 justify-center items-center min-w-min">
+				{(sanma && suit === 'm' ? [] : TilesBySuit[suit].slice(5)).map((t) => (
+					<TileButton
+						key={t}
+						tile={t}
+						onClick={onClick}
+						dora={isDora(t, hand)}
+						disabled={isDisabled(t, action, hand, tileCount, allTiles, sanma)}
+					/>
+				))}
+				{akadora && !sanma && (
+					<TileButton
+						tile={`0${suit}`}
+						onClick={onClick}
+						dora={isDora(`0${suit}`, hand)}
+						disabled={isDisabled(`0${suit}`, action, hand, tileCount, allTiles, false)}
+					/>
+				)}
+			</div>
 		</div>
 	);
 }
