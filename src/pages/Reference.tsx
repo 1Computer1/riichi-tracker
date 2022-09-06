@@ -98,11 +98,11 @@ function TileReference() {
 	return (
 		<VerticalRow>
 			<h2 className="text-xl lg:text-3xl">Characters</h2>
-			<LabeledTiles tiles={TilesBySuit.m.map((t) => [t, t[0]])} />
+			<LabeledTiles suited tiles={TilesBySuit.m.map((t) => [t, t[0]])} />
 			<h2 className="text-xl lg:text-3xl">Circles</h2>
-			<LabeledTiles tiles={TilesBySuit.p.map((t) => [t, t[0]])} />
+			<LabeledTiles suited tiles={TilesBySuit.p.map((t) => [t, t[0]])} />
 			<h2 className="text-xl lg:text-3xl">Bamboo</h2>
-			<LabeledTiles tiles={TilesBySuit.s.map((t) => [t, t[0]])} />
+			<LabeledTiles suited tiles={TilesBySuit.s.map((t) => [t, t[0]])} />
 			<h2 className="text-xl lg:text-3xl">Winds</h2>
 			<LabeledTiles
 				tiles={[
@@ -124,8 +124,27 @@ function TileReference() {
 	);
 }
 
-function LabeledTiles({ tiles }: { tiles: [TileCode, string][] }) {
-	return (
+function LabeledTiles({ suited = false, tiles }: { suited?: boolean; tiles: [TileCode, string][] }) {
+	return suited ? (
+		<div className="flex flex-row flex-wrap justify-center items-center gap-x-1 lg:gap-x-2">
+			<div className="flex flex-row flex-wrap justify-center items-center gap-x-1 lg:gap-x-2">
+				{tiles.slice(0, 5).map((t, i) => (
+					<div key={i} className="flex flex-col justify-center items-center">
+						<span className="text-base lg:text-lg">{t[1]}</span>
+						<TileButton tile={t[0]} forced />
+					</div>
+				))}
+			</div>
+			<div className="flex flex-row flex-wrap justify-center items-center gap-x-1 lg:gap-x-2">
+				{tiles.slice(5).map((t, i) => (
+					<div key={i} className="flex flex-col justify-center items-center">
+						<span className="text-base lg:text-lg">{t[1]}</span>
+						<TileButton tile={t[0]} forced />
+					</div>
+				))}
+			</div>
+		</div>
+	) : (
 		<div className="flex flex-row flex-wrap justify-center items-center gap-x-1 lg:gap-x-2">
 			{tiles.map((t, i) => (
 				<div key={i} className="flex flex-col justify-center items-center">
