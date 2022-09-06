@@ -53,7 +53,7 @@ export default function ScoreDisplay({
 			>
 				<span
 					className={clsx(
-						vertical ? '[writing-mode:vertical-rl] h-4 lg:h-5 w-12 lg:w-20' : 'w-4 lg:w-5 h-12 lg:h-20',
+						vertical ? '[writing-mode:vertical-rl] h-5 w-12 lg:w-20' : 'w-5 h-12 lg:h-20',
 						'text-xs lg:text-lg text-center  text-slate-900 dark:text-slate-400 font-semibold',
 					)}
 				>
