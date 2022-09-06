@@ -11,7 +11,7 @@ export function AdvancedDialog({ gameId, game, onClose }: { gameId: string; game
 	const { bottomWind, roundWind, round, repeats, riichiSticks, riichi, settings } = game;
 
 	const isSanma = settings.sanma != null;
-	const roundCap = isSanma ? 4 : 3;
+	const roundCap = isSanma ? 3 : 4;
 
 	return (
 		<CustomDialog title="Other Actions" onClose={onClose}>
