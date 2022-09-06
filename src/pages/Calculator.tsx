@@ -273,12 +273,12 @@ function CalculatorWithGame({
 					for (const entry of entries) {
 						if (entry.isIntersecting) {
 							toast.dismiss('tiles');
-						} else if (hand.tiles.length || hand.melds.length) {
+						} else {
 							toast.custom(
 								(tst) => (
 									<Transition
 										appear
-										show={tst.visible}
+										show={tst.visible && (hand.tiles.length > 0 || hand.melds.length > 0)}
 										enter="transition ease-in-out duration-300 transform"
 										enterFrom="-translate-y-[200%]"
 										enterTo="translate-y-0"
@@ -287,7 +287,7 @@ function CalculatorWithGame({
 										leaveTo="-translate-y-[200%]"
 									>
 										<button
-											className="bg-slate-200 dark:bg-gray-900 text-black dark:text-white -my-3.5 lg:my-0 scale-50 lg:scale-100 p-2 lg:px-0.5 lg:py-2 rounded-xl shadow flex flex-row justify-center items-center"
+											className="bg-slate-200 dark:bg-gray-900 text-black dark:text-white -my-3.5 lg:my-0 scale-50 lg:scale-100 p-2 rounded-xl shadow flex flex-row justify-center items-center"
 											onClick={(e) => {
 												e.preventDefault();
 												handBuilderEl?.scrollIntoView({ block: 'start', behavior: 'smooth' });
@@ -308,7 +308,7 @@ function CalculatorWithGame({
 										</button>
 									</Transition>
 								),
-								{ id: 'tiles' },
+								{ duration: Infinity, id: 'tiles' },
 							);
 						}
 					}
