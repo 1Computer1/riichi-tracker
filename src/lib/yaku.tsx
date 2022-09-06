@@ -333,8 +333,20 @@ export const YakuList = {
 		value: 1,
 		help: <span>Win off a player upgrading a pon into a kan.</span>,
 	}),
-	海底摸月: yaku({ id: '海底摸月', name: 'Under the Sea', type: 'optional', value: 1 }),
-	河底撈魚: yaku({ id: '河底撈魚', name: 'Under the River', type: 'optional', value: 1 }),
+	海底摸月: yaku({
+		id: '海底摸月',
+		name: 'Under the Sea',
+		type: 'optional',
+		value: 1,
+		help: <span>Win on the final draw from the wall.</span>,
+	}),
+	河底撈魚: yaku({
+		id: '河底撈魚',
+		name: 'Under the River',
+		type: 'optional',
+		value: 1,
+		help: <span>Win on the final discard from the wall.</span>,
+	}),
 	// 1 Han
 	場風東: yaku({ id: '場風東', name: 'Prevalent Wind (East)', value: 1, basic: true }),
 	場風南: yaku({ id: '場風南', name: 'Prevalent Wind (South)', value: 1, basic: true }),
