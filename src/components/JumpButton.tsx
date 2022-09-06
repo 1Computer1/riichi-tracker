@@ -18,7 +18,7 @@ export default function JumpButton({
 		<CircleButton
 			highlight={highlight}
 			onClick={() => {
-				element?.scrollIntoView(alignToTop);
+				element?.scrollIntoView({ block: alignToTop ? 'start' : 'end', behavior: 'smooth' });
 				onJump?.();
 			}}
 		>
