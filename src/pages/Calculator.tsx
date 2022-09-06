@@ -1,11 +1,14 @@
+import { Transition } from '@headlessui/react';
 import clsx from 'clsx';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useImmer } from 'use-immer';
 import Button from '../components/Button';
 import CircleButton from '../components/CircleButton';
 import Counter from '../components/Counter';
 import JumpButton from '../components/JumpButton';
+import Tiles from '../components/Tiles';
 import Toggle from '../components/Toggle';
 import ToggleOnOff from '../components/ToggleOnOff';
 import HanFu from '../components/calculator/HanFu';
@@ -258,9 +261,71 @@ function CalculatorWithGame({
 		.concat(action?.t === 'chii' ? action.tiles : []);
 
 	const [handBuilderEl, setHandBuilderEl] = useState<Element | null>(null);
+	const [selectedTilesEl, setSelectedTilesEl] = useState<Element | null>(null);
 	const [scoreResultEl, setScoreResultEl] = useState<Element | null>(null);
 	const [pointsCalculatorEl, setPointsCalculatorEl] = useState<Element | null>(null);
 	const scoreResult = tileCount === 14 ? calculate(hand, settings) : null;
+
+	const selectedTilesObserver = useMemo(
+		() =>
+			new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (entry.isIntersecting) {
+							toast.dismiss('tiles');
+						} else if (hand.tiles.length || hand.melds.length) {
+							toast.custom(
+								(tst) => (
+									<Transition
+										appear
+										show={tst.visible}
+										enter="transition ease-in-out duration-300 transform"
+										enterFrom="-translate-y-[200%]"
+										enterTo="translate-y-0"
+										leave="transition ease-in-out duration-300 transform"
+										leaveFrom="translate-y-0"
+										leaveTo="-translate-y-[200%]"
+									>
+										<button
+											className="bg-slate-200 dark:bg-gray-900 text-black dark:text-white -my-3.5 lg:my-0 scale-50 lg:scale-100 p-2 lg:px-0.5 lg:py-2 rounded-xl shadow flex flex-row justify-center items-center"
+											onClick={(e) => {
+												e.preventDefault();
+												handBuilderEl?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+											}}
+										>
+											<Tiles
+												small
+												sets={[
+													hand.tiles,
+													...hand.melds.map((m) =>
+														m.t === 'kan' && m.closed
+															? ([m.tiles[0], '00', '00', m.tiles[3]] as ('00' | TileCode)[])
+															: m.tiles,
+													),
+												]}
+											/>
+										</button>
+									</Transition>
+								),
+								{ id: 'tiles' },
+							);
+						}
+					}
+				},
+				{
+					root: null,
+					rootMargin: '0px',
+					threshold: 1.0,
+				},
+			),
+		[handBuilderEl, hand.tiles, hand.melds],
+	);
+	useEffect(() => {
+		if (selectedTilesEl) {
+			selectedTilesObserver.observe(selectedTilesEl);
+			return () => selectedTilesObserver.unobserve(selectedTilesEl);
+		}
+	}, [selectedTilesObserver, selectedTilesEl]);
 
 	const makeHanFuScore = (h: number, f: number) =>
 		makeScore(hand.seatWind === '1', hand.agari, isSanma, calculateHanFu(h, f, settings));
@@ -466,8 +531,9 @@ function CalculatorWithGame({
 
 	return (
 		<div className="flex flex-row justify-center">
+			<Toaster position="top-center" />
 			<div className="w-full h-screen overflow-y-auto">
-				<div className="fixed top-2 left-2 lg:top-4 lg:left-4 flex flex-col gap-y-2">
+				<div className="fixed z-10 top-2 left-2 lg:top-4 lg:left-4 flex flex-col gap-y-2">
 					<CircleButton
 						onClick={() => {
 							if (locState.t === 'transfer') {
@@ -482,7 +548,7 @@ function CalculatorWithGame({
 					</CircleButton>
 				</div>
 				{game == null && (
-					<div className="fixed top-2 right-2 lg:top-4 lg:right-8 flex flex-col gap-y-2">
+					<div className="fixed z-10 top-2 right-2 lg:top-4 lg:right-8 flex flex-col gap-y-2">
 						<CircleButton
 							onClick={() => {
 								setOpenedSettings(true);
@@ -492,7 +558,7 @@ function CalculatorWithGame({
 						</CircleButton>
 					</div>
 				)}
-				<div className="invisible sm:visible fixed bottom-2 right-2 lg:bottom-4 lg:right-8 flex flex-col gap-y-2">
+				<div className="invisible sm:visible fixed z-10 bottom-2 right-2 lg:bottom-4 lg:right-8 flex flex-col gap-y-2">
 					<JumpButton element={handBuilderEl}>牌</JumpButton>
 					<JumpButton element={scoreResultEl} highlight={scoreResult?.agari != null}>
 						役
@@ -535,6 +601,7 @@ function CalculatorWithGame({
 						</div>
 						<HorizontalRow>
 							<Selected
+								ref={setSelectedTilesEl}
 								hand={hand}
 								onTileClick={(t, i) => {
 									updateAction(null);
@@ -564,6 +631,7 @@ function CalculatorWithGame({
 									disabled={hand.riichi != null || hand.blessing || tileCount + 3 > 14}
 									currentAction={action}
 									onActionChange={updateAction}
+									small
 								>
 									Chii
 								</ActionButton>
@@ -573,6 +641,7 @@ function CalculatorWithGame({
 								disabled={hand.riichi != null || hand.blessing || tileCount + 3 > 14}
 								currentAction={action}
 								onActionChange={updateAction}
+								small
 							>
 								Pon
 							</ActionButton>
@@ -581,6 +650,7 @@ function CalculatorWithGame({
 								disabled={hand.riichi != null || hand.blessing || tileCount + 3 > 14}
 								currentAction={action}
 								onActionChange={updateAction}
+								small
 							>
 								Kan
 							</ActionButton>
@@ -589,6 +659,7 @@ function CalculatorWithGame({
 								disabled={hand.blessing || tileCount + 3 > 14}
 								currentAction={action}
 								onActionChange={updateAction}
+								small
 							>
 								Closed Kan
 							</ActionButton>
@@ -1063,12 +1134,14 @@ function ActionButton({
 	currentAction,
 	onActionChange,
 	disabled,
+	small,
 	children,
 }: {
 	t: Action['t'];
 	currentAction: Action | null;
 	onActionChange: (a: Action | null) => void;
 	disabled?: boolean;
+	small?: boolean;
 	children?: ReactNode;
 }) {
 	return (
@@ -1076,6 +1149,7 @@ function ActionButton({
 			onClick={() => onActionChange(currentAction?.t === t ? null : defaultAction(t))}
 			active={currentAction?.t === t}
 			disabled={disabled}
+			small={small}
 		>
 			{children}
 		</Button>

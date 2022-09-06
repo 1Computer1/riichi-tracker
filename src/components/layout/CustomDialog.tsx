@@ -16,8 +16,8 @@ export default function CustomDialog({
 }) {
 	return (
 		<Dialog open onClose={onClose} initialFocus={initialFocus}>
-			<div className="fixed inset-0 bg-black/70" aria-hidden="true" />
-			<div className="fixed inset-0 flex flex-col justify-center items-center">
+			<div className="fixed z-20 inset-0 bg-black/70" aria-hidden="true" />
+			<div className="fixed z-20 inset-0 flex flex-col justify-center items-center">
 				<div className="flex flex-col justify-center items-center">
 					<Dialog.Panel className="max-w-[100vw] max-h-screen">
 						<div className="text-black dark:text-white flex flex-col max-w-[100vw] max-h-screen px-4 py-8">

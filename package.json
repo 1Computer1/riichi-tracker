@@ -20,6 +20,7 @@
 		"immer": "^9.0.15",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"react-hot-toast": "^2.3.0",
 		"react-responsive": "^9.0.0-beta.10",
 		"react-router-dom": "^6.3.0",
 		"riichi": "github:1Computer1/riichi",

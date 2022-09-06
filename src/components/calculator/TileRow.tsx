@@ -22,7 +22,7 @@ export function SuitRow({
 	onClick?: (tile: TileCode) => void;
 }) {
 	return (
-		<div className="flex flex-row gap-1 lg:gap-2 justify-center items-center min-w-min">
+		<div className="flex flex-row flex-wrap gap-1 lg:gap-2 justify-center items-center min-w-min">
 			{(sanma && suit === 'm' ? [TilesBySuit[suit][0], TilesBySuit[suit][8]] : TilesBySuit[suit]).map((t) => (
 				<TileButton
 					key={t}
@@ -58,16 +58,29 @@ export function HonorRow({
 	action: Action | null;
 }) {
 	return (
-		<div className="flex flex-row gap-1 lg:gap-2 justify-center items-center min-w-min">
-			{TilesBySuit.z.map((t) => (
-				<TileButton
-					key={t}
-					tile={t}
-					dora={isDora(t, hand)}
-					disabled={isDisabled(t, action, hand, tileCount, allTiles, false)}
-					onClick={onClick}
-				/>
-			))}
+		<div className="flex flex-row flex-wrap gap-1 lg:gap-2 justify-center items-center min-w-min">
+			<div className="flex flex-row flex-wrap gap-1 lg:gap-2 justify-center items-center min-w-min">
+				{TilesBySuit.z.slice(0, 4).map((t) => (
+					<TileButton
+						key={t}
+						tile={t}
+						dora={isDora(t, hand)}
+						disabled={isDisabled(t, action, hand, tileCount, allTiles, false)}
+						onClick={onClick}
+					/>
+				))}
+			</div>
+			<div className="flex flex-row flex-wrap gap-1 lg:gap-2 justify-center items-center min-w-min">
+				{TilesBySuit.z.slice(4).map((t) => (
+					<TileButton
+						key={t}
+						tile={t}
+						dora={isDora(t, hand)}
+						disabled={isDisabled(t, action, hand, tileCount, allTiles, false)}
+						onClick={onClick}
+					/>
+				))}
+			</div>
 		</div>
 	);
 }
