@@ -11,7 +11,6 @@ import TileButton from '../components/calculator/TileButton';
 import Left from '../components/icons/heroicons/Left';
 import Right from '../components/icons/heroicons/Right';
 import Up from '../components/icons/heroicons/Up';
-import HorizontalRow from '../components/layout/HorizontalRow';
 import VerticalRow from '../components/layout/VerticalRow';
 import H from '../components/text/H';
 import { calculateHanFu, TileCode, TilesBySuit } from '../lib/hand';
@@ -266,9 +265,9 @@ function YakuItem({ yaku }: { yaku: Omit<Yaku, 'id'> }) {
 				</h2>
 				{yaku.help && <div className="text-base lg:text-lg">{yaku.help}</div>}
 				{yaku.example && (
-					<HorizontalRow>
+					<div className="w-full flex flex-row justify-center items-center">
 						<Tiles sets={yaku.example} small />
-					</HorizontalRow>
+					</div>
 				)}
 			</div>
 		</div>

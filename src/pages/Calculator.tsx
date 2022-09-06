@@ -295,6 +295,7 @@ function CalculatorWithGame({
 										>
 											<Tiles
 												small
+												wrap={false}
 												sets={[
 													hand.tiles,
 													...hand.melds.map((m) =>

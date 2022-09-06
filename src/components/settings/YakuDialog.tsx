@@ -153,7 +153,11 @@ function YakuToggle({
 							</div>
 						</div>
 						<div className="text-lg lg:text-xl">{yaku.help}</div>
-						{yaku.example && <Tiles sets={yaku.example} small />}
+						{yaku.example && (
+							<div className="w-full flex flex-row justify-center items-center">
+								<Tiles sets={yaku.example} small />
+							</div>
+						)}
 					</div>
 				</CustomDialog>
 			)}
