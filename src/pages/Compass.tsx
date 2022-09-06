@@ -147,7 +147,9 @@ function CompassWithGame({ gameId, game }: { gameId: string; game: Game }) {
 				data-1c1
 				className={clsx(
 					'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-300 dark:bg-sky-900 rounded-xl shadow',
-					isPortrait ? '[writing-mode:vertical-lr] p-2 h-[min(70vh,70vw)]' : 'p-2 w-[min(70vh,70vw)]',
+					isPortrait
+						? '[writing-mode:vertical-lr] h-[min(70vh,70vw)] p-1.5 lg:px-2 lg:py-4'
+						: 'w-[min(70vh,70vw)] p-1.5 lg:py-2 lg:px-4',
 				)}
 			>
 				<div className="flex flex-row justify-between items-center gap-x-4">

@@ -32,8 +32,8 @@ export default function ScoreDisplay({
 		<div
 			className={clsx(
 				vertical
-					? 'flex h-full w-[7.625rem] lg:w-[10.375rem] flex-row-reverse'
-					: 'flex flex-col w-full h-[7.625rem] lg:h-[10.375rem]',
+					? 'flex h-full w-[7.75rem] lg:w-[11.25rem] flex-row-reverse'
+					: 'flex flex-col w-full h-[7.75rem] lg:h-[11.25rem]',
 				'justify-center items-center gap-1',
 			)}
 		>
@@ -41,17 +41,19 @@ export default function ScoreDisplay({
 				onClick={onRiichiClick}
 				className={clsx(
 					'text-center border border-gray-800 rounded-xl shadow text-sm md:text-lg lg:text-2xl',
-					vertical ? '[writing-mode:vertical-lr] py-8 px-1.5 h-40 lg:h-80' : 'px-8 py-1.5 w-40 lg:w-80',
+					vertical ? 'py-8 px-1.5 h-40 lg:h-80 w-9 lg:w-14' : 'px-8 py-1.5 w-40 lg:w-80 h-9 lg:h-14',
 					riichi
 						? 'bg-amber-500 enabled:hover:bg-amber-600 dark:bg-amber-700 dark:enabled:hover:bg-amber-800'
 						: 'bg-gray-50 enabled:hover:bg-gray-200 dark:bg-gray-500 dark:enabled:hover:bg-gray-600',
 				)}
 			>
-				Riichi
+				<span className={clsx(vertical ? '[writing-mode:vertical-rl]' : '')}>Riichi</span>
 			</button>
 			<div
 				className={clsx(
-					vertical ? 'flex flex-col h-full w-fit py-2 px-2 lg:px-4' : 'flex flex-row w-full h-fit px-2 py-2 lg:py-4',
+					vertical
+						? 'flex flex-col h-full w-fit p-1.5 lg:py-2 lg:px-4'
+						: 'flex flex-row w-full h-fit p-1.5 lg:px-2 lg:py-4',
 					'justify-between items-center bg-slate-300 dark:bg-sky-900 rounded-xl shadow',
 				)}
 			>
@@ -69,10 +71,12 @@ export default function ScoreDisplay({
 					{dices[2]}
 				</span>
 				<button
-					className={clsx('text-4xl lg:text-6xl font-bold', vertical ? '[writing-mode:vertical-lr] h-48' : 'w-52')}
+					className={clsx('text-4xl lg:text-6xl font-bold', vertical ? 'h-52 w-12 lg:w-20' : 'w-52 h-12 lg:h-20')}
 					onClick={onScoreClick}
 				>
-					<H>{score}</H>
+					<span className={clsx(vertical ? '[writing-mode:vertical-rl]' : '')}>
+						<H>{score}</H>
+					</span>
 				</button>
 				<div className={clsx(vertical ? 'rotate-90 mx-2 -my-2' : '', 'flex flex-col justify-center items-center')}>
 					<TileButton onClick={onTileClick} red={seatWind === '1'} tile={`${seatWind}z`}></TileButton>
