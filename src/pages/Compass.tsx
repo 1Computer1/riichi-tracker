@@ -230,6 +230,7 @@ function ScoreDisplayInCompass({
 			vertical={vertical}
 			score={scores[ix]}
 			riichi={riichi[ix]}
+			isSanma={settings.sanma != null}
 			seatWind={nextWind(bottomWind, ix, settings.sanma != null)}
 			onScoreClick={onScoreClick}
 			onTileClick={onTileClick}

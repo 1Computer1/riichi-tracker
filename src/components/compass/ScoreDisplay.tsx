@@ -6,6 +6,7 @@ import H from '../text/H';
 export default function ScoreDisplay({
 	score,
 	seatWind,
+	isSanma,
 	vertical = false,
 	riichi = false,
 	onScoreClick,
@@ -14,6 +15,7 @@ export default function ScoreDisplay({
 }: {
 	score: number;
 	seatWind: Wind;
+	isSanma: boolean;
 	vertical?: boolean;
 	riichi?: boolean;
 	onScoreClick?: () => void;
@@ -55,6 +57,7 @@ export default function ScoreDisplay({
 			>
 				<span
 					className={clsx(
+						isSanma && 'invisible',
 						vertical ? '[writing-mode:vertical-rl] h-5 w-12 lg:w-20' : 'w-5 h-12 lg:h-20',
 						'text-xs lg:text-lg text-center  text-slate-900 dark:text-slate-400 font-semibold',
 					)}
