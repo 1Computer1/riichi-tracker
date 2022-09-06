@@ -9,7 +9,7 @@ import JumpButton from '../components/JumpButton';
 import Toggle from '../components/Toggle';
 import ToggleOnOff from '../components/ToggleOnOff';
 import HanFu from '../components/calculator/HanFu';
-import PointsResult from '../components/calculator/PointsResult';
+import PointsResult, { TakeText } from '../components/calculator/PointsResult';
 import ScoreResult from '../components/calculator/ScoreResult';
 import Selected from '../components/calculator/Selected';
 import SelectedDora from '../components/calculator/SelectedDora';
@@ -40,6 +40,11 @@ import { ScoreSettings } from '../lib/settings';
 import { CalculatorState, CompassState } from '../lib/states';
 import { replicate } from '../lib/util';
 import { useDb } from '../providers/DbProvider';
+
+interface CommonValueGroup {
+	name: ReactNode;
+	values: { label: ReactNode; value: [number, number]; score: Exclude<CalculatedPoints, { agari: null }> }[];
+}
 
 export default function Calculator() {
 	const location = useLocation();
@@ -257,9 +262,125 @@ function CalculatorWithGame({
 	const [pointsCalculatorEl, setPointsCalculatorEl] = useState<Element | null>(null);
 	const scoreResult = tileCount === 14 ? calculate(hand, settings) : null;
 
+	const makeHanFuScore = (h: number, f: number) =>
+		makeScore(hand.seatWind === '1', hand.agari, isSanma, calculateHanFu(h, f, settings));
+
 	const [han, setHan] = useState(1);
 	const [fu, setFu] = useState(30);
-	const hanFuScores = makeScore(hand.seatWind === '1', hand.agari, isSanma, calculateHanFu(han, fu, settings));
+	const hanFuScores = makeHanFuScore(han, fu);
+
+	const makeCommonValue = ([h, f]: number[]) => ({
+		value: [h, f] as [number, number],
+		label: (
+			<span>
+				<H>{h}</H> Han <H>{f}</H> Fu
+			</span>
+		),
+		score: makeHanFuScore(h, f),
+	});
+
+	const commonValues: CommonValueGroup[] = [
+		{
+			name: (
+				<span>
+					<H>1</H> Han
+				</span>
+			),
+			values: [
+				[1, 30],
+				[1, 40],
+				[1, 50],
+				[1, 60],
+			].map(makeCommonValue),
+		},
+		{
+			name: (
+				<span>
+					<H>2</H> Han
+				</span>
+			),
+			values: [
+				...(hand.agari === 'tsumo' ? [[2, 20]] : []),
+				...(hand.agari === 'ron' ? [[2, 25]] : []),
+				[2, 30],
+				[2, 40],
+				[2, 50],
+				[2, 60],
+			].map(makeCommonValue),
+		},
+		{
+			name: (
+				<span>
+					<H>3</H> Han
+				</span>
+			),
+			values: [...(hand.agari === 'tsumo' ? [[3, 20]] : []), [3, 25], [3, 30], [3, 40], [3, 50], [3, 60]].map(
+				makeCommonValue,
+			),
+		},
+		{
+			name: (
+				<span>
+					<H>4</H> Han
+				</span>
+			),
+			values: [...(hand.agari === 'tsumo' ? [[4, 20]] : []), [4, 25], [4, 30]].map(makeCommonValue),
+		},
+		{
+			name: (
+				<span>
+					<H>Mangan</H> and Beyond
+				</span>
+			),
+			values: [
+				{
+					value: [5, 30],
+					label: (
+						<span>
+							<H>Mangan</H>
+						</span>
+					),
+					score: makeHanFuScore(5, 30),
+				},
+				{
+					value: [6, 30],
+					label: (
+						<span>
+							<H>Haneman</H>
+						</span>
+					),
+					score: makeHanFuScore(6, 30),
+				},
+				{
+					value: [8, 30],
+					label: (
+						<span>
+							<H>Baiman</H>
+						</span>
+					),
+					score: makeHanFuScore(8, 30),
+				},
+				{
+					value: [11, 30],
+					label: (
+						<span>
+							<H>Sanbaiman</H>
+						</span>
+					),
+					score: makeHanFuScore(11, 30),
+				},
+				{
+					value: [13, 30],
+					label: (
+						<span>
+							<H>Yakuman</H>
+						</span>
+					),
+					score: makeHanFuScore(13, 30),
+				},
+			],
+		},
+	];
 
 	const transferScores = async (calcPoints: Exclude<CalculatedPoints, { agari: null }>) => {
 		if (game == null || locState.t !== 'transfer' || locState.agari !== calcPoints.agari) {
@@ -898,7 +1019,7 @@ function CalculatorWithGame({
 								pao={locState.t === 'transfer' && locState.pao != null}
 							/>
 							{locState.t === 'transfer' && (
-								<div className="flex flex-col container lg:w-[50%]">
+								<div className="flex flex-col container lg:w-[50%] gap-y-2 lg:gap-y-4">
 									<button
 										className={clsx(
 											'border border-gray-800 rounded-xl shadow py-1 lg:p-2 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
@@ -911,6 +1032,22 @@ function CalculatorWithGame({
 									>
 										Quick Transfer
 									</button>
+									<div className="flex flex-col justify-center items-center gap-y-2 lg:gap-y-4">
+										<h2 className="text-xl">Common Values</h2>
+										{commonValues.map((group, i) => (
+											<CommonValuesGroup
+												key={i}
+												group={group}
+												hand={hand}
+												locState={locState}
+												onClick={(s) => {
+													setHan(s[0]);
+													setFu(s[1]);
+													pointsCalculatorEl?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+												}}
+											/>
+										))}
+									</div>
 								</div>
 							)}
 						</div>
@@ -942,5 +1079,61 @@ function ActionButton({
 		>
 			{children}
 		</Button>
+	);
+}
+
+function CommonValuesGroup({
+	group,
+	hand,
+	locState,
+	onClick,
+}: {
+	group: CommonValueGroup;
+	hand: Hand;
+	locState: CalculatorState & { t: 'transfer' };
+	onClick: (s: [number, number]) => void;
+}) {
+	const [open, setOpen] = useState(false);
+
+	return (
+		<div className="w-full flex flex-col justify-center items-center gap-y-2 lg:gap-y-4">
+			<Button active={open} onClick={() => setOpen(!open)}>
+				{group.name}
+			</Button>
+			{open && (
+				<div className="flex flex-row flex-wrap gap-2 justify-center items-center">
+					{group.values.map((item) => (
+						<button
+							key={item.value.join(',')}
+							className={clsx(
+								'border border-gray-800 gap-1 lg:gap-3 p-0.5 rounded-xl shadow disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
+								'text-lg lg:text-xl w-28 h-28 lg:w-32 lg:h-32 flex flex-col justify-center items-center',
+								'bg-gray-50 hover:bg-gray-200 dark:bg-gray-500 dark:hover:bg-gray-600',
+							)}
+							onClick={() => {
+								void onClick(item.value);
+							}}
+						>
+							<span>{item.label}</span>
+							<span>
+								<TakeText
+									result={{
+										...item.score,
+										noYaku: false,
+										isOya: hand.seatWind === '1',
+										yakuman: 0,
+										yaku: [],
+										han: item.value[0],
+										fu: item.value[1],
+										name: null,
+									}}
+									pao={locState.pao != null}
+								/>
+							</span>
+						</button>
+					))}
+				</div>
+			)}
+		</div>
 	);
 }
