@@ -46,7 +46,7 @@ export function SuitRow({
 						disabled={isDisabled(t, action, hand, tileCount, allTiles)}
 					/>
 				))}
-				{akadora && !sanma && (
+				{akadora && !(sanma && suit === 'm') && (
 					<TileButton
 						tile={`0${suit}`}
 						onClick={onClick}
