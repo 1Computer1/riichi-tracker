@@ -138,13 +138,17 @@ function isDisabled(
 			if (action.tiles.length === 0) {
 				return false;
 			}
+			const suit = action.tiles[0][1];
+			if (tile[1] !== suit) {
+				return true;
+			}
 			// Can only continue to chii adjacent tiles.
 			const n = Number(tile[0]) || 5;
-			const adj =
+			const adjancents =
 				action.tiles.length === 1
 					? [(Number(action.tiles[0][0]) || 5) - 1, (Number(action.tiles[0][0]) || 5) + 1]
 					: [(Number(action.tiles[0][0]) || 5) - 1, (Number(action.tiles[1][0]) || 5) + 1];
-			return !adj.includes(n);
+			return !adjancents.includes(n);
 		}
 		// Cannot pon/kan if there's already 2/1.
 		return action.t === 'pon' ? count >= 2 : count >= 1;
