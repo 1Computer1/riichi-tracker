@@ -141,7 +141,12 @@ function CalculatorWithGame({
 		if (!action) {
 			updateHand((h) => {
 				// Add red 5 if its the fourth 5.
-				if (settings.akadora && t[0] === '5' && t[1] !== 'z' && hand.tiles.filter((t2) => t2 === t).length === 3) {
+				if (
+					settings.akadora &&
+					t[0] === '5' &&
+					t[1] !== 'z' &&
+					allTiles.concat(hand.dora, hand.uradora).filter((t2) => t2 === t).length === 3
+				) {
 					h.tiles.push(`0${t[1]}` as TileCode);
 					sortTiles(h.tiles);
 					const i = h.tiles.findIndex((t2) => t2 === `0${t[1]}`);
@@ -163,7 +168,12 @@ function CalculatorWithGame({
 				return [t, tx, tx];
 			}
 			// Clicked pon on the 5 and already has a normal 5, so must have red 5.
-			if (settings.akadora && t[0] === '5' && t[1] !== 'z' && hand.tiles.some((t2) => t2 === t)) {
+			if (
+				settings.akadora &&
+				t[0] === '5' &&
+				t[1] !== 'z' &&
+				allTiles.concat(hand.dora, hand.uradora).filter((t2) => t2 === t).length === 3
+			) {
 				const tx = `0${t[1]}` as TileCode;
 				return [tx, t, t];
 			}
@@ -187,14 +197,34 @@ function CalculatorWithGame({
 		switch (action.t) {
 			case 'dora': {
 				updateHand((h) => {
-					h.dora.push(t);
+					// Add red 5 if its the fourth 5.
+					if (
+						settings.akadora &&
+						t[0] === '5' &&
+						t[1] !== 'z' &&
+						allTiles.concat(hand.dora, hand.uradora).filter((t2) => t2 === t).length === 3
+					) {
+						h.dora.push(`0${t[1]}` as TileCode);
+					} else {
+						h.dora.push(t);
+					}
 					updateAction(null);
 				});
 				break;
 			}
 			case 'uradora': {
 				updateHand((h) => {
-					h.uradora.push(t);
+					// Add red 5 if its the fourth 5.
+					if (
+						settings.akadora &&
+						t[0] === '5' &&
+						t[1] !== 'z' &&
+						allTiles.concat(hand.dora, hand.uradora).filter((t2) => t2 === t).length === 3
+					) {
+						h.uradora.push(`0${t[1]}` as TileCode);
+					} else {
+						h.uradora.push(t);
+					}
 					updateAction(null);
 				});
 				break;
