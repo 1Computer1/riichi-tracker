@@ -211,9 +211,9 @@ export const YakuList = {
 		name: 'Big Seven Stars',
 		type: 'local',
 		yakuman: true,
-		value: 1,
+		value: 2,
 		closedOnly: true,
-		help: <span>A seven pairs hand consisting of all seven of the honor tiles.</span>,
+		help: <span>A seven pairs hand consisting of all seven of the honor tiles. Does not combine with all honors.</span>,
 		example: [['1z', '1z', '2z', '2z', '3z', '3z', '4z', '4z', '5z', '5z', '6z', '6z', '7z', '7z']],
 	}),
 	大数隣: yaku({
