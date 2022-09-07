@@ -141,7 +141,7 @@ function CalculatorWithGame({
 		if (!action) {
 			updateHand((h) => {
 				// Add red 5 if its the fourth 5.
-				if (settings.akadora && t[0] === '5' && hand.tiles.filter((t2) => t2 === t).length === 3) {
+				if (settings.akadora && t[0] === '5' && t[1] !== 'z' && hand.tiles.filter((t2) => t2 === t).length === 3) {
 					h.tiles.push(`0${t[1]}` as TileCode);
 					sortTiles(h.tiles);
 					const i = h.tiles.findIndex((t2) => t2 === `0${t[1]}`);
@@ -163,7 +163,7 @@ function CalculatorWithGame({
 				return [t, tx, tx];
 			}
 			// Clicked pon on the 5 and already has a normal 5, so must have red 5.
-			if (settings.akadora && t[0] === '5' && hand.tiles.some((t2) => t2 === t)) {
+			if (settings.akadora && t[0] === '5' && t[1] !== 'z' && hand.tiles.some((t2) => t2 === t)) {
 				const tx = `0${t[1]}` as TileCode;
 				return [tx, t, t];
 			}
