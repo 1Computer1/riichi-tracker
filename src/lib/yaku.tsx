@@ -310,7 +310,11 @@ export const YakuList = {
 		type: 'optional',
 		value: 1,
 		closedOnly: true,
-		help: <span>Win before your next discard. Calls invalidate.</span>,
+		help: (
+			<span>
+				Additional <H>1</H> han if you win before your next discard after calling riichi. Calls invalidate.
+			</span>
+		),
 	}),
 	門前清自摸和: yaku({
 		id: '門前清自摸和',
@@ -542,7 +546,11 @@ export const YakuList = {
 		id: '小三元',
 		name: 'Three Little Dragons',
 		value: 2,
-		help: <span>Two sets and a pair of each dragon.</span>,
+		help: (
+			<span>
+				Two sets and a pair of each dragon. The <H>2</H> han from having two dragon triplets are still included.
+			</span>
+		),
 		example: [
 			['5z', '5z', '5z'],
 			['6z', '6z', '6z'],

@@ -464,15 +464,15 @@ function ScoreReference() {
 											<H>+10</H> for winning with closed ron
 										</li>
 										<li>
-											<H>+2</H> for having non-open waits
+											<H>+2</H> for having a single wait
 										</li>
 										<li>
-											<H>+2</H> per yakuhai pair
+											<H>+2</H> per yakuhai pair (some rules may have <H>+4</H> for double wind pair)
 										</li>
 									</ul>
 								</li>
 								<li>
-									<H>2</H> base fu per triplet
+									<H>+2</H> fu per triplet
 									<ul className="flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc ml-4 lg:ml-8 mt-1">
 										<li>
 											<H>x2</H> if concealed
