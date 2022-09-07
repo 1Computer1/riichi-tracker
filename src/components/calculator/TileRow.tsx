@@ -112,7 +112,7 @@ function isDisabled(
 	// Cannot add dora indicator if tiles are taken.
 	if (action?.t === 'dora' || action?.t === 'uradora') {
 		// Cannot add more than one red five.
-		if (tile[0] === '0' && allTiles.some((t) => t === tile)) {
+		if (tile[0] === '0' && allTiles.concat(hand.dora, hand.uradora).some((t) => t === tile)) {
 			return true;
 		}
 		const count = countTiles(tile, hand, allTiles);
@@ -123,7 +123,7 @@ function isDisabled(
 		return true;
 	}
 	// Cannot add more than one red five.
-	if (tile[0] === '0' && allTiles.some((t) => t === tile)) {
+	if (tile[0] === '0' && allTiles.concat(hand.dora, hand.uradora).some((t) => t === tile)) {
 		return true;
 	}
 	const count = countTiles(tile, hand, allTiles);
