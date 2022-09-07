@@ -37,7 +37,13 @@ export default forwardRef(function Selected(
 						</div>
 					)}
 					{hand.melds.map((m, i) => (
-						<MeldButton key={i} meld={m} hand={hand} onClick={onMeldClick && ((m) => onMeldClick(m, i))} />
+						<MeldButton
+							key={i}
+							meld={m}
+							hand={hand}
+							sanma={sanma}
+							onClick={onMeldClick && ((m) => onMeldClick(m, i))}
+						/>
 					))}
 				</>
 			) : (
