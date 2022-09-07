@@ -13,7 +13,7 @@ export default function SelectedDora({
 		<div className="flex flex-row gap-x-2 justify-center items-center min-w-min">
 			<div className="flex flex-row gap-x-0.5">
 				{dora.length ? (
-					dora.map((t, i) => <TileButton key={i} tile={t} dora onClick={onTileClick && ((t) => onTileClick(t, i))} />)
+					dora.map((t, i) => <TileButton key={i} tile={t} onClick={onTileClick && ((t) => onTileClick(t, i))} />)
 				) : (
 					<Placeholder />
 				)}

@@ -8,10 +8,12 @@ import { Placeholder } from '../Tile';
 export default forwardRef(function Selected(
 	{
 		hand,
+		sanma,
 		onTileClick,
 		onMeldClick,
 	}: {
 		hand: Hand;
+		sanma: boolean;
 		onTileClick?: (tile: TileCode, i: number) => void;
 		onMeldClick?: (meld: Meld, i: number) => void;
 	},
@@ -28,7 +30,7 @@ export default forwardRef(function Selected(
 									key={i}
 									tile={t}
 									agari={i === hand.agariIndex}
-									dora={isDora(t, hand)}
+									dora={isDora(t, hand, sanma)}
 									onClick={onTileClick && ((t) => onTileClick(t, i))}
 								/>
 							))}

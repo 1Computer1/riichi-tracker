@@ -589,7 +589,7 @@ function CalculatorWithGame({
 					>
 						<div className="flex flex-row gap-x-2 items-end">
 							<h1 className="text-2xl lg:text-4xl">Score Calculator</h1>
-							{tileCount > 0 && (
+							{(tileCount > 0 || hand.dora.length > 0 || hand.uradora.length > 0) && (
 								<button
 									onClick={() => {
 										updateAction(null);
@@ -605,6 +605,7 @@ function CalculatorWithGame({
 							<Selected
 								ref={setSelectedTilesEl}
 								hand={hand}
+								sanma={isSanma}
 								onTileClick={(t, i) => {
 									updateAction(null);
 									updateHand((h) => {
@@ -697,364 +698,381 @@ function CalculatorWithGame({
 								sanma={isSanma}
 								onClick={updateTiles}
 							/>
-							<HonorRow hand={hand} allTiles={allTiles} tileCount={tileCount} action={action} onClick={updateTiles} />
+							<HonorRow
+								hand={hand}
+								allTiles={allTiles}
+								tileCount={tileCount}
+								action={action}
+								sanma={isSanma}
+								onClick={updateTiles}
+							/>
 						</VerticalRow>
-						<div className="w-full overflow-x-auto mb-1">
-							<div className="flex flex-row gap-x-8 justify-center items-center min-w-min">
-								<div className="flex flex-col justify-center items-center gap-y-1">
-									<span className="text-xl">Round</span>
-									<WindSelect
-										forced={locState.t === 'transfer'}
-										value={hand.roundWind}
-										redEast
-										sanma={isSanma}
-										onChange={(w) => {
-											updateAction(null);
-											updateHand((h) => {
-												h.roundWind = w;
-											});
-										}}
-									/>
+						<div className="w-full mb-1">
+							<div className="flex flex-row flex-wrap gap-x-8 justify-center items-center min-w-min">
+								<div className="flex flex-row flex-wrap gap-x-8 justify-center items-center min-w-min">
+									<div className="flex flex-col flex-wrap justify-center items-center gap-x-8 gap-y-1">
+										<span className="text-xl">Round</span>
+										<WindSelect
+											forced={locState.t === 'transfer'}
+											value={hand.roundWind}
+											redEast
+											sanma={isSanma}
+											onChange={(w) => {
+												updateAction(null);
+												updateHand((h) => {
+													h.roundWind = w;
+												});
+											}}
+										/>
+									</div>
+									<div className="flex flex-col justify-center items-center gap-y-1">
+										<span className="text-xl">Seat</span>
+										<WindSelect
+											forced={locState.t === 'transfer'}
+											value={hand.seatWind}
+											redEast
+											sanma={isSanma}
+											onChange={(w) => {
+												updateAction(null);
+												updateHand((h) => {
+													h.seatWind = w;
+												});
+											}}
+										/>
+									</div>
 								</div>
-								<div className="flex flex-col justify-center items-center gap-y-1">
-									<span className="text-xl">Seat</span>
-									<WindSelect
-										forced={locState.t === 'transfer'}
-										value={hand.seatWind}
-										redEast
-										sanma={isSanma}
-										onChange={(w) => {
-											updateAction(null);
-											updateHand((h) => {
-												h.seatWind = w;
-											});
-										}}
-									/>
-								</div>
-								<div className="flex flex-col justify-center items-center gap-y-1">
-									<span className="text-xl">Dora</span>
-									<SelectedDora
-										dora={hand.dora}
-										onTileClick={(t, i) => {
-											updateAction(null);
-											updateHand((h) => {
-												h.dora.splice(i, 1);
-												sortTiles(h.dora);
-											});
-										}}
-									/>
-								</div>
-								<div className="flex flex-col justify-center items-center gap-y-1">
-									<span className="text-xl">Uradora</span>
-									<SelectedDora
-										dora={hand.uradora}
-										onTileClick={(t, i) => {
-											updateAction(null);
-											updateHand((h) => {
-												h.uradora.splice(i, 1);
-												sortTiles(h.uradora);
-											});
-										}}
-									/>
+								<div className="flex flex-row flex-wrap justify-center items-center gap-x-8 gap-y-1">
+									<div className="flex flex-col justify-center items-center gap-y-1">
+										<span className="text-xl">
+											Dora <span className="text-xs">Indicators</span>
+										</span>
+										<SelectedDora
+											dora={hand.dora}
+											onTileClick={(t, i) => {
+												updateAction(null);
+												updateHand((h) => {
+													h.dora.splice(i, 1);
+													sortTiles(h.dora);
+												});
+											}}
+										/>
+									</div>
+									<div className="flex flex-col justify-center items-center gap-y-1">
+										<span className="text-xl">
+											Uradora <span className="text-xs">Indicators</span>
+										</span>
+										<SelectedDora
+											dora={hand.uradora}
+											onTileClick={(t, i) => {
+												updateAction(null);
+												updateHand((h) => {
+													h.uradora.splice(i, 1);
+													sortTiles(h.uradora);
+												});
+											}}
+										/>
+									</div>
 								</div>
 							</div>
 						</div>
-						<HorizontalRow>
-							<Toggle
-								forced={locState.t === 'transfer'}
-								toggled={hand.agari === 'ron'}
-								onToggle={(b) => {
-									updateAction(null);
-									updateHand((h) => {
-										h.agari = b ? 'ron' : 'tsumo';
-										// Robbing a Kan -> Drawing a Kan only if there is kan meld.
-										if (h.agari === 'tsumo' && !hand.melds.some((m) => m.t === 'kan')) {
-											h.kan = false;
-										}
-									});
-								}}
-								left="Tsumo"
-								right="Ron"
-							/>
-							<ActionButton
-								t="dora"
-								disabled={hand.dora.length >= 5}
-								currentAction={action}
-								onActionChange={updateAction}
-							>
-								Add Dora
-							</ActionButton>
-							<ActionButton
-								t="uradora"
-								disabled={hand.riichi == null || hand.uradora.length >= 5}
-								currentAction={action}
-								onActionChange={updateAction}
-							>
-								Add Uradora
-							</ActionButton>
-							{isSanma && (
-								<Counter
-									canDecrement={hand.nukidora > 0}
-									onDecrement={() => {
-										updateAction(null);
-										updateHand((h) => {
-											h.nukidora--;
-										});
-									}}
-									canIncrement={hand.nukidora + allTiles.filter((t) => t === '4z').length < 4}
-									onIncrement={() => {
-										updateAction(null);
-										updateHand((h) => {
-											h.nukidora++;
-										});
-									}}
-								>
-									Kita ({hand.nukidora})
-								</Counter>
-							)}
-						</HorizontalRow>
-						<HorizontalRow>
-							<ToggleOnOff
-								toggled={hand.riichi != null}
-								// No riichi if there are melds, except closed kans.
-								disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
-								// Can swap between riichi and blessings.
-								incompatible={hand.blessing}
-								onToggle={(b) => {
-									updateAction(null);
-									updateHand((h) => {
-										h.riichi = b ? { double: false, ippatsu: false } : null;
-										// No blessings in riichi, no uradora out of riichi.
-										if (b) {
-											h.blessing = false;
-										} else {
-											h.uradora = [];
-										}
-									});
-								}}
-							>
-								Riichi
-							</ToggleOnOff>
-							{!settings.disabledYaku.includes('ダブル立直') && (
-								<ToggleOnOff
-									toggled={hand.riichi?.double ?? false}
-									disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
-									incompatible={
-										hand.riichi == null ||
-										(hand.riichi.ippatsu && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) ||
-										(hand.riichi.ippatsu && hand.lastTile)
-									}
+						<VerticalRow>
+							<HorizontalRow>
+								<Toggle
+									forced={locState.t === 'transfer'}
+									toggled={hand.agari === 'ron'}
 									onToggle={(b) => {
 										updateAction(null);
 										updateHand((h) => {
-											if (b && h.riichi == null) {
-												h.riichi = { double: true, ippatsu: false };
+											h.agari = b ? 'ron' : 'tsumo';
+											// Robbing a Kan -> Drawing a Kan only if there is kan meld.
+											if (h.agari === 'tsumo' && !hand.melds.some((m) => m.t === 'kan')) {
+												h.kan = false;
 											}
-											h.riichi!.double = b;
+										});
+									}}
+									left="Tsumo"
+									right="Ron"
+								/>
+								<ActionButton
+									t="dora"
+									disabled={hand.dora.length >= 5}
+									currentAction={action}
+									onActionChange={updateAction}
+								>
+									Add Dora Indicator
+								</ActionButton>
+								<ActionButton
+									t="uradora"
+									disabled={hand.riichi == null || hand.uradora.length >= 5}
+									currentAction={action}
+									onActionChange={updateAction}
+								>
+									Add Uradora Indicator
+								</ActionButton>
+								{isSanma && (
+									<Counter
+										canDecrement={hand.nukidora > 0}
+										onDecrement={() => {
+											updateAction(null);
+											updateHand((h) => {
+												h.nukidora--;
+											});
+										}}
+										canIncrement={hand.nukidora + allTiles.filter((t) => t === '4z').length < 4}
+										onIncrement={() => {
+											updateAction(null);
+											updateHand((h) => {
+												h.nukidora++;
+											});
+										}}
+									>
+										Kita ({hand.nukidora})
+									</Counter>
+								)}
+							</HorizontalRow>
+							<HorizontalRow>
+								<ToggleOnOff
+									toggled={hand.riichi != null}
+									// No riichi if there are melds, except closed kans.
+									disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
+									// Can swap between riichi and blessings.
+									incompatible={hand.blessing}
+									onToggle={(b) => {
+										updateAction(null);
+										updateHand((h) => {
+											h.riichi = b ? { double: false, ippatsu: false } : null;
+											// No blessings in riichi, no uradora out of riichi.
 											if (b) {
-												// Cannot be ippatsu if closed kan and double riichi.
-												if (h.riichi?.ippatsu && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) {
-													h.riichi.ippatsu = false;
-												}
-												if (h.riichi?.ippatsu && h.lastTile) {
-													h.lastTile = false;
-												}
+												h.blessing = false;
+											} else {
+												h.uradora = [];
 											}
 										});
 									}}
 								>
-									Double Riichi
+									Riichi
 								</ToggleOnOff>
-							)}
-							{!settings.disabledYaku.includes('一発') && (
-								<ToggleOnOff
-									toggled={hand.riichi?.ippatsu ?? false}
-									disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
-									incompatible={
-										hand.riichi == null ||
-										(hand.riichi.double && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) ||
-										(hand.agari === 'tsumo' && hand.kan) ||
-										(hand.agari === 'ron' && hand.lastTile) ||
-										(hand.lastTile && hand.riichi.double)
-									}
-									onToggle={(b) => {
-										updateAction(null);
-										updateHand((h) => {
-											if (b && h.riichi == null) {
-												h.riichi = { double: false, ippatsu: true };
-											}
-											h.riichi!.ippatsu = b;
-											if (b) {
-												// If ippatsu, cannot be after a kan or under the river.
-												if (h.agari === 'tsumo') {
+								{!settings.disabledYaku.includes('ダブル立直') && (
+									<ToggleOnOff
+										toggled={hand.riichi?.double ?? false}
+										disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
+										incompatible={
+											hand.riichi == null ||
+											(hand.riichi.ippatsu && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) ||
+											(hand.riichi.ippatsu && hand.lastTile)
+										}
+										onToggle={(b) => {
+											updateAction(null);
+											updateHand((h) => {
+												if (b && h.riichi == null) {
+													h.riichi = { double: true, ippatsu: false };
+												}
+												h.riichi!.double = b;
+												if (b) {
+													// Cannot be ippatsu if closed kan and double riichi.
+													if (h.riichi?.ippatsu && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) {
+														h.riichi.ippatsu = false;
+													}
+													if (h.riichi?.ippatsu && h.lastTile) {
+														h.lastTile = false;
+													}
+												}
+											});
+										}}
+									>
+										Double Riichi
+									</ToggleOnOff>
+								)}
+								{!settings.disabledYaku.includes('一発') && (
+									<ToggleOnOff
+										toggled={hand.riichi?.ippatsu ?? false}
+										disabled={hand.melds.filter((m) => m.t !== 'kan' || !m.closed).length > 0}
+										incompatible={
+											hand.riichi == null ||
+											(hand.riichi.double && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) ||
+											(hand.agari === 'tsumo' && hand.kan) ||
+											(hand.agari === 'ron' && hand.lastTile) ||
+											(hand.lastTile && hand.riichi.double)
+										}
+										onToggle={(b) => {
+											updateAction(null);
+											updateHand((h) => {
+												if (b && h.riichi == null) {
+													h.riichi = { double: false, ippatsu: true };
+												}
+												h.riichi!.ippatsu = b;
+												if (b) {
+													// If ippatsu, cannot be after a kan or under the river.
+													if (h.agari === 'tsumo') {
+														h.kan = false;
+													}
+													if (h.agari === 'ron') {
+														h.lastTile = false;
+													}
+													// Cannot be double riichi if closed kan and ippatsu.
+													if (h.riichi?.double && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) {
+														h.riichi.double = false;
+													}
+													// Cannot be last tile if double riichi and ippatsu.
+													if (h.lastTile && h.riichi?.double) {
+														h.lastTile = false;
+													}
+												}
+											});
+										}}
+									>
+										Ippatsu
+									</ToggleOnOff>
+								)}
+							</HorizontalRow>
+							<HorizontalRow>
+								{(!settings.disabledYaku.includes('嶺上開花') || !settings.disabledYaku.includes('搶槓')) && (
+									<ToggleOnOff
+										toggled={hand.kan}
+										// No after a kan if no kan melds.
+										// No robbing a kan if all 4 kans in hand.
+										disabled={
+											(hand.agari === 'tsumo' && !hand.melds.some((m) => m.t === 'kan') && !hand.nukidora) ||
+											(hand.agari === 'ron' && hand.melds.filter((m) => m.t === 'kan').length === 4) ||
+											(hand.agari === 'ron' && hand.tiles.filter((t) => hand.tiles[hand.agariIndex] === t).length > 1)
+										}
+										incompatible={hand.blessing || (hand.agari === 'tsumo' && hand.riichi?.ippatsu) || hand.lastTile}
+										onToggle={(b) => {
+											updateAction(null);
+											updateHand((h) => {
+												h.kan = b;
+												// A kan call means no blessing, not last tile, and not tsumo ippatsu.
+												if (b) {
+													h.blessing = false;
+													h.lastTile = false;
+													if (h.agari === 'tsumo' && h.riichi) {
+														h.riichi.ippatsu = false;
+													}
+												}
+											});
+										}}
+									>
+										{hand.agari === 'ron' ? 'Robbing a Kan' : 'After a Kan'}
+									</ToggleOnOff>
+								)}
+								{(!settings.disabledYaku.includes('海底摸月') || !settings.disabledYaku.includes('河底撈魚')) && (
+									<ToggleOnOff
+										toggled={hand.lastTile}
+										incompatible={
+											hand.blessing ||
+											(hand.agari === 'ron' && hand.riichi?.ippatsu) ||
+											hand.kan ||
+											(hand.riichi?.double && hand.riichi.ippatsu)
+										}
+										onToggle={(b) => {
+											updateAction(null);
+											updateHand((h) => {
+												// Last tile means no blessing, not from a kan call, not ron ippatsu.
+												h.lastTile = b;
+												if (b) {
+													h.blessing = false;
+													h.kan = false;
+													if (h.agari === 'ron' && h.riichi) {
+														h.riichi.ippatsu = false;
+													}
+													if (h.riichi?.double && h.riichi.ippatsu) {
+														h.riichi.ippatsu = false;
+													}
+												}
+											});
+										}}
+									>
+										{hand.agari === 'tsumo' ? 'Under the Sea' : 'Under the River'}
+									</ToggleOnOff>
+								)}
+								{(!settings.disabledYaku.includes('天和') || !settings.disabledYaku.includes('地和')) && (
+									<ToggleOnOff
+										toggled={hand.blessing}
+										disabled={
+											(hand.agari === 'ron' &&
+												(settings.enabledLocalYaku.includes('人和') ? hand.seatWind === '1' : true)) ||
+											hand.melds.length > 0 ||
+											hand.nukidora > 0
+										}
+										incompatible={hand.riichi != null || hand.kan || hand.lastTile}
+										onToggle={(b) => {
+											updateAction(null);
+											updateHand((h) => {
+												h.blessing = b;
+												// Blessing means no call can be made, first title.
+												if (b) {
+													h.riichi = null;
+													h.uradora = [];
+													h.lastTile = false;
 													h.kan = false;
 												}
-												if (h.agari === 'ron') {
-													h.lastTile = false;
-												}
-												// Cannot be double riichi if closed kan and ippatsu.
-												if (h.riichi?.double && hand.melds.filter((m) => m.t === 'kan' && m.closed).length > 0) {
-													h.riichi.double = false;
-												}
-												// Cannot be last tile if double riichi and ippatsu.
-												if (h.lastTile && h.riichi?.double) {
-													h.lastTile = false;
-												}
-											}
-										});
-									}}
-								>
-									Ippatsu
-								</ToggleOnOff>
-							)}
-						</HorizontalRow>
-						<HorizontalRow>
-							{(!settings.disabledYaku.includes('嶺上開花') || !settings.disabledYaku.includes('搶槓')) && (
-								<ToggleOnOff
-									toggled={hand.kan}
-									// No after a kan if no kan melds.
-									// No robbing a kan if all 4 kans in hand.
-									disabled={
-										(hand.agari === 'tsumo' && !hand.melds.some((m) => m.t === 'kan') && !hand.nukidora) ||
-										(hand.agari === 'ron' && hand.melds.filter((m) => m.t === 'kan').length === 4) ||
-										(hand.agari === 'ron' && hand.tiles.filter((t) => hand.tiles[hand.agariIndex] === t).length > 1)
-									}
-									incompatible={hand.blessing || (hand.agari === 'tsumo' && hand.riichi?.ippatsu) || hand.lastTile}
-									onToggle={(b) => {
-										updateAction(null);
-										updateHand((h) => {
-											h.kan = b;
-											// A kan call means no blessing, not last tile, and not tsumo ippatsu.
-											if (b) {
-												h.blessing = false;
-												h.lastTile = false;
-												if (h.agari === 'tsumo' && h.riichi) {
-													h.riichi.ippatsu = false;
-												}
-											}
-										});
-									}}
-								>
-									{hand.agari === 'ron' ? 'Robbing a Kan' : 'After a Kan'}
-								</ToggleOnOff>
-							)}
-							{(!settings.disabledYaku.includes('海底摸月') || !settings.disabledYaku.includes('河底撈魚')) && (
-								<ToggleOnOff
-									toggled={hand.lastTile}
-									incompatible={
-										hand.blessing ||
-										(hand.agari === 'ron' && hand.riichi?.ippatsu) ||
-										hand.kan ||
-										(hand.riichi?.double && hand.riichi.ippatsu)
-									}
-									onToggle={(b) => {
-										updateAction(null);
-										updateHand((h) => {
-											// Last tile means no blessing, not from a kan call, not ron ippatsu.
-											h.lastTile = b;
-											if (b) {
-												h.blessing = false;
-												h.kan = false;
-												if (h.agari === 'ron' && h.riichi) {
-													h.riichi.ippatsu = false;
-												}
-												if (h.riichi?.double && h.riichi.ippatsu) {
-													h.riichi.ippatsu = false;
-												}
-											}
-										});
-									}}
-								>
-									{hand.agari === 'tsumo' ? 'Under the Sea' : 'Under the River'}
-								</ToggleOnOff>
-							)}
-							{(!settings.disabledYaku.includes('天和') || !settings.disabledYaku.includes('地和')) && (
-								<ToggleOnOff
-									toggled={hand.blessing}
-									disabled={
-										(hand.agari === 'ron' &&
-											(settings.enabledLocalYaku.includes('人和') ? hand.seatWind === '1' : true)) ||
-										hand.melds.length > 0 ||
-										hand.nukidora > 0
-									}
-									incompatible={hand.riichi != null || hand.kan || hand.lastTile}
-									onToggle={(b) => {
-										updateAction(null);
-										updateHand((h) => {
-											h.blessing = b;
-											// Blessing means no call can be made, first title.
-											if (b) {
-												h.riichi = null;
-												h.uradora = [];
-												h.lastTile = false;
-												h.kan = false;
-											}
-										});
-									}}
-								>
-									{hand.seatWind === '1'
-										? 'Blessing of Heaven'
-										: settings.enabledLocalYaku.includes('人和') && hand.agari === 'ron'
-										? 'Blessing of Man'
-										: 'Blessing of Earth'}
-								</ToggleOnOff>
-							)}
-						</HorizontalRow>
-						{settings.otherScoring && (
-							<HorizontalRow>
-								<Counter
-									canDecrement={hand.extraYakuHan > 0}
-									onDecrement={() => {
-										updateAction(null);
-										updateHand((h) => {
-											h.extraYakuHan--;
-										});
-									}}
-									onIncrement={() => {
-										updateAction(null);
-										updateHand((h) => {
-											h.extraYakuHan++;
-										});
-									}}
-								>
-									Yaku ({hand.extraYakuHan})
-								</Counter>
-								<Counter
-									canDecrement={hand.extraDoraHan > 0}
-									onDecrement={() => {
-										updateAction(null);
-										updateHand((h) => {
-											h.extraDoraHan--;
-										});
-									}}
-									onIncrement={() => {
-										updateAction(null);
-										updateHand((h) => {
-											h.extraDoraHan++;
-										});
-									}}
-								>
-									Dora ({hand.extraDoraHan})
-								</Counter>
-								<Counter
-									canDecrement={hand.extraYakuman > 0}
-									onDecrement={() => {
-										updateAction(null);
-										updateHand((h) => {
-											h.extraYakuman--;
-										});
-									}}
-									onIncrement={() => {
-										updateAction(null);
-										updateHand((h) => {
-											h.extraYakuman++;
-										});
-									}}
-								>
-									Yakuman ({hand.extraYakuman})
-								</Counter>
+											});
+										}}
+									>
+										{hand.seatWind === '1'
+											? 'Blessing of Heaven'
+											: settings.enabledLocalYaku.includes('人和') && hand.agari === 'ron'
+											? 'Blessing of Man'
+											: 'Blessing of Earth'}
+									</ToggleOnOff>
+								)}
 							</HorizontalRow>
-						)}
+							{settings.otherScoring && (
+								<HorizontalRow>
+									<Counter
+										canDecrement={hand.extraYakuHan > 0}
+										onDecrement={() => {
+											updateAction(null);
+											updateHand((h) => {
+												h.extraYakuHan--;
+											});
+										}}
+										onIncrement={() => {
+											updateAction(null);
+											updateHand((h) => {
+												h.extraYakuHan++;
+											});
+										}}
+									>
+										Yaku ({hand.extraYakuHan})
+									</Counter>
+									<Counter
+										canDecrement={hand.extraDoraHan > 0}
+										onDecrement={() => {
+											updateAction(null);
+											updateHand((h) => {
+												h.extraDoraHan--;
+											});
+										}}
+										onIncrement={() => {
+											updateAction(null);
+											updateHand((h) => {
+												h.extraDoraHan++;
+											});
+										}}
+									>
+										Dora ({hand.extraDoraHan})
+									</Counter>
+									<Counter
+										canDecrement={hand.extraYakuman > 0}
+										onDecrement={() => {
+											updateAction(null);
+											updateHand((h) => {
+												h.extraYakuman--;
+											});
+										}}
+										onIncrement={() => {
+											updateAction(null);
+											updateHand((h) => {
+												h.extraYakuman++;
+											});
+										}}
+									>
+										Yakuman ({hand.extraYakuman})
+									</Counter>
+								</HorizontalRow>
+							)}
+						</VerticalRow>
 					</div>
 					<div
 						ref={setScoreResultEl}

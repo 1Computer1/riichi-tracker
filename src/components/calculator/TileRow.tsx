@@ -1,6 +1,6 @@
 import TileButton from './TileButton';
 import { Action } from '../../lib/action';
-import { Hand, isDora, nextDoraTile, TileCode, TilesBySuit } from '../../lib/hand';
+import { Hand, isDora, TileCode, TilesBySuit } from '../../lib/hand';
 
 export function SuitRow({
 	suit,
@@ -30,8 +30,8 @@ export function SuitRow({
 							key={t}
 							tile={t}
 							onClick={onClick}
-							dora={isDora(t, hand)}
-							disabled={isDisabled(t, action, hand, tileCount, allTiles, sanma)}
+							dora={isDora(t, hand, sanma)}
+							disabled={isDisabled(t, action, hand, tileCount, allTiles)}
 						/>
 					),
 				)}
@@ -42,16 +42,16 @@ export function SuitRow({
 						key={t}
 						tile={t}
 						onClick={onClick}
-						dora={isDora(t, hand)}
-						disabled={isDisabled(t, action, hand, tileCount, allTiles, sanma)}
+						dora={isDora(t, hand, sanma)}
+						disabled={isDisabled(t, action, hand, tileCount, allTiles)}
 					/>
 				))}
 				{akadora && !sanma && (
 					<TileButton
 						tile={`0${suit}`}
 						onClick={onClick}
-						dora={isDora(`0${suit}`, hand)}
-						disabled={isDisabled(`0${suit}`, action, hand, tileCount, allTiles, false)}
+						dora={isDora(`0${suit}`, hand, sanma)}
+						disabled={isDisabled(`0${suit}`, action, hand, tileCount, allTiles)}
 					/>
 				)}
 			</div>
@@ -64,12 +64,14 @@ export function HonorRow({
 	hand,
 	allTiles,
 	action,
+	sanma,
 	tileCount,
 }: {
 	onClick?: (tile: TileCode) => void;
 	hand: Hand;
 	allTiles: TileCode[];
 	tileCount: number;
+	sanma: boolean;
 	action: Action | null;
 }) {
 	return (
@@ -79,8 +81,8 @@ export function HonorRow({
 					<TileButton
 						key={t}
 						tile={t}
-						dora={isDora(t, hand)}
-						disabled={isDisabled(t, action, hand, tileCount, allTiles, false)}
+						dora={isDora(t, hand, sanma)}
+						disabled={isDisabled(t, action, hand, tileCount, allTiles)}
 						onClick={onClick}
 					/>
 				))}
@@ -90,8 +92,8 @@ export function HonorRow({
 					<TileButton
 						key={t}
 						tile={t}
-						dora={isDora(t, hand)}
-						disabled={isDisabled(t, action, hand, tileCount, allTiles, false)}
+						dora={isDora(t, hand, sanma)}
+						disabled={isDisabled(t, action, hand, tileCount, allTiles)}
 						onClick={onClick}
 					/>
 				))}
@@ -106,12 +108,14 @@ function isDisabled(
 	hand: Hand,
 	tileCount: number,
 	allTiles: TileCode[],
-	sanma: boolean,
 ): boolean {
-	// Cannot add dora if indicator tiles are taken, but otherwise always.
+	// Cannot add dora indicator if tiles are taken.
 	if (action?.t === 'dora' || action?.t === 'uradora') {
-		const indicator = nextDoraTile(tile, -1, sanma);
-		const count = countTiles(indicator, hand, allTiles);
+		// Cannot add more than one red five.
+		if (tile[0] === '0' && allTiles.some((t) => t === tile)) {
+			return true;
+		}
+		const count = countTiles(tile, hand, allTiles);
 		return count >= 4;
 	}
 	// Cannot add over 14 tiles to hand.
@@ -157,13 +161,22 @@ function isDisabled(
 }
 
 function countTiles(tile: TileCode, hand: Hand, allTiles: TileCode[]): number {
-	// Count 5s and red 5s together.
-	if (tile[0] === '0' || tile[0] === '5') {
-		return allTiles.filter((t) => t === `0${tile[1]}` || t === `5${tile[1]}`).length;
-	}
+	const inds = countDoraIndicators(tile, hand);
 	// Count nukidora as north.
 	if (tile === '4z') {
-		return allTiles.filter((t) => t === tile).length + hand.nukidora;
+		return allTiles.filter((t) => t === tile).length + hand.nukidora + inds;
 	}
-	return allTiles.filter((t) => t === tile).length;
+	return allTiles.filter((t) => sameTile(t, tile)).length + inds;
+}
+
+function countDoraIndicators(tile: TileCode, hand: Hand): number {
+	return hand.dora.filter((d) => sameTile(d, tile)).length + hand.uradora.filter((d) => sameTile(d, tile)).length;
+}
+
+function sameTile(a: TileCode, b: TileCode) {
+	// Count 5s and red 5s together.
+	if (a[0] === '0' || (a[0] === '5' && a[1] !== 'z')) {
+		return b === `0${a[1]}` || b === `5${a[1]}`;
+	}
+	return a === b;
 }

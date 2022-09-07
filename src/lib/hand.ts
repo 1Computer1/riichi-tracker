@@ -242,7 +242,7 @@ export type CalculatedValue = CalculatedPoints & {
 	name: string | null;
 };
 
-export function convertHand(hand: Hand): string {
+export function convertHand(hand: Hand, sanma: boolean): string {
 	let s = '';
 	const suits = partitionSuits(hand.tiles.filter((t, i) => i !== hand.agariIndex));
 	for (const [suit, tiles] of suits) {
@@ -271,7 +271,7 @@ export function convertHand(hand: Hand): string {
 	}
 	if (hand.dora.length) {
 		s += '+d';
-		const doraSuits = partitionSuits(hand.dora);
+		const doraSuits = partitionSuits(hand.dora.map((x) => nextDoraTile(x, 1, sanma)));
 		for (const [suit, tiles] of doraSuits) {
 			s += tiles;
 			s += suit;
@@ -279,7 +279,7 @@ export function convertHand(hand: Hand): string {
 	}
 	if (hand.uradora.length) {
 		s += '+u';
-		const doraSuits = partitionSuits(hand.uradora);
+		const doraSuits = partitionSuits(hand.uradora.map((x) => nextDoraTile(x, 1, sanma)));
 		for (const [suit, tiles] of doraSuits) {
 			s += tiles;
 			s += suit;
@@ -326,12 +326,13 @@ export function convertHand(hand: Hand): string {
 	return s;
 }
 
-export function isDora(t: TileCode, hand: Hand) {
+export function isDora(t: TileCode, hand: Hand, sanma: boolean) {
+	const prev = nextDoraTile(t, -1, sanma);
 	return (
-		hand.dora.includes(t) ||
-		(t[0] === '0' && hand.dora.includes(`5${t[1]}` as TileCode)) ||
-		hand.uradora.includes(t) ||
-		(t[0] === '0' && hand.uradora.includes(`5${t[1]}` as TileCode))
+		hand.dora.includes(prev) ||
+		(prev[0] === '5' && hand.dora.includes(`0${prev[1]}` as TileCode)) ||
+		hand.uradora.includes(prev) ||
+		(prev[0] === '5' && hand.uradora.includes(`0${prev[1]}` as TileCode))
 	);
 }
 
@@ -391,7 +392,7 @@ export function convertValue(hand: Hand, res: Riichi.Result): CalculatedValue {
 }
 
 export function calculate(hand: Hand, settings: ScoreSettings): CalculatedValue {
-	const conv = convertHand(hand);
+	const conv = convertHand(hand, settings.sanma != null);
 	const riichi = new Riichi(conv, {
 		multiYakuman: settings.multiYakuman,
 		wyakuman: settings.doubleYakuman,
