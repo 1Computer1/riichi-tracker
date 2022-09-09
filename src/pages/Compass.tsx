@@ -158,8 +158,8 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 						: 'w-[min(70vh,70vw)] p-1.5 lg:py-2 lg:px-4',
 				)}
 			>
-				<div className="flex flex-row justify-between items-center gap-x-4">
-					<div className={clsx(isPortrait ? 'rotate-90 mx-2 -my-2' : 'flex flex-col justify-center items-center')}>
+				<div className="flex flex-row justify-between items-center gap-4">
+					<div className={clsx(isPortrait ? 'rotate-90 mx-2 -my-2' : '', 'flex flex-col justify-center items-center')}>
 						<TileButton
 							onClick={() => {
 								setOpenDrawDialog(true);
