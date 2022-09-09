@@ -10,6 +10,7 @@ export interface ScoreSettings {
 	doubleWindFu: boolean;
 	rinshanFu: boolean;
 	sanma: 'loss' | 'bisection' | null;
+	northYakuhai: boolean;
 	akadora: boolean;
 	usePao: boolean;
 	otherScoring: boolean;
@@ -29,6 +30,7 @@ export const DefaultSettings: ScoreSettings = {
 	doubleWindFu: true,
 	rinshanFu: true,
 	sanma: null,
+	northYakuhai: false,
 	akadora: true,
 	usePao: false,
 	otherScoring: false,

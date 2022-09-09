@@ -406,6 +406,7 @@ export function calculate(hand: Hand, settings: ScoreSettings): CalculatedValue 
 		rinshanFu: settings.rinshanFu,
 		sanma: settings.sanma != null,
 		sanmaBisection: settings.sanma === 'bisection',
+		otakazePei: settings.northYakuhai,
 		aka: settings.akadora,
 		disabledYaku: settings.disabledYaku,
 		localYaku: settings.enabledLocalYaku,

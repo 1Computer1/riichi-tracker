@@ -360,6 +360,7 @@ export const YakuList = {
 	自風南: yaku({ id: '自風南', name: 'Seat Wind (South)', value: 1, basic: true }),
 	自風西: yaku({ id: '自風西', name: 'Seat Wind (West)', value: 1, basic: true }),
 	自風北: yaku({ id: '自風北', name: 'Seat Wind (North)', value: 1, basic: true }),
+	客風北: yaku({ id: '客風北', name: 'Guest Wind (North)', value: 1, basic: true }),
 	役牌白: yaku({ id: '役牌白', name: 'White Dragon', value: 1, basic: true }),
 	役牌発: yaku({ id: '役牌発', name: 'Green Dragon', value: 1, basic: true }),
 	役牌中: yaku({ id: '役牌中', name: 'Red Dragon', value: 1, basic: true }),
@@ -808,7 +809,12 @@ export const YakuReferenceSort: YakuReferenceItem[] = [
 		value: 1,
 		per: true,
 		type: 'extra',
-		help: <span>In three-player mahjong, north tiles that were called counts as dora.</span>,
+		help: (
+			<span>
+				In three-player mahjong, north tiles that were called counts as dora. In certain rule variations, north instead
+				counts as yakuhai for every player.
+			</span>
+		),
 		example: [['4z']],
 	}),
 ];

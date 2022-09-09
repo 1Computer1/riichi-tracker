@@ -1,7 +1,7 @@
 import Dexie, { Table } from 'dexie';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { DefaultSettings, ScoreSettings } from '../../lib/settings';
 import { none, Option, some } from '../../lib/option';
+import { DefaultSettings, ScoreSettings } from '../../lib/settings';
 import { Game, IRepository } from '../interfaces';
 
 type Game_ = Game & {
@@ -37,7 +37,7 @@ function fromGame(id: string, game: Game): Game_ {
 
 type ScoreSettings_ = ScoreSettings & { id: string };
 
-function toSettings(settings: ScoreSettings_) {
+function toSettings(settings: ScoreSettings_): ScoreSettings {
 	return {
 		noYakuFu: settings.noYakuFu,
 		noYakuDora: settings.noYakuDora,
@@ -50,6 +50,7 @@ function toSettings(settings: ScoreSettings_) {
 		doubleWindFu: settings.doubleWindFu,
 		rinshanFu: settings.rinshanFu,
 		sanma: settings.sanma,
+		northYakuhai: settings.northYakuhai,
 		akadora: settings.akadora,
 		usePao: settings.usePao,
 		otherScoring: settings.otherScoring,
@@ -58,7 +59,7 @@ function toSettings(settings: ScoreSettings_) {
 	};
 }
 
-function fromSettings(id: string, settings: ScoreSettings) {
+function fromSettings(id: string, settings: ScoreSettings): ScoreSettings_ {
 	return {
 		id,
 		noYakuFu: settings.noYakuFu,
@@ -72,6 +73,7 @@ function fromSettings(id: string, settings: ScoreSettings) {
 		doubleWindFu: settings.doubleWindFu,
 		rinshanFu: settings.rinshanFu,
 		sanma: settings.sanma,
+		northYakuhai: settings.northYakuhai,
 		akadora: settings.akadora,
 		usePao: settings.usePao,
 		otherScoring: settings.otherScoring,
@@ -141,6 +143,27 @@ db.version(4)
 				updateSettings(old);
 			}),
 	);
+
+db.version(5)
+	.stores({
+		games: '++id', // id, roundWind, round, repeats, bottomWind, scores, riichiSticks, riichi, settings(..., northYakuhai)
+		settings: '++id', // id, ...settings(..., northYakuhai)
+	})
+	.upgrade(async (tx) => {
+		await tx
+			.table('games')
+			.toCollection()
+			.modify((old) => {
+				updateSettings(old);
+			});
+		await tx
+			.table('settings')
+			.toCollection()
+			.modify((old) => {
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+				old.northYakuhai = false;
+			});
+	});
 
 export const repository: IRepository = {
 	async getGame(id): Promise<Option<Game>> {

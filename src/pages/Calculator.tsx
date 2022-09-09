@@ -839,7 +839,7 @@ function CalculatorWithGame({
 								>
 									Add Uradora Indicator
 								</ActionButton>
-								{isSanma && (
+								{isSanma && !settings.northYakuhai && (
 									<Counter
 										canDecrement={hand.nukidora > 0}
 										onDecrement={() => {

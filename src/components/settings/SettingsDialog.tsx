@@ -71,41 +71,73 @@ export default function SettingsDialog({
 						</Button>
 					</SettingRow>
 					{settings.sanma != null && (
-						<SettingRow
-							name="Tsumo Points"
-							help={
-								<span>
-									The distribution of points when a player wins with tsumo.
-									<br />
-									If <H.B>Loss</H.B> is enabled, the base points are the same as in four player. In effect, the winning
-									player loses the points from the missing north player.
-									<br />
-									If <H.B>Bisection</H.B> is enabled, the base points will include the points from the north player that
-									should have been paid. In effect, the other two players will pay more.
-								</span>
-							}
-						>
-							<Button
-								active={settings.sanma === 'loss'}
-								onClick={() =>
-									change((s) => {
-										s.sanma = 'loss';
-									})
+						<>
+							<SettingRow
+								name="Tsumo Points"
+								help={
+									<span>
+										The distribution of points when a player wins with tsumo.
+										<br />
+										If <H.B>Loss</H.B> is enabled, the base points are the same as in four player. In effect, the
+										winning player loses the points from the missing north player.
+										<br />
+										If <H.B>Bisection</H.B> is enabled, the base points will include the points from the north player
+										that should have been paid. In effect, the other two players will pay more.
+									</span>
 								}
 							>
-								Loss
-							</Button>
-							<Button
-								active={settings.sanma === 'bisection'}
-								onClick={() =>
-									change((s) => {
-										s.sanma = 'bisection';
-									})
+								<Button
+									active={settings.sanma === 'loss'}
+									onClick={() =>
+										change((s) => {
+											s.sanma = 'loss';
+										})
+									}
+								>
+									Loss
+								</Button>
+								<Button
+									active={settings.sanma === 'bisection'}
+									onClick={() =>
+										change((s) => {
+											s.sanma = 'bisection';
+										})
+									}
+								>
+									Bisection
+								</Button>
+							</SettingRow>
+							<SettingRow
+								name="North Tiles"
+								help={
+									<span>
+										North tiles can either be called with <H.B>kita</H.B> or used as <H.B>yakuhai</H.B> regardless of
+										wind in three-player mahjong. With <H.B>kita</H.B>, a counter will be added to count north tiles.
+									</span>
 								}
 							>
-								Bisection
-							</Button>
-						</SettingRow>
+								<Button
+									active={!settings.northYakuhai}
+									onClick={() =>
+										change((s) => {
+											s.northYakuhai = false;
+										})
+									}
+								>
+									Kita
+								</Button>
+								<Button
+									active={settings.northYakuhai}
+									onClick={() =>
+										change((s) => {
+											s.northYakuhai = true;
+										})
+									}
+								>
+									Yakuhai
+								</Button>
+							</SettingRow>
+						</>
 					)}
 					<SettingRow
 						name="Red Fives"
