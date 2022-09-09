@@ -154,11 +154,16 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 				className={clsx(
 					'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-300 dark:bg-sky-900 rounded-xl shadow',
 					isPortrait
-						? '[writing-mode:vertical-lr] h-[min(70vh,70vw)] p-1.5 lg:px-2 lg:py-4'
-						: 'w-[min(70vh,70vw)] p-1.5 lg:py-2 lg:px-4',
+						? 'h-[min(min(70vw,70vh),calc(100vh_-_16rem))] lg:h-[min(min(70vw,70vh),calc(100vh_-_24rem))] p-1.5 lg:px-2 lg:py-4'
+						: 'w-[min(min(70vw,70vh),calc(100vw_-_16rem))] lg:w-[min(min(70vw,70vh),calc(100vw_-_24rem))] p-1.5 lg:py-2 lg:px-4',
 				)}
 			>
-				<div className="flex flex-row justify-between items-center gap-4">
+				<div
+					className={clsx(
+						isPortrait ? 'flex flex-col h-full' : 'flex flex-row w-full',
+						'justify-between items-center gap-4',
+					)}
+				>
 					<div className={clsx(isPortrait ? 'rotate-90 mx-2 -my-2' : '', 'flex flex-col justify-center items-center')}>
 						<TileButton
 							onClick={() => {
@@ -167,16 +172,16 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 							tile={`${roundWind}z`}
 						/>
 					</div>
-					<div
+					<span
 						className={clsx(
-							isPortrait ? 'flex flex-col-reverse' : 'flex flex-col',
+							isPortrait ? 'flex flex-col-reverse [writing-mode:vertical-lr]' : 'flex flex-col',
 							'gap-y-2 justify-between items-center text-xl lg:text-4xl',
 						)}
 					>
 						<span>
 							{translateWind(roundWind)} {round}
 						</span>
-						<div className="flex flex-row gap-x-4 justify-center items-center">
+						<span className="flex flex-row gap-x-4 justify-center items-center">
 							<span className="flex flex-row gap-x-2 justify-center items-center">
 								<span
 									className={clsx(
@@ -185,16 +190,16 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 									)}
 								>
 									⠿
-								</span>{' '}
-								{repeats}
+								</span>
+								<span>{repeats}</span>
 							</span>
 							<span className="flex flex-row gap-x-2 justify-center items-center">
 								<span className={clsx('text-red-500 dark:text-red-600', isPortrait ? 'mr-0.5 lg:mr-2' : '')}>●</span>{' '}
-								{riichiSticks}
+								<span>{riichiSticks}</span>
 							</span>
-						</div>
-					</div>
-					<div className={clsx(isPortrait ? 'flex flex-col-reverse' : 'flex flex-col', 'gap-y-2')}>
+						</span>
+					</span>
+					<div className={clsx(isPortrait ? 'flex flex-row-reverse' : 'flex flex-col', 'gap-2')}>
 						<CircleButton
 							onClick={() => {
 								navigate('/', { replace: true });
