@@ -328,7 +328,12 @@ export const YakuList = {
 		name: 'After a Kan',
 		type: 'optional',
 		value: 1,
-		help: <span>Win on the dead wall draw after calling kan.</span>,
+		help: (
+			<span>
+				Win on the dead wall draw after calling kan. In three-player mahjong, a win on the dead wall draw after calling
+				kita also counts.
+			</span>
+		),
 	}),
 	搶槓: yaku({
 		id: '搶槓',
