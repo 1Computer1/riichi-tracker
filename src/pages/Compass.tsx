@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CircleButton from '../components/CircleButton';
 import TileButton from '../components/calculator/TileButton';
@@ -46,16 +46,6 @@ export default function Compass() {
 function CompassWithGame({ locState, game }: { locState: CompassState; game: Game }) {
 	const db = useDb();
 	const navigate = useNavigate();
-
-	const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
-	useEffect(() => {
-		const onResize = () => {
-			setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-		};
-		window.addEventListener('resize', onResize);
-		return () => window.removeEventListener('resize', onResize);
-	});
-	const isPortrait = windowSize.width < windowSize.height;
 
 	const { roundWind, round, repeats, scores, riichi, riichiSticks, settings } = game;
 
@@ -153,18 +143,23 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 				data-1c1
 				className={clsx(
 					'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-300 dark:bg-sky-900 rounded-xl shadow',
-					isPortrait
-						? 'h-[min(min(70vw,70vh),calc(100vh_-_16rem))] lg:h-[min(min(70vw,70vh),calc(100vh_-_24rem))] p-1.5 lg:px-2 lg:py-4'
-						: 'w-[min(min(70vw,70vh),calc(100vw_-_16rem))] lg:w-[min(min(70vw,70vh),calc(100vw_-_24rem))] p-1.5 lg:py-2 lg:px-4',
+					'portrait:h-[min(min(70vw,70vh),calc(100vh_-_16rem))] portrait:lg:h-[min(min(70vw,70vh),calc(100vh_-_24rem))] portrait:p-1.5 portrait:lg:px-2 portrait:lg:py-2',
+					'landscape:w-[min(min(70vw,70vh),calc(100vw_-_16rem))] landscape:lg:w-[min(min(70vw,70vh),calc(100vw_-_24rem))] landscape:p-1.5 landscape:lg:py-2 landscape:lg:px-2',
 				)}
 			>
 				<div
 					className={clsx(
-						isPortrait ? 'flex flex-col h-full' : 'flex flex-row w-full',
-						'justify-between items-center gap-4',
+						'flex justify-between items-center gap-4',
+						'portrait:flex-col portrait:h-full',
+						'landscape:flex-row landscape:w-full',
 					)}
 				>
-					<div className={clsx(isPortrait ? 'rotate-90 mx-2 -my-2' : '', 'flex flex-col justify-center items-center')}>
+					<div
+						className={clsx(
+							'portrait:rotate-90 portrait:mx-2 portrait:-my-2',
+							'flex flex-col justify-center items-center',
+						)}
+					>
 						<TileButton
 							onClick={() => {
 								setOpenDrawDialog(true);
@@ -174,8 +169,9 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 					</div>
 					<span
 						className={clsx(
-							isPortrait ? 'flex flex-col-reverse [writing-mode:vertical-lr]' : 'flex flex-col',
-							'gap-y-2 justify-between items-center text-xl lg:text-4xl',
+							'flex gap-y-2 justify-between items-center text-xl lg:text-4xl',
+							'portrait:flex-col-reverse portrait:[writing-mode:vertical-lr]',
+							'landscape:flex-col',
 						)}
 					>
 						<span>
@@ -186,7 +182,8 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 								<span
 									className={clsx(
 										'text-slate-900 dark:text-slate-400 rotate-90',
-										isPortrait ? 'mr-0.5 lg:mr-2' : 'mt-2 lg:mt-2',
+										'portrait:mr-0.5 portrait:lg:mr-2',
+										'landscape:mt-2 landscape:lg:mt-2',
 									)}
 								>
 									⠿
@@ -194,18 +191,23 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 								<span>{repeats}</span>
 							</span>
 							<span className="flex flex-row gap-x-2 justify-center items-center">
-								<span className={clsx('text-red-500 dark:text-red-600', isPortrait ? 'mr-0.5 lg:mr-2' : '')}>●</span>{' '}
+								<span className={clsx('text-red-500 dark:text-red-600', 'portrait:mr-0.5 portrait:lg:mr-2')}>●</span>
 								<span>{riichiSticks}</span>
 							</span>
 						</span>
 					</span>
-					<div className={clsx(isPortrait ? 'flex flex-row-reverse' : 'flex flex-col', 'gap-2')}>
+					<div className={clsx('flex gap-2', 'portrait:flex-row-reverse', 'landscape:flex-col')}>
 						<CircleButton
 							onClick={() => {
 								navigate('/', { replace: true });
 							}}
 						>
-							{isPortrait ? <Up /> : <Left />}
+							<div className="portrait:hidden">
+								<Left />
+							</div>
+							<div className="landscape:hidden">
+								<Up />
+							</div>
 						</CircleButton>
 						<CircleButton
 							onClick={() => {
