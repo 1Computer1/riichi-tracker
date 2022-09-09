@@ -81,7 +81,7 @@ export default function Tile({ tile, small = false }: { tile: TileCode | '00'; s
 		<img
 			src={file}
 			className={clsx(
-				small ? 'h-16 w-12 min-w-[3rem] p-2' : 'h-16 w-12 min-w-[3rem] lg:h-20 lg:w-[60px] lg:min-w-[60px] p-2',
+				small ? 'h-16 w-12 min-w-[3rem] p-2' : 'h-16 w-12 min-w-[3rem] lg:h-20 lg:w-[3.75rem] lg:min-w-[3.75rem] p-2',
 				'rounded-xl',
 			)}
 		></img>
@@ -90,6 +90,6 @@ export default function Tile({ tile, small = false }: { tile: TileCode | '00'; s
 
 export function Placeholder() {
 	return (
-		<div className="h-16 w-12 min-w-[3rem] lg:h-20 lg:w-[60px] lg:min-w-[60px] p-2 rounded-xl border-2 border-black dark:border-white border-dashed"></div>
+		<div className="h-16 w-12 min-w-[3rem] lg:h-20 lg:w-[3.75rem] lg:min-w-[3.75rem] p-2 rounded-xl border-2 border-black dark:border-white border-dashed"></div>
 	);
 }
