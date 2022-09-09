@@ -197,18 +197,24 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 						</span>
 					</span>
 					<div className={clsx('flex gap-2', 'portrait:flex-row-reverse', 'landscape:flex-col')}>
-						<CircleButton
-							onClick={() => {
-								navigate('/', { replace: true });
-							}}
-						>
-							<div className="portrait:hidden">
+						<div className="portrait:hidden">
+							<CircleButton
+								onClick={() => {
+									navigate('/', { replace: true });
+								}}
+							>
 								<Left />
-							</div>
-							<div className="landscape:hidden">
+							</CircleButton>
+						</div>
+						<div className="landscape:hidden">
+							<CircleButton
+								onClick={() => {
+									navigate('/', { replace: true });
+								}}
+							>
 								<Up />
-							</div>
-						</CircleButton>
+							</CircleButton>
+						</div>
 						<CircleButton
 							onClick={() => {
 								setOpenAdvancedDialog(true);
