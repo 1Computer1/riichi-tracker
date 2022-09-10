@@ -525,7 +525,7 @@ function CalculatorWithGame({
 								ref={setPointsCalculatorEl}
 								className="w-full min-h-screen flex flex-col justify-center px-4 py-4 lg:py-8"
 							>
-								<div className="flex flex-col justify-center items-center gap-y-4 lg:gap-y-8">
+								<div className="flex flex-col justify-center items-center gap-y-2 lg:gap-y-4">
 									<h1 className="text-3xl lg:text-4xl">Points Calculator</h1>
 									<div className="flex flex-row flex-wrap gap-x-8 justify-center items-center min-w-min">
 										{game != null && (

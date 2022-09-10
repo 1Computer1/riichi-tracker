@@ -23,7 +23,7 @@ export default function HanFu({
 	return (
 		<div className="w-full">
 			<div className="flex flex-row flex-wrap justify-center items-center gap-x-2">
-				<div className="flex flex-row justify-center items-center gap-x-2">
+				<div className="flex flex-col justify-center items-center gap-1 lg:gap-2">
 					<p className="text-2xl lg:text-4xl">Han</p>
 					<button
 						className="bg-slate-300 hover:bg-slate-400 dark:bg-sky-900 hover:dark:bg-sky-800 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl border border-gray-800 shadow rounded-xl w-24 lg:w-32 px-1 py-4 lg:px-2 lg:py-6"
@@ -100,7 +100,7 @@ export default function HanFu({
 						</CustomDialog>
 					)}
 				</div>
-				<div className="flex flex-row justify-center items-center gap-x-2">
+				<div className="flex flex-col justify-center items-center gap-1 lg:gap-2">
 					<p className="text-2xl lg:text-4xl">Fu</p>
 					<button
 						className="bg-slate-300 enabled:hover:bg-slate-400 dark:bg-sky-900 enabled:hover:dark:bg-sky-800 text-amber-700 dark:text-amber-500 font-bold text-center text-2xl lg:text-4xl border border-gray-800 shadow rounded-xl w-24 lg:w-32 px-1 py-4 lg:px-2 lg:py-6"
