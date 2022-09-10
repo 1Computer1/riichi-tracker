@@ -365,7 +365,7 @@ function CalculatorWithGame({
 	const hanFuScores = makeHanFuScore(han, fu);
 
 	const [prefersQuickInit] = useLocalStorage('prefersQuick');
-	const [prefersQuick, setPrefersQuick] = useState(prefersQuickInit);
+	const [prefersQuick, setPrefersQuick] = useState(locState.t === 'transfer' && prefersQuickInit);
 
 	const transferScores = async (calcPoints: Exclude<CalculatedPoints, { agari: null }>) => {
 		if (game == null || locState.t !== 'transfer' || locState.agari !== calcPoints.agari) {
