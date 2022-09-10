@@ -549,7 +549,7 @@ function CalculatorWithGame({
 											<span className="text-xl">{game == null ? 'Dealer' : 'Seat'}</span>
 											<WindSelect
 												forced={locState.t === 'transfer'}
-												dealerOnly
+												dealerOnly={game == null}
 												value={hand.seatWind}
 												redEast
 												sanma={isSanma}
