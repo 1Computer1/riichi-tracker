@@ -130,7 +130,7 @@ export default function HanFu({
 											setOpenSelectFu(false);
 										}}
 									>
-										<H>Mangan</H>
+										<H>{han === 3 ? '70+' : '40+'}</H> Fu
 									</Button>
 								)}
 							</div>
