@@ -563,12 +563,21 @@ function CalculatorWithGame({
 										</div>
 									</div>
 									<div className="flex flex-col flex-wrap justify-center items-center gap-x-8 gap-y-1">
-										<span className="text-xl lg:text-2xl">
-											Won by{' '}
-											<H>
-												<H.B>{hand.agari === 'ron' ? 'Ron' : 'Tsumo'}</H.B>
-											</H>
-										</span>
+										<Toggle
+											forced={locState.t === 'transfer'}
+											toggled={hand.agari === 'ron'}
+											onToggle={(b) => {
+												updateAction(null);
+												updateHand((h) => {
+													h.agari = b ? 'ron' : 'tsumo';
+													if (h.agari === 'tsumo' && !hand.melds.some((m) => m.t === 'kan')) {
+														h.kan = false;
+													}
+												});
+											}}
+											left="Tsumo"
+											right="Ron"
+										/>
 									</div>
 									<HanFu han={han} fu={fu} agari={hand.agari} onHanChange={setHan} onFuChange={setFu} />
 									<PointsResult
