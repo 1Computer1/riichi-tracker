@@ -365,8 +365,7 @@ function CalculatorWithGame({
 	const hanFuScores = makeHanFuScore(han, fu);
 
 	const [prefersQuickInit] = useLocalStorage('prefersQuick');
-	const [prefersQuick_, setPrefersQuick] = useState(prefersQuickInit);
-	const prefersQuick = locState.t === 'transfer' && prefersQuick_;
+	const [prefersQuick, setPrefersQuick] = useState(prefersQuickInit);
 
 	const transferScores = async (calcPoints: Exclude<CalculatedPoints, { agari: null }>) => {
 		if (game == null || locState.t !== 'transfer' || locState.agari !== calcPoints.agari) {
@@ -469,8 +468,8 @@ function CalculatorWithGame({
 						<Left />
 					</CircleButton>
 				</div>
-				{game == null && (
-					<div className="fixed z-10 top-2 right-2 lg:top-4 lg:right-8 flex flex-col gap-y-2">
+				<div className="fixed z-10 top-2 right-2 lg:top-4 lg:right-8 flex flex-col gap-y-2">
+					{game == null && (
 						<CircleButton
 							onClick={() => {
 								setOpenedSettings(true);
@@ -478,23 +477,19 @@ function CalculatorWithGame({
 						>
 							<Cog />
 						</CircleButton>
-					</div>
-				)}
-				{locState.t === 'transfer' && (
-					<div className="fixed z-10 top-2 right-2 lg:top-4 lg:right-8 flex flex-col gap-y-2">
-						<CircleButton
-							onClick={() => {
-								if (prefersQuick) {
-									setPrefersQuick(null);
-								} else {
-									setPrefersQuick('true');
-								}
-							}}
-						>
-							{prefersQuick ? <Cap /> : <Calc />}
-						</CircleButton>
-					</div>
-				)}
+					)}
+					<CircleButton
+						onClick={() => {
+							if (prefersQuick) {
+								setPrefersQuick(null);
+							} else {
+								setPrefersQuick('true');
+							}
+						}}
+					>
+						{prefersQuick ? <Cap /> : <Calc />}
+					</CircleButton>
+				</div>
 				{prefersQuick ? (
 					<div className="invisible sm:visible fixed z-10 bottom-2 right-2 lg:bottom-4 lg:right-8 flex flex-col gap-y-2">
 						<JumpButton element={pointsCalculatorEl}>点</JumpButton>
@@ -533,25 +528,28 @@ function CalculatorWithGame({
 								<div className="flex flex-col justify-center items-center gap-y-4 lg:gap-y-8">
 									<h1 className="text-3xl lg:text-4xl">Points Calculator</h1>
 									<div className="flex flex-row flex-wrap gap-x-8 justify-center items-center min-w-min">
-										<div className="flex flex-col flex-wrap justify-center items-center gap-x-8 gap-y-1">
-											<span className="text-xl">Round</span>
-											<WindSelect
-												forced
-												value={hand.roundWind}
-												redEast
-												sanma={isSanma}
-												onChange={(w) => {
-													updateAction(null);
-													updateHand((h) => {
-														h.roundWind = w;
-													});
-												}}
-											/>
-										</div>
+										{game != null && (
+											<div className="flex flex-col flex-wrap justify-center items-center gap-x-8 gap-y-1">
+												<span className="text-xl">Round</span>
+												<WindSelect
+													forced={locState.t === 'transfer'}
+													value={hand.roundWind}
+													redEast
+													sanma={isSanma}
+													onChange={(w) => {
+														updateAction(null);
+														updateHand((h) => {
+															h.roundWind = w;
+														});
+													}}
+												/>
+											</div>
+										)}
 										<div className="flex flex-col justify-center items-center gap-y-1">
-											<span className="text-xl">Seat</span>
+											<span className="text-xl">{game == null ? 'Dealer' : 'Seat'}</span>
 											<WindSelect
-												forced
+												forced={locState.t === 'transfer'}
+												dealerOnly
 												value={hand.seatWind}
 												redEast
 												sanma={isSanma}
@@ -584,22 +582,24 @@ function CalculatorWithGame({
 											fu,
 											name: null,
 										}}
-										pao={locState.pao != null}
+										pao={locState.t === 'transfer' && locState.pao != null}
 									/>
-									<div className="flex flex-col container lg:w-[50%] gap-y-2 lg:gap-y-4">
-										<button
-											className={clsx(
-												'border border-gray-800 rounded-xl shadow py-1 lg:p-2 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
-												'h-24 text-2xl',
-												'bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-800',
-											)}
-											onClick={() => {
-												void transferScores(hanFuScores);
-											}}
-										>
-											Transfer Points
-										</button>
-									</div>
+									{locState.t === 'transfer' && (
+										<div className="flex flex-col container lg:w-[50%] gap-y-2 lg:gap-y-4">
+											<button
+												className={clsx(
+													'border border-gray-800 rounded-xl shadow py-1 lg:p-2 disabled:bg-gray-300 dark:disabled:bg-gray-800 dark:disabled:text-gray-600',
+													'h-24 text-2xl',
+													'bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-800',
+												)}
+												onClick={() => {
+													void transferScores(hanFuScores);
+												}}
+											>
+												Transfer Points
+											</button>
+										</div>
+									)}
 								</div>
 							</div>
 							<div

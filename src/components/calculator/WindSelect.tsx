@@ -3,12 +3,14 @@ import { nextWind, Wind } from '../../lib/hand';
 
 export default function WindSelect({
 	value,
+	dealerOnly = false,
 	redEast = false,
 	forced = false,
 	sanma,
 	onChange,
 }: {
 	value: Wind;
+	dealerOnly?: boolean;
 	redEast?: boolean;
 	forced?: boolean;
 	sanma: boolean;
@@ -16,13 +18,17 @@ export default function WindSelect({
 }) {
 	return (
 		<TileButton
-			tile={`${value}z`}
+			tile={dealerOnly && value !== '1' ? '00' : `${value}z`}
 			red={redEast && value === '1'}
 			forced={forced}
 			onClick={
 				onChange &&
 				(() => {
-					onChange(nextWind(value, 1, sanma));
+					if (dealerOnly) {
+						onChange(value === '1' ? '2' : '1');
+					} else {
+						onChange(nextWind(value, 1, sanma));
+					}
 				})
 			}
 		/>
