@@ -99,6 +99,11 @@ export default function App() {
 						Transfer scores by tapping on the <H>winning player&apos;s wind tile</H> and using the <H>Calculator</H>.
 					</li>
 					<li>
+						Beginners can input their hand while advanced players can input the han and fu values. This can be toggled
+						at the <H>top-right of the Calculator</H>. The default input can be set with the{' '}
+						<H>Prefer Han &amp; Fu Input</H> option.
+					</li>
+					<li>
 						Handle draws and repeats by tapping on the <H>center wind tile</H>.
 					</li>
 					<li>

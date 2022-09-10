@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useLocalStorage from '../../hooks/useLocalStorage';
 import { Wind } from '../../lib/hand';
 import { DefaultSettings } from '../../lib/settings';
 import { CompassState } from '../../lib/states';
@@ -20,6 +21,8 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 	const [newCompassBottomWind, setNewCompassBottomWind] = useState<Wind>('1');
 	const [newCompassSettings, setNewCompassSettings] = useState(DefaultSettings);
 	const initialScoreInputRef = useRef<HTMLInputElement | null>(null);
+
+	const [prefersQuick, setPrefersQuick] = useLocalStorage('prefersQuick');
 
 	const submitNewCompass = async () => {
 		await db.setGame('$tools', {
@@ -70,6 +73,9 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 							onChange={(w) => setNewCompassBottomWind(w)}
 						/>
 					</div>
+					<ToggleOnOff toggled={prefersQuick != null} onToggle={() => setPrefersQuick(prefersQuick ? null : 'true')}>
+						Prefer Han &amp; Fu Input
+					</ToggleOnOff>
 					<ToggleOnOff toggled={openedSettings} onToggle={() => setOpenedSettings(true)}>
 						Settings
 					</ToggleOnOff>

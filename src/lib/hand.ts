@@ -232,6 +232,21 @@ export function makeScore(
 		  };
 }
 
+export function possibleHanFuValues(agari: 'tsumo' | 'ron'): Map<number, number[]> {
+	const when = <T>(p: boolean, x: T) => (p ? [x] : []);
+	const values = [
+		[30, 40, 50, 60, 70, 80, 90, 100, 110],
+		[...when(agari === 'tsumo', 20), ...when(agari === 'ron', 25), 30, 40, 50, 60, 70, 80, 90, 100, 110],
+		[...when(agari === 'tsumo', 20), 25, 30, 40, 50, 60],
+		[...when(agari === 'tsumo', 20), 25, 30],
+	];
+	const map = new Map<number, number[]>();
+	for (const [han, fus] of values.entries()) {
+		map.set(han + 1, fus);
+	}
+	return map;
+}
+
 export type CalculatedValue = CalculatedPoints & {
 	isOya: boolean;
 	yakuman: number;

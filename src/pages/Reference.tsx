@@ -363,7 +363,7 @@ function ScoreReference() {
 					<ScoreSection
 						title={
 							<span>
-								<H>3</H> Han <H>70</H> Fu / <H>4</H> Han <H>40</H> Fu / <H>5</H> Han
+								<H>3</H> Han <H>70+</H> Fu, <H>4</H> Han <H>40+</H> Fu, <H>5</H> Han
 							</span>
 						}
 					>
@@ -374,7 +374,7 @@ function ScoreReference() {
 					<ScoreSection
 						title={
 							<span>
-								<H>6</H> Han / <H>7</H> Han
+								<H>6-7</H> Han
 							</span>
 						}
 					>
@@ -385,7 +385,7 @@ function ScoreReference() {
 					<ScoreSection
 						title={
 							<span>
-								<H>8</H> Han / <H>9</H> Han / <H>10</H> Han
+								<H>8-10</H> Han
 							</span>
 						}
 					>
@@ -396,7 +396,7 @@ function ScoreReference() {
 					<ScoreSection
 						title={
 							<span>
-								<H>11</H> Han / <H>12</H> Han
+								<H>11-12</H> Han
 							</span>
 						}
 					>
@@ -458,7 +458,7 @@ function ScoreReference() {
 									<H>20</H> base fu
 									<ul className="flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc ml-4 lg:ml-8 mt-1">
 										<li>
-											<H>+2</H> for winning with tsumo
+											<H>+2</H> for winning with tsumo (some rules may score <H>0</H> for tsumo after a kan)
 										</li>
 										<li>
 											<H>+10</H> for winning with closed ron
@@ -486,7 +486,7 @@ function ScoreReference() {
 									</ul>
 								</li>
 								<li>
-									Seven pairs is always <H>25</H> fu.
+									Seven pairs is always <H>25</H> fu and not rounded.
 								</li>
 								<li>
 									Pinfu tsumo is always <H>20</H> fu.
