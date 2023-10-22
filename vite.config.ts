@@ -6,7 +6,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 // eslint-disable-next-line arrow-body-style
 export default ({ mode }: { mode: string }) => {
 	return defineConfig({
-		base: process.env.GITHUB_PAGES ? '/riichi-tracker/' : '/',
+		base: '/',
 		plugins: [
 			react(),
 			VitePWA({
@@ -19,7 +19,7 @@ export default ({ mode }: { mode: string }) => {
 				manifest: {
 					name: 'Riichi Tracker',
 					short_name: 'Riichi Tracker',
-					start_url: process.env.GITHUB_PAGES ? '/riichi-tracker/' : '/',
+					start_url: '/',
 					display: 'standalone',
 					background_color: '#ffffff',
 					lang: 'en',
