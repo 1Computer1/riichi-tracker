@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  app:
+    ports:
+      - 2080:80
+    build: .
