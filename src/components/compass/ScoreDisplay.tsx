@@ -26,12 +26,18 @@ export default function ScoreDisplay({
 	onRiichiClick?: () => void;
 }) {
 	const [animDone, setAnimDone] = useState(false);
-	const dices = [
-		[1, 5, 9],
-		[2, 6, 10],
-		[3, 7, 11],
-		[4, 8, 12],
-	][Number(seatWind) - 1];
+	const dices = isSanma
+		? [
+				[1, 4, 7, 10],
+				[2, 5, 8, 11],
+				[3, 6, 9, 12],
+		  ][Number(seatWind) - 1]
+		: [
+				[1, 5, 9],
+				[2, 6, 10],
+				[3, 7, 11],
+				[4, 8, 12],
+		  ][Number(seatWind) - 1];
 	return (
 		<div
 			className={clsx(
@@ -63,16 +69,23 @@ export default function ScoreDisplay({
 			>
 				<span
 					className={clsx(
-						isSanma && 'invisible',
-						vertical ? '[writing-mode:vertical-rl] h-5 w-12 lg:w-20' : 'w-5 h-12 lg:h-20',
-						'text-xs lg:text-lg text-center  text-slate-900 dark:text-slate-400 font-semibold',
+						isSanma
+							? vertical
+								? '[writing-mode:vertical-rl] h-5 w-16 lg:w-20'
+								: 'w-5 h-16 lg:h-20'
+							: vertical
+							? '[writing-mode:vertical-rl] h-5 w-12 lg:w-20'
+							: 'w-5 h-12 lg:h-20',
+						isSanma ? 'lg:text-sm' : 'lg:text-lg',
+						'text-xs text-center text-slate-900 dark:text-slate-400 font-semibold',
 					)}
 				>
-					{dices[0]}
-					<br />
-					{dices[1]}
-					<br />
-					{dices[2]}
+					{dices.map((x, i, a) => (
+						<>
+							{x}
+							{i !== a.length && <br />}
+						</>
+					))}
 				</span>
 				<button
 					className={clsx('text-4xl lg:text-6xl font-bold', vertical ? 'h-52 w-12 lg:w-20' : 'w-52 h-12 lg:h-20')}
