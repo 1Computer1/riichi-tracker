@@ -383,7 +383,7 @@ function CalculatorWithGame({
 		if (locState.scoreRepeatSticks && riichiSticks) {
 			scores_[locState.winner] += 1000 * riichiSticks;
 		}
-		if (locState.scoreRepeatSticks && !isOya) {
+		if (locState.scoreRepeatSticks) {
 			scores_[locState.winner] += repeats * honba;
 		}
 
@@ -392,14 +392,14 @@ function CalculatorWithGame({
 			if (locState.pao == null) {
 				const deltas = isOya ? calcPoints.points.oya : calcPoints.points.ko;
 				scores_[locState.dealtInPlayer] -= deltas.ron;
-				if (locState.scoreRepeatSticks && !isOya) {
+				if (locState.scoreRepeatSticks) {
 					scores_[locState.dealtInPlayer] -= repeats * honba;
 				}
 			} else {
 				const delta = ceil100(calcPoints.points.total / 2);
 				scores_[locState.dealtInPlayer] -= delta;
 				scores_[locState.pao] -= delta;
-				if (locState.scoreRepeatSticks && !isOya) {
+				if (locState.scoreRepeatSticks) {
 					scores_[locState.dealtInPlayer] -= repeats * honba;
 				}
 			}
@@ -412,14 +412,14 @@ function CalculatorWithGame({
 						? calcPoints.points.ko.oya
 						: calcPoints.points.ko.ko;
 					scores_[loser] -= delta;
-					if (locState.scoreRepeatSticks && !isOya) {
+					if (locState.scoreRepeatSticks) {
 						scores_[loser] -= repeats * 100;
 					}
 				}
 			} else {
 				const delta = calcPoints.points.total;
 				scores_[locState.pao] -= delta;
-				if (locState.scoreRepeatSticks && !isOya) {
+				if (locState.scoreRepeatSticks) {
 					scores_[locState.pao] -= repeats * honba;
 				}
 			}

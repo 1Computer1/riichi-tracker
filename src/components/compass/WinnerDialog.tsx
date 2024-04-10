@@ -100,11 +100,9 @@ export function WinnerDialog({
 					<ToggleOnOff toggled={scoreRiichiSticks} onToggle={(b) => setScoreRiichiSticks(b)}>
 						Score Riichi Sticks
 					</ToggleOnOff>
-					{seatWind !== '1' && (
-						<ToggleOnOff toggled={scoreRepeatSticks} onToggle={(b) => setScoreRepeatSticks(b)}>
-							Score Repeat Sticks
-						</ToggleOnOff>
-					)}
+					<ToggleOnOff toggled={scoreRepeatSticks} onToggle={(b) => setScoreRepeatSticks(b)}>
+						Score Repeat Sticks
+					</ToggleOnOff>
 					{settings.usePao && (
 						<>
 							<ToggleOnOff
