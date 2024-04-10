@@ -14,11 +14,13 @@ export function ScoreUpdateDialog({
 	scoreUpdater,
 	gameId,
 	game,
+	onScoreUpdate,
 	onClose,
 }: {
 	scoreUpdater: number;
 	gameId: string;
 	game: Game;
+	onScoreUpdate: (oldScores: number[]) => void;
 	onClose: () => void;
 }) {
 	const db = useDb();
@@ -44,6 +46,7 @@ export function ScoreUpdateDialog({
 				break;
 		}
 		await db.setGame(gameId, { ...game, scores: scores_ });
+		onScoreUpdate(game.scores);
 		onClose();
 	};
 

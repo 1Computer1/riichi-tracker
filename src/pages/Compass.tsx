@@ -49,6 +49,7 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 
 	const { roundWind, round, repeats, scores, riichi, riichiSticks, settings } = game;
 
+	const [oldScores, setOldScores] = useState<number[] | undefined>(locState.oldScores);
 	const [scoreUpdater, setScoreUpdater] = useState<number | null>(null);
 	const [winner, setWinner] = useState<number | null>(null);
 	const [openDrawDialog, setOpenDrawDialog] = useState(false);
@@ -76,7 +77,7 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 				<div className="h-fit w-[min(70vh,70vw)]">
 					<ScoreDisplayInCompass
 						ix={0}
-						oldScores={locState.oldScores}
+						oldScores={oldScores}
 						game={game}
 						onScoreClick={() => setScoreUpdater(0)}
 						onTileClick={() => setWinner(0)}
@@ -89,7 +90,7 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 					<ScoreDisplayInCompass
 						vertical
 						ix={1}
-						oldScores={locState.oldScores}
+						oldScores={oldScores}
 						game={game}
 						onScoreClick={() => setScoreUpdater(1)}
 						onTileClick={() => setWinner(1)}
@@ -101,7 +102,7 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 				<div className="rotate-180 h-fit w-[min(70vh,70vw)]">
 					<ScoreDisplayInCompass
 						ix={2}
-						oldScores={locState.oldScores}
+						oldScores={oldScores}
 						game={game}
 						onScoreClick={() => setScoreUpdater(2)}
 						onTileClick={() => setWinner(2)}
@@ -115,7 +116,7 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 						<ScoreDisplayInCompass
 							vertical
 							ix={3}
-							oldScores={locState.oldScores}
+							oldScores={oldScores}
 							game={game}
 							onScoreClick={() => setScoreUpdater(3)}
 							onTileClick={() => setWinner(3)}
@@ -129,13 +130,21 @@ function CompassWithGame({ locState, game }: { locState: CompassState; game: Gam
 					gameId={locState.id}
 					game={game}
 					scoreUpdater={scoreUpdater}
+					onScoreUpdate={(x) => setOldScores(x)}
 					onClose={() => setScoreUpdater(null)}
 				/>
 			)}
 			{winner != null && (
 				<WinnerDialog gameId={locState.id} game={game} winner={winner} onClose={() => setWinner(null)} />
 			)}
-			{openDrawDialog && <DrawDialog gameId={locState.id} game={game} onClose={() => setOpenDrawDialog(false)} />}
+			{openDrawDialog && (
+				<DrawDialog
+					gameId={locState.id}
+					game={game}
+					onScoreUpdate={(x) => setOldScores(x)}
+					onClose={() => setOpenDrawDialog(false)}
+				/>
+			)}
 			{openAdvancedDialog && (
 				<AdvancedDialog gameId={locState.id} game={game} onClose={() => setOpenAdvancedDialog(false)} />
 			)}

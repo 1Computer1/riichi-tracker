@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Wind } from '../../lib/hand';
 import TileButton from '../calculator/TileButton';
 import H from '../text/H';
@@ -26,6 +26,11 @@ export default function ScoreDisplay({
 	onRiichiClick?: () => void;
 }) {
 	const [animDone, setAnimDone] = useState(false);
+	useEffect(() => {
+		if (oldScore !== score) {
+			setAnimDone(false);
+		}
+	}, [score, oldScore]);
 	const dices = isSanma
 		? [
 				[1, 4, 7, 10],
