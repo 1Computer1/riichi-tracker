@@ -1,6 +1,6 @@
 import { Transition } from '@headlessui/react';
 import clsx from 'clsx';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useImmer } from 'use-immer';
@@ -299,72 +299,90 @@ function CalculatorWithGame({
 
 	const [handBuilderEl, setHandBuilderEl] = useState<Element | null>(null);
 	const [selectedTilesEl, setSelectedTilesEl] = useState<Element | null>(null);
+	const [tileSelectEl, setTileSelectEl] = useState<Element | null>(null);
 	const [scoreResultEl, setScoreResultEl] = useState<Element | null>(null);
 	const [pointsCalculatorEl, setPointsCalculatorEl] = useState<Element | null>(null);
 	const [fuReferenceEl, setFuReferenceEl] = useState<Element | null>(null);
 	const scoreResult = tileCount === 14 ? calculate(hand, settings) : null;
 
-	const selectedTilesObserver = useMemo(
-		() =>
-			new IntersectionObserver(
-				(entries) => {
-					for (const entry of entries) {
-						if (entry.isIntersecting) {
-							toast.dismiss('tiles');
-						} else {
-							toast.custom(
-								(tst) => (
-									<Transition
-										appear
-										show={tst.visible && (hand.tiles.length > 0 || hand.melds.length > 0)}
-										enter="transition ease-in-out duration-300 transform"
-										enterFrom="-translate-y-[200%]"
-										enterTo="translate-y-0"
-										leave="transition ease-in-out duration-300 transform"
-										leaveFrom="translate-y-0"
-										leaveTo="-translate-y-[200%]"
+	const prevHeight = useRef(0);
+	const [selectedTilesIntersectionObserver, selectedTilesResizeObserver] = useMemo(() => {
+		const intersectionObserver = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						toast.dismiss('tiles');
+					} else {
+						toast.custom(
+							(tst) => (
+								<Transition
+									appear
+									show={tst.visible && (hand.tiles.length > 0 || hand.melds.length > 0)}
+									enter="transition ease-in-out duration-300 transform"
+									enterFrom="-translate-y-[200%]"
+									enterTo="translate-y-0"
+									leave="transition ease-in-out duration-300 transform"
+									leaveFrom="translate-y-0"
+									leaveTo="-translate-y-[200%]"
+								>
+									<button
+										className="bg-slate-200 dark:bg-gray-900 text-black dark:text-white -my-3.5 lg:my-0 scale-50 lg:scale-100 p-2 rounded-xl shadow flex flex-row justify-center items-center"
+										onClick={(e) => {
+											e.preventDefault();
+											handBuilderEl?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+										}}
 									>
-										<button
-											className="bg-slate-200 dark:bg-gray-900 text-black dark:text-white -my-3.5 lg:my-0 scale-50 lg:scale-100 p-2 rounded-xl shadow flex flex-row justify-center items-center"
-											onClick={(e) => {
-												e.preventDefault();
-												handBuilderEl?.scrollIntoView({ block: 'start', behavior: 'smooth' });
-											}}
-										>
-											<Tiles
-												small
-												wrap={false}
-												sets={[
-													hand.tiles,
-													...hand.melds.map((m) =>
-														m.t === 'kan' && m.closed
-															? ([m.tiles[0], '00', '00', m.tiles[3]] as ('00' | TileCode)[])
-															: m.tiles,
-													),
-												]}
-											/>
-										</button>
-									</Transition>
-								),
-								{ duration: Infinity, id: 'tiles' },
-							);
-						}
+										<Tiles
+											small
+											wrap={false}
+											sets={[
+												hand.tiles,
+												...hand.melds.map((m) =>
+													m.t === 'kan' && m.closed
+														? ([m.tiles[0], '00', '00', m.tiles[3]] as ('00' | TileCode)[])
+														: m.tiles,
+												),
+											]}
+										/>
+									</button>
+								</Transition>
+							),
+							{ duration: Infinity, id: 'tiles' },
+						);
 					}
-				},
-				{
-					root: null,
-					rootMargin: '0px',
-					threshold: 1.0,
-				},
-			),
-		[handBuilderEl, hand.tiles, hand.melds],
-	);
+				}
+			},
+			{
+				root: null,
+				rootMargin: '0px',
+				threshold: 1.0,
+			},
+		);
+
+		const resizeObserver = new ResizeObserver((entries) => {
+			for (const entry of entries) {
+				const height = entry.borderBoxSize[0].blockSize;
+				if (height !== prevHeight.current) {
+					if (height > prevHeight.current) {
+						tileSelectEl?.scrollIntoView(false);
+					}
+					prevHeight.current = height;
+				}
+			}
+		});
+
+		return [intersectionObserver, resizeObserver];
+	}, [handBuilderEl, tileSelectEl, hand.tiles, hand.melds]);
 	useEffect(() => {
 		if (selectedTilesEl) {
-			selectedTilesObserver.observe(selectedTilesEl);
-			return () => selectedTilesObserver.unobserve(selectedTilesEl);
+			selectedTilesIntersectionObserver.observe(selectedTilesEl);
+			selectedTilesResizeObserver.observe(selectedTilesEl);
+			return () => {
+				selectedTilesIntersectionObserver.unobserve(selectedTilesEl);
+				selectedTilesResizeObserver.unobserve(selectedTilesEl);
+			};
 		}
-	}, [selectedTilesObserver, selectedTilesEl]);
+	}, [selectedTilesIntersectionObserver, selectedTilesResizeObserver, selectedTilesEl]);
 
 	const makeHanFuScore = (h: number, f: number) =>
 		makeScore(hand.seatWind === '1', hand.agari, isSanma, calculateHanFu(h, f, settings));
@@ -773,7 +791,7 @@ function CalculatorWithGame({
 										Closed Kan
 									</ActionButton>
 								</HorizontalRow>
-								<VerticalRow>
+								<VerticalRow ref={setTileSelectEl} className="scroll-mb-4">
 									<SuitRow
 										suit="m"
 										akadora={settings.akadora}
