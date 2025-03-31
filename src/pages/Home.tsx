@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import CircleButton from '../components/CircleButton';
 import { NewCompassDialog } from '../components/home/NewCompassDialog';
-import Ban from '../components/icons/heroicons/Ban';
+import Computer from '../components/icons/heroicons/Computer';
 import Moon from '../components/icons/heroicons/Moon';
 import Sun from '../components/icons/heroicons/Sun';
 import H from '../components/text/H';
@@ -45,7 +45,7 @@ export default function App() {
 						updateTheme();
 					}}
 				>
-					{theme === 'dark' ? <Moon /> : theme === 'light' ? <Sun /> : <Ban />}
+					{theme === 'dark' ? <Moon /> : theme === 'light' ? <Sun /> : <Computer />}
 				</CircleButton>
 			</div>
 			<div className="flex flex-col justify-center items-center min-h-screen gap-y-4 lg:gap-y-8 py-4 px-2">
