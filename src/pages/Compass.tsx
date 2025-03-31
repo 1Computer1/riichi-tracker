@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CircleButton from '../components/CircleButton';
 import TileButton from '../components/calculator/TileButton';
@@ -19,10 +19,20 @@ import { useDb } from '../providers/DbProvider';
 
 export default function Compass() {
 	const db = useDb();
+	const navigate = useNavigate();
 	const location = useLocation();
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const locState: CompassState = (location.state ?? { t: 'load', id: '$tools' }) as any;
 	const game = db.useGame(locState.id);
+
+	useEffect(() => {
+		if (game == null) {
+			return;
+		}
+		if (!game.ok) {
+			navigate('/', { replace: true });
+		}
+	}, [game, navigate]);
 
 	return (
 		<div className="h-screen w-screen bg-slate-200 dark:bg-gray-900 text-black dark:text-white">

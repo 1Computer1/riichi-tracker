@@ -48,12 +48,21 @@ import { replicate } from '../lib/util';
 import { useDb } from '../providers/DbProvider';
 
 export default function Calculator() {
+	const navigate = useNavigate();
 	const location = useLocation();
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const locState: CalculatorState = (location.state ?? { t: 'load', id: '$global' }) as any;
 
 	const db = useDb();
 	const globalSettings = db.useSettings('$global', { enabled: locState.t === 'load' });
+	useEffect(() => {
+		if (globalSettings == null) {
+			return;
+		}
+		if (!globalSettings.ok) {
+			navigate('/', { replace: true });
+		}
+	}, [globalSettings, navigate]);
 
 	// The id is only used if we're transferring, in which case it will exist.
 	const game = db.useGame(locState.id, { enabled: locState.t === 'transfer' });
