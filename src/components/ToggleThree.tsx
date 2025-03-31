@@ -19,7 +19,7 @@ export default function ToggleThree({
 	onToggle?: (toggled: 0 | 1 | 2) => void;
 }) {
 	return (
-		<div className="flex flex-row w-52 lg:w-80 h-10 lg:h-14 text-xl lg:text-2xl">
+		<div className="flex flex-row w-64 lg:w-80 h-10 lg:h-14 text-xl lg:text-2xl">
 			{forced ? (
 				<button
 					disabled
