@@ -280,7 +280,7 @@ export function convertHand(hand: Hand, sanma: boolean): string {
 		} else {
 			// Riichi library uses two tiles as closed kan.
 			s += meld.tiles[0][0];
-			s += meld.tiles[0][0];
+			s += meld.tiles[1][0]; // Use first and second tiles so we don't duplicate akadora.
 			s += meld.tiles[0][1];
 		}
 	}
