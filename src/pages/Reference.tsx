@@ -488,12 +488,6 @@ function ScoreReference() {
 								<li>
 									Seven pairs is always <H>25</H> fu and not rounded.
 								</li>
-								<li>
-									Pinfu tsumo is always <H>20</H> fu.
-								</li>
-								<li>
-									Open hands are always worth at least <H>30</H> fu.
-								</li>
 							</ul>
 						</li>
 						<li>
@@ -527,6 +521,20 @@ function ScoreReference() {
 							</ul>
 						</li>
 					</ol>
+				</li>
+				<li>
+					Some common fu values:
+					<ul className="flex flex-col justify-center items-start gap-y-1 lg:gap-y-2 list-disc ml-4 lg:ml-8 mt-1">
+						<li>
+							Most open hands, most closed hands tsumo, pinfu ron are <H>30 fu</H>.
+						</li>
+						<li>
+							Most closed hands ron, most open All Triplets are <H>40 fu</H>.
+						</li>
+						<li>
+							Pinfu tsumo is <H>20 fu</H>.
+						</li>
+					</ul>
 				</li>
 			</ul>
 		</div>
@@ -606,15 +614,21 @@ function ScoreCard({
 			<span className="text-lg xl:text-xl font-semibold">{title}</span>
 			<div className="relative w-full flex flex-col justify-center items-center gap-0.5 lg:gap-1 text-sm lg:text-lg">
 				<div className="w-full flex flex-row justify-center items-center">
-					<span className="w-1/2 flex flex-row justify-center items-center">
+					<span className="w-1/2 flex flex-row justify-center items-center" title="Dealer Tsumo">
 						{noTsumo ? '--' : points.tsumoAsFromOya}
 					</span>
-					<span className="w-1/2 flex flex-row justify-center items-center">{noTsumo ? '--' : points.tsumoAsKo}</span>
+					<span className="w-1/2 flex flex-row justify-center items-center" title="Non-Dealer Tsumo">
+						{noTsumo ? '--' : points.tsumoAsKo}
+					</span>
 				</div>
 				<div className="absolute h-full w-0 border border-gray-800"></div>
 				<div className="w-full flex flex-row justify-center items-center">
-					<span className="w-1/2 flex flex-row justify-center items-center">{noRon ? '--' : points.ronAsOya}</span>
-					<span className="w-1/2 flex flex-row justify-center items-center">{noRon ? '--' : points.ronAsKo}</span>
+					<span className="w-1/2 flex flex-row justify-center items-center" title="Dealer Ron">
+						{noRon ? '--' : points.ronAsOya}
+					</span>
+					<span className="w-1/2 flex flex-row justify-center items-center" title="Non-Dealer Ron">
+						{noRon ? '--' : points.ronAsKo}
+					</span>
 				</div>
 			</div>
 		</div>
