@@ -23,12 +23,12 @@ export default function Tiles({
 								<div
 									key={i}
 									className={clsx(
-										'flex flex-row justify-center items-center gap-x-0.5 gap-y-1 lg:gap-y-2',
+										'flex flex-row justify-center items-end gap-x-0.5 gap-y-1 lg:gap-y-2',
 										wrap && 'flex-wrap',
 									)}
 								>
 									{tiles.map((t, j) => (
-										<TileButton key={j} tile={t} forced small={small} />
+										<TileButton key={j} tile={t} forced small={small} rotate={i >= 1 && j === 0} />
 									))}
 								</div>
 							),

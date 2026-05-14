@@ -53,7 +53,15 @@ export function shortForTile(tile: TileCode): [string, 'base' | 'blue' | 'green'
 	}
 }
 
-export default function Tile({ tile, small = false }: { tile: TileCode | '00'; small?: boolean }) {
+export default function Tile({
+	tile,
+	small = false,
+	rotate = false,
+}: {
+	tile: TileCode | '00';
+	small?: boolean;
+	rotate?: boolean;
+}) {
 	const theme = useTheme();
 	const isLg = useMediaQuery({ query: '(min-width: 1024px)' });
 
@@ -62,7 +70,10 @@ export default function Tile({ tile, small = false }: { tile: TileCode | '00'; s
 		return (
 			<div
 				className={clsx(
-					'h-8 w-6 min-w-[1.5rem] lg:h-16 lg:w-12 lg:min-w-[3rem] flex flex-col justify-center items-center text-lg lg:text-3xl font-bold select-none',
+					'flex flex-col justify-center items-center text-lg lg:text-3xl font-bold select-none',
+					rotate
+						? 'w-8 h-6 min-h-[1.5rem] lg:w-16 lg:h-12 lg:min-h-[3rem]'
+						: 'h-8 w-6 min-w-[1.5rem] lg:h-16 lg:w-12 lg:min-w-[3rem]',
 					color === 'red'
 						? 'text-red-600 dark:text-red-700'
 						: color === 'green'
@@ -78,13 +89,32 @@ export default function Tile({ tile, small = false }: { tile: TileCode | '00'; s
 	}
 	const file = (tile === '00' ? svgForTile('5z') : svgForTile(tile))[theme === 'dark' ? 1 : 0];
 	return (
-		<img
-			src={file}
+		<div
 			className={clsx(
-				small ? 'h-16 w-12 min-w-[3rem] p-2' : 'h-16 w-12 min-w-[3rem] lg:h-20 lg:w-[3.75rem] lg:min-w-[3.75rem] p-2',
-				'rounded-xl',
+				'flex flex-col justify-center items-center',
+				small
+					? rotate
+						? 'w-16 h-12 min-h-[3rem]'
+						: 'h-16 w-12 min-w-[3rem]'
+					: rotate
+					? 'w-16 h-12 min-h-[3rem] lg:w-20 lg:h-[3.75rem] lg:min-h-[3.75rem]'
+					: 'h-16 w-12 min-w-[3rem] lg:h-20 lg:w-[3.75rem] lg:min-w-[3.75rem]',
 			)}
-		></img>
+		>
+			<img
+				src={file}
+				className={clsx(
+					'rounded-xl p-2 object-contain',
+					small
+						? rotate
+							? 'rotate-90 w-16 h-14'
+							: 'h-16 w-12 lg:h-20'
+						: rotate
+						? 'rotate-90 w-16 h-14 lg:w-20 lg:h-[4.5rem]'
+						: 'h-16 w-12 lg:h-20 lg:w-[3.75rem]',
+				)}
+			></img>
+		</div>
 	);
 }
 

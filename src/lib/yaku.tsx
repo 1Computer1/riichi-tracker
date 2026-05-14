@@ -76,12 +76,7 @@ export const YakuList = {
 		yakuman: true,
 		value: 2,
 		help: <span>A set of each wind.</span>,
-		example: [
-			['1z', '1z', '1z'],
-			['2z', '2z', '2z'],
-			['3z', '3z', '3z'],
-			['4z', '4z', '4z'],
-		],
+		example: [['1z', '1z', '1z', '2z', '2z', '2z', '3z', '3z', '3z', '4z', '4z', '4z']],
 	}),
 	// Yakuman
 	天和: yaku({ id: '天和', name: 'Blessing of Heaven', yakuman: true, value: 1, closedOnly: true }),
@@ -137,12 +132,7 @@ export const YakuList = {
 		yakuman: true,
 		value: 1,
 		help: <span>Three sets and a pair of each wind.</span>,
-		example: [
-			['1z', '1z', '1z'],
-			['2z', '2z', '2z'],
-			['3z', '3z', '3z'],
-			['4z', '4z'],
-		],
+		example: [['1z', '1z', '1z', '2z', '2z', '2z', '3z', '3z', '3z', '4z', '4z']],
 	}),
 	大三元: yaku({
 		id: '大三元',
@@ -150,11 +140,7 @@ export const YakuList = {
 		yakuman: true,
 		value: 1,
 		help: <span>A set of each dragon.</span>,
-		example: [
-			['5z', '5z', '5z'],
-			['6z', '6z', '6z'],
-			['7z', '7z', '7z'],
-		],
+		example: [['5z', '5z', '5z', '6z', '6z', '6z', '7z', '7z', '7z']],
 	}),
 	字一色: yaku({
 		id: '字一色',
@@ -162,10 +148,7 @@ export const YakuList = {
 		yakuman: true,
 		value: 1,
 		help: <span>A hand composed entirely out of honor tiles.</span>,
-		example: [
-			['1z', '1z', '1z'],
-			['7z', '7z', '7z'],
-		],
+		example: [['1z', '1z', '1z', '7z', '7z', '7z']],
 	}),
 	緑一色: yaku({
 		id: '緑一色',
@@ -186,11 +169,7 @@ export const YakuList = {
 		yakuman: true,
 		value: 1,
 		help: <span>A hand composed entirely out of terminal tiles.</span>,
-		example: [
-			['1m', '1m', '1m'],
-			['1p', '1p', '1p'],
-			['9s', '9s', '9s'],
-		],
+		example: [['1m', '1m', '1m', '1p', '1p', '1p', '9s', '9s', '9s']],
 	}),
 	四槓子: yaku({
 		id: '四槓子',
@@ -271,11 +250,7 @@ export const YakuList = {
 		yakuman: true,
 		value: 1,
 		help: <span>A full flush hand of characters, such that the numeric values sum up to at least 100.</span>,
-		example: [
-			['1m', '2m', '3m', '6m', '6m', '6m', '7m', '7m'],
-			['8m', '8m', '8m', '8m'],
-			['9m', '9m', '9m', '9m'],
-		],
+		example: [['1m', '2m', '3m', '6m', '6m', '6m', '7m', '7m', '8m', '8m', '8m', '8m', '9m', '9m', '9m', '9m']],
 	}),
 	// Riichi & Special
 	立直: yaku({
@@ -381,7 +356,7 @@ export const YakuList = {
 				a dragon or round/seat wind), and a two-sided open wait.
 			</span>
 		),
-		example: [['1p'], ['2p', '3p'], ['4p']],
+		example: [['1p', '2p', '3p', '4p']],
 	}),
 	断么九: yaku({
 		id: '断么九',
@@ -429,11 +404,7 @@ export const YakuList = {
 		value: 2,
 		openMinus: true,
 		help: <span>The same sequence in each suit.</span>,
-		example: [
-			['1m', '2m', '3m'],
-			['1p', '2p', '3p'],
-			['1s', '2s', '3s'],
-		],
+		example: [['1m', '2m', '3m', '1p', '2p', '3p', '1s', '2s', '3s']],
 	}),
 	一気通貫: yaku({
 		id: '一気通貫',
@@ -445,11 +416,7 @@ export const YakuList = {
 				The sequences <H.B>123</H.B>, <H.B>456</H.B>, <H.B>789</H.B> in a single suit.
 			</span>
 		),
-		example: [
-			['1p', '2p', '3p'],
-			['4p', '5p', '6p'],
-			['7p', '8p', '9p'],
-		],
+		example: [['1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p']],
 	}),
 	混全帯么九: yaku({
 		id: '混全帯么九',
@@ -457,11 +424,7 @@ export const YakuList = {
 		value: 2,
 		openMinus: true,
 		help: <span>All tile sets in the hand contains a terminal or an honor.</span>,
-		example: [
-			['1p', '2p', '3p'],
-			['9p', '9p', '9p'],
-			['7z', '7z', '7z'],
-		],
+		example: [['1p', '2p', '3p', '9p', '9p', '9p', '7z', '7z', '7z']],
 	}),
 	// 2 Han
 	七対子: yaku({
@@ -481,13 +444,7 @@ export const YakuList = {
 		type: 'local',
 		value: 2,
 		help: <span>A hand containing all five different suits (characters, circles, bamboo, winds, and dragons).</span>,
-		example: [
-			['2m', '2m', '2m'],
-			['2p', '3p', '4p'],
-			['9s', '9s', '9s'],
-			['1z', '1z', '1z'],
-			['7z', '7z'],
-		],
+		example: [['2m', '2m', '2m', '2p', '3p', '4p', '9s', '9s', '9s', '1z', '1z', '1z', '7z', '7z']],
 	}),
 	対々和: yaku({
 		id: '対々和',
@@ -495,24 +452,14 @@ export const YakuList = {
 		value: 2,
 		basic: true,
 		help: <span>A hand consisting of only triplets.</span>,
-		example: [
-			['1m', '1m'],
-			['2m', '2m', '2m'],
-			['3p', '3p', '3p'],
-			['5p', '5p', '5p'],
-			['9s', '9s', '9s'],
-		],
+		example: [['1m', '1m', '2m', '2m', '2m', '3p', '3p', '3p', '5p', '5p', '5p', '9s', '9s', '9s']],
 	}),
 	三色同刻: yaku({
 		id: '三色同刻',
 		name: 'Triple Triplets',
 		value: 2,
 		help: <span>A hand containing the same triplet in each suit.</span>,
-		example: [
-			['5m', '5m', '5m'],
-			['5p', '5p', '5p'],
-			['5s', '5s', '5s'],
-		],
+		example: [['5m', '5m', '5m', '5p', '5p', '5p', '5s', '5s', '5s']],
 	}),
 	三暗刻: yaku({
 		id: '三暗刻',
@@ -530,11 +477,7 @@ export const YakuList = {
 		type: 'local',
 		value: 2,
 		help: <span>A hand containing three triplets in the same suit where their number steps by one.</span>,
-		example: [
-			['3p', '3p', '3p'],
-			['4p', '4p', '4p'],
-			['5p', '5p', '5p'],
-		],
+		example: [['3p', '3p', '3p', '4p', '4p', '4p', '5p', '5p', '5p']],
 	}),
 	三槓子: yaku({
 		id: '三槓子',
@@ -557,22 +500,14 @@ export const YakuList = {
 				Two sets and a pair of each dragon. The <H>2</H> han from having two dragon triplets are still included.
 			</span>
 		),
-		example: [
-			['5z', '5z', '5z'],
-			['6z', '6z', '6z'],
-			['7z', '7z'],
-		],
+		example: [['5z', '5z', '5z', '6z', '6z', '6z', '7z', '7z']],
 	}),
 	混老頭: yaku({
 		id: '混老頭',
 		name: 'All Terminals and Honors',
 		value: 2,
 		help: <span>A hand composed entirely out of terminal and honor tiles.</span>,
-		example: [
-			['1p', '1p', '1p'],
-			['9p', '9p', '9p'],
-			['7z', '7z', '7z'],
-		],
+		example: [['1p', '1p', '1p', '9p', '9p', '9p', '7z', '7z', '7z']],
 	}),
 	// 2+ Han
 	一色三順: yaku({
@@ -582,11 +517,7 @@ export const YakuList = {
 		value: 3,
 		openMinus: true,
 		help: <span>A hand containing three identical sequences in the same suit.</span>,
-		example: [
-			['1p', '2p', '3p'],
-			['1p', '2p', '3p'],
-			['1p', '2p', '3p'],
-		],
+		example: [['1p', '2p', '3p', '1p', '2p', '3p', '1p', '2p', '3p']],
 	}),
 	純全帯么九: yaku({
 		id: '純全帯么九',
@@ -594,10 +525,7 @@ export const YakuList = {
 		value: 3,
 		openMinus: true,
 		help: <span>All tile sets in the hand contains a terminal.</span>,
-		example: [
-			['1p', '2p', '3p'],
-			['9p', '9p', '9p'],
-		],
+		example: [['1p', '2p', '3p', '9p', '9p', '9p']],
 	}),
 	混一色: yaku({
 		id: '混一色',
@@ -606,11 +534,7 @@ export const YakuList = {
 		openMinus: true,
 		basic: true,
 		help: <span>A hand composed out of only one suit and honors.</span>,
-		example: [
-			['1p', '2p', '3p'],
-			['1z', '1z', '1z'],
-			['7z', '7z', '7z'],
-		],
+		example: [['1p', '2p', '3p', '1z', '1z', '1z', '7z', '7z', '7z']],
 	}),
 	// 3 Han
 	二盃口: yaku({
@@ -619,10 +543,7 @@ export const YakuList = {
 		value: 3,
 		closedOnly: true,
 		help: <span>Two separate instances of two identical sequences. Does not combine with seven pairs.</span>,
-		example: [
-			['1m', '1m', '2m', '2m', '3m', '3m'],
-			['5p', '5p', '6p', '6p', '7p', '7p'],
-		],
+		example: [['1m', '1m', '2m', '2m', '3m', '3m', '5p', '5p', '6p', '6p', '7p', '7p']],
 	}),
 	// 5+ Han
 	清一色: yaku({
@@ -802,12 +723,7 @@ export const YakuReferenceSort: YakuReferenceItem[] = [
 				counts as <H>1</H> han.
 			</span>
 		),
-		example: [
-			['9p', '1p'],
-			['1z', '2z', '3z', '4z', '1z'],
-			['5z', '6z', '7z', '5z'],
-			['0m', '0p', '0s'],
-		],
+		example: [['9p', '1p', '1z', '2z', '3z', '4z', '1z', '5z', '6z', '7z', '5z', '0m', '0p', '0s']],
 	}),
 	otherRef({
 		name: 'Kita',

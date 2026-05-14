@@ -13,10 +13,16 @@ export default function MeldButton({
 	onClick?: (meld: Meld) => void;
 }) {
 	return (
-		<div className="flex flex-row gap-x-0.5 group">
+		<div className="flex flex-row gap-x-0.5 group justify-center items-end">
 			{meld.t === 'chiipon'
 				? meld.tiles.map((t, i) => (
-						<TileButton key={i} tile={t} onClick={onClick && (() => onClick(meld))} dora={isDora(t, hand, sanma)} />
+						<TileButton
+							key={i}
+							tile={t}
+							onClick={onClick && (() => onClick(meld))}
+							dora={isDora(t, hand, sanma)}
+							rotate={i === 0}
+						/>
 				  ))
 				: meld.closed
 				? meld.tiles.map((t, i) => (
@@ -28,7 +34,13 @@ export default function MeldButton({
 						/>
 				  ))
 				: meld.tiles.map((t, i) => (
-						<TileButton key={i} tile={t} onClick={onClick && (() => onClick(meld))} dora={isDora(t, hand, sanma)} />
+						<TileButton
+							key={i}
+							tile={t}
+							onClick={onClick && (() => onClick(meld))}
+							dora={isDora(t, hand, sanma)}
+							rotate={i === 0}
+						/>
 				  ))}
 		</div>
 	);

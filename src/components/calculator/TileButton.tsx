@@ -11,6 +11,7 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 	disabled = false,
 	forced = false,
 	small = false,
+	rotate = false,
 	onClick,
 }: {
 	tile: T;
@@ -20,6 +21,7 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 	disabled?: boolean;
 	forced?: boolean;
 	small?: boolean;
+	rotate?: boolean;
 	onClick?: (tile: T) => void;
 }) {
 	const isLg = useMediaQuery({ query: '(min-width: 1024px)' });
@@ -39,7 +41,7 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 					: 'bg-gray-50 dark:bg-gray-500',
 			)}
 		>
-			<Tile tile={tile} small={small} />
+			<Tile tile={tile} small={small} rotate={rotate} />
 		</div>
 	) : (
 		<button
@@ -64,7 +66,7 @@ export default function TileButton<T extends TileCode | '00' = TileCode>({
 					: 'bg-gray-50 enabled:hover:bg-gray-200 enabled:group-hover:bg-gray-200 dark:bg-gray-500 dark:enabled:hover:bg-gray-600 dark:enabled:group-hover:bg-gray-600',
 			)}
 		>
-			<Tile tile={tile} small={small} />
+			<Tile tile={tile} small={small} rotate={rotate} />
 		</button>
 	);
 }
