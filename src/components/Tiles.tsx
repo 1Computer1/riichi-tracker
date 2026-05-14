@@ -28,7 +28,7 @@ export default function Tiles({
 									)}
 								>
 									{tiles.map((t, j) => (
-										<TileButton key={j} tile={t} forced small={small} rotate={i >= 1 && j === 0} />
+										<TileButton key={j} tile={t} forced small={small} rotate={i >= 1 && j === 0 && t !== '00'} />
 									))}
 								</div>
 							),

@@ -191,12 +191,12 @@ function CalculatorWithGame({
 			// Clicked kan on the red 5.
 			if (t[0] === '0') {
 				const tx = `5${t[1]}` as TileCode;
-				return [t, tx, tx, tx];
+				return [tx, t, tx, tx];
 			}
 			// Clicked kan on the 5, so must have red 5.
 			if (settings.akadora && t[0] === '5' && t[1] !== 'z') {
 				const tx = `0${t[1]}` as TileCode;
-				return [tx, t, t, t];
+				return [t, tx, t, t];
 			}
 			return [t, t, t, t];
 		};
@@ -339,7 +339,7 @@ function CalculatorWithGame({
 												hand.tiles,
 												...hand.melds.map((m) =>
 													m.t === 'kan' && m.closed
-														? ([m.tiles[0], '00', '00', m.tiles[3]] as ('00' | TileCode)[])
+														? (['00', m.tiles[1], m.tiles[2], '00'] as ('00' | TileCode)[])
 														: m.tiles,
 												),
 											]}
