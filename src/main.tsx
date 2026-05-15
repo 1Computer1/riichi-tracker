@@ -27,16 +27,23 @@ registerSW({
 enableMapSet();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <DbContext.Provider value={dexieRepository()}>
-      <HashRouter>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/calculator" element={<Calculator />}></Route>
-          <Route path="/compass" element={<Compass />}></Route>
-          <Route path="/reference" element={<Reference />}></Route>
-        </Routes>
-      </HashRouter>
-    </DbContext.Provider>
-  </React.StrictMode>,
+  (() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", () => updateTheme());
+
+    return (
+      <React.StrictMode>
+        <DbContext.Provider value={dexieRepository()}>
+          <HashRouter>
+            <Routes>
+              <Route path="/" element={<Home />}></Route>
+              <Route path="/calculator" element={<Calculator />}></Route>
+              <Route path="/compass" element={<Compass />}></Route>
+              <Route path="/reference" element={<Reference />}></Route>
+            </Routes>
+          </HashRouter>
+        </DbContext.Provider>
+      </React.StrictMode>
+    );
+  })(),
 );

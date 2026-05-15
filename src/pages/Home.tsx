@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { flushSync } from "react-dom";
 import { HiDesktopComputer, HiMoon, HiSun } from "react-icons/hi";
+import { MdFontDownload, MdFontDownloadOff } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../components/Button";
@@ -20,6 +21,7 @@ export default function App() {
   const toolsGame = db.useGame("$tools");
 
   const [theme, setTheme] = useLocalStorage("theme");
+  const [showTileName, setShowTileName] = useLocalStorage("showTileName");
   const [openNewCompassDialog, setOpenNewCompassDialog] = useState(false);
 
   return (
@@ -53,6 +55,17 @@ export default function App() {
           ) : (
             <HiDesktopComputer />
           )}
+        </CircleButton>
+        <CircleButton
+          onClick={() => {
+            if (showTileName === "true") {
+              setShowTileName("false");
+            } else {
+              setShowTileName("true");
+            }
+          }}
+        >
+          {showTileName === "true" ? <MdFontDownload /> : <MdFontDownloadOff />}
         </CircleButton>
       </div>
       <div className="flex min-h-screen flex-col items-center justify-center gap-y-4 px-2 py-4 lg:gap-y-8">

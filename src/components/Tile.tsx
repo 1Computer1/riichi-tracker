@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useMediaQuery } from "react-responsive";
 
+import useLocalStorage from "../hooks/useLocalStorage";
 import { useTheme } from "../hooks/useTheme";
 import type { TileCode } from "../lib/hand";
 import { shortForTile, svgForTile } from "../lib/tiles";
@@ -15,11 +16,13 @@ export default function Tile({
   rotate?: boolean;
 }) {
   const theme = useTheme();
+  const [showTileName] = useLocalStorage("showTileName");
   const isLg = useMediaQuery({ query: "(min-width: 1024px)" });
 
+  const [text, label, color] =
+    tile === "00" ? ([" ", "base"] as const) : shortForTile(tile);
+
   if (small && !isLg) {
-    const [text, color] =
-      tile === "00" ? ([" ", "base"] as const) : shortForTile(tile);
     return (
       <div
         className={clsx(
@@ -46,7 +49,7 @@ export default function Tile({
   return (
     <div
       className={clsx(
-        "flex flex-col items-center justify-center",
+        "relative flex flex-col items-center justify-center",
         small
           ? rotate
             ? "h-12 min-h-12 w-16"
@@ -69,6 +72,11 @@ export default function Tile({
               : "h-16 w-12 lg:h-20 lg:w-15",
         )}
       ></img>
+      {showTileName === "true" && (
+        <div className="absolute top-0 right-0 m-1 text-sm font-extrabold text-white [-webkit-text-stroke:1px_black] text-shadow-black text-shadow-sm">
+          {label}
+        </div>
+      )}
     </div>
   );
 }

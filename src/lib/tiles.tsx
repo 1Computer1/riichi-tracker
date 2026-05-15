@@ -32,26 +32,26 @@ export function svgForTile(tile: TileCode): readonly [string, string] {
 
 export function shortForTile(
   tile: TileCode,
-): [string, "base" | "blue" | "green" | "red"] {
+): [string, string, "base" | "blue" | "green" | "red"] {
   switch (tile) {
     case "1z":
-      return ["東", "blue"];
+      return ["東", "E", "blue"];
     case "2z":
-      return ["南", "blue"];
+      return ["南", "S", "blue"];
     case "3z":
-      return ["西", "blue"];
+      return ["西", "W", "blue"];
     case "4z":
-      return ["北", "blue"];
+      return ["北", "N", "blue"];
     case "5z":
-      return [" ", "base"];
+      return [" ", "Wh", "base"];
     case "6z":
-      return ["發", "green"];
+      return ["發", "G", "green"];
     case "7z":
-      return ["中", "red"];
+      return ["中", "R", "red"];
     default: {
       const suit = tile[1] === "m" ? "red" : tile[1] === "p" ? "blue" : "green";
       const num = tile[0] === "0" ? "5" : tile[0];
-      return [num, suit];
+      return [num, num, suit];
     }
   }
 }
