@@ -732,57 +732,55 @@ function CalculatorWithGame({
                 </span>
                 <ul className="ml-4 flex list-disc flex-col items-start justify-center gap-y-1 text-xl lg:ml-8 lg:gap-y-2 lg:text-2xl">
                   <li>
-                    <H>20</H> base fu
+                    <H>20</H> base fu.
                     <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                       {settings.rinshanFu ? (
                         <li>
-                          <H>+2</H> for winning with tsumo
+                          <H>+2</H> for winning with tsumo unless with Pinfu.
                         </li>
                       ) : (
                         <li>
-                          <H>+2</H> for winning with tsumo without after a kan
+                          <H>+2</H> for winning with tsumo unless with Pinfu or
+                          after a kan.
                         </li>
                       )}
                       <li>
-                        <H>+10</H> for winning with closed ron
+                        <H>+10</H> for winning with closed ron.
                       </li>
                       <li>
-                        <H>+2</H> for having a single wait
+                        <H>+2</H> for winning on a wait with one tile.
                       </li>
                       {settings.doubleWindFu ? (
                         <li>
                           <H>+2</H> per yakuhai pair and additional <H>+2</H> if
-                          double wind
+                          double wind.
                         </li>
                       ) : (
                         <li>
-                          <H>+2</H> per yakuhai pair
+                          <H>+2</H> per yakuhai pair.
                         </li>
                       )}
                     </ul>
                   </li>
                   <li>
-                    <H>+2</H> fu per triplet
+                    <H>+2</H> fu per triplet:
                     <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                       <li>
-                        <H>x2</H> if concealed
+                        <H>x2</H> if concealed.
                       </li>
                       <li>
-                        <H>x2</H> if terminals or honors
+                        <H>x2</H> if terminals or honors.
                       </li>
                       <li>
-                        <H>x4</H> if kan
+                        <H>x4</H> if kan.
                       </li>
                     </ul>
                   </li>
                   <li>
-                    Seven pairs is always <H>25</H> fu and not rounded.
+                    <H>+2</H> for winning with an open hand if at 20 fu.
                   </li>
                   <li>
-                    Pinfu tsumo is always <H>20</H> fu.
-                  </li>
-                  <li>
-                    Open hands are always worth at least <H>30</H> fu.
+                    Seven Pairs is always <H>25</H> fu and not rounded.
                   </li>
                 </ul>
               </div>

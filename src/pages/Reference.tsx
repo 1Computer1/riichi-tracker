@@ -505,40 +505,43 @@ function ScoreReference() {
               nearest 10:
               <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                 <li>
-                  <H>20</H> base fu
+                  <H>20</H> base fu.
                   <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                     <li>
-                      <H>+2</H> for winning with tsumo (some rules may score{" "}
-                      <H>0</H> for tsumo after a kan)
+                      <H>+2</H> for winning with tsumo unless with Pinfu (some
+                      rules may score <H>0</H> for tsumo after a kan).
                     </li>
                     <li>
-                      <H>+10</H> for winning with closed ron
+                      <H>+10</H> for winning with closed ron.
                     </li>
                     <li>
-                      <H>+2</H> for having a single wait
+                      <H>+2</H> for winning on a wait with one tile.
                     </li>
                     <li>
                       <H>+2</H> per yakuhai pair (some rules may have <H>+4</H>{" "}
-                      for double wind pair)
+                      for double wind pair).
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <H>+2</H> fu per triplet
+                  <H>+2</H> fu per triplet:
                   <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                     <li>
-                      <H>x2</H> if concealed
+                      <H>x2</H> if concealed.
                     </li>
                     <li>
-                      <H>x2</H> if terminals or honors
+                      <H>x2</H> if terminals or honors.
                     </li>
                     <li>
-                      <H>x4</H> if kan
+                      <H>x4</H> if kan.
                     </li>
                   </ul>
                 </li>
                 <li>
-                  Seven pairs is always <H>25</H> fu and not rounded.
+                  <H>+2</H> for winning with an open hand if at 20 fu.
+                </li>
+                <li>
+                  Seven Pairs is always <H>25</H> fu and not rounded.
                 </li>
               </ul>
             </li>
@@ -581,11 +584,12 @@ function ScoreReference() {
           Some common fu values:
           <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
             <li>
-              Most open hands, most closed hands tsumo, pinfu ron are{" "}
+              Most open hands, most closed hands tsumo, and pinfu ron are{" "}
               <H>30 fu</H>.
             </li>
             <li>
-              Most closed hands ron, most open All Triplets are <H>40 fu</H>.
+              Most closed hands ron, and most open All Triplets are <H>40 fu</H>
+              .
             </li>
             <li>
               Pinfu tsumo is <H>20 fu</H>.
