@@ -31,7 +31,7 @@ export default function TileButton<T extends TileCode | "00" = TileCode>({
 
   return forced ? (
     <div
-      data-theme="light"
+      data-theme={brightTiles === "true" ? "light" : null}
       className={clsx(
         small && !isLg ? "rounded-md" : "rounded-xl",
         "shadow shadow-gray-400 dark:shadow-gray-800",
