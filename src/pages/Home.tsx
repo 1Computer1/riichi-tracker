@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { flushSync } from "react-dom";
 import { HiDesktopComputer, HiMoon, HiSun } from "react-icons/hi";
-import { MdFontDownload, MdFontDownloadOff } from "react-icons/md";
+import {
+  MdFlashlightOff,
+  MdFlashlightOn,
+  MdFontDownload,
+  MdFontDownloadOff,
+} from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../components/Button";
@@ -9,6 +14,7 @@ import CircleButton from "../components/CircleButton";
 import { NewCompassDialog } from "../components/home/NewCompassDialog";
 import H from "../components/text/H";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { useTheme } from "../hooks/useTheme";
 import { DefaultSettings } from "../lib/settings";
 import { type CalculatorState, type CompassState } from "../lib/states";
 import { updateTheme } from "../lib/util";
@@ -21,7 +27,10 @@ export default function App() {
   const toolsGame = db.useGame("$tools");
 
   const [theme, setTheme] = useLocalStorage("theme");
+  const actualTheme = useTheme();
+
   const [showTileName, setShowTileName] = useLocalStorage("showTileName");
+  const [brightTiles, setBrightTiles] = useLocalStorage("brightTiles");
   const [openNewCompassDialog, setOpenNewCompassDialog] = useState(false);
 
   return (
@@ -67,6 +76,19 @@ export default function App() {
         >
           {showTileName === "true" ? <MdFontDownload /> : <MdFontDownloadOff />}
         </CircleButton>
+        {actualTheme === "dark" && (
+          <CircleButton
+            onClick={() => {
+              if (brightTiles === "true") {
+                setBrightTiles("false");
+              } else {
+                setBrightTiles("true");
+              }
+            }}
+          >
+            {brightTiles === "true" ? <MdFlashlightOn /> : <MdFlashlightOff />}
+          </CircleButton>
+        )}
       </div>
       <div className="flex min-h-screen flex-col items-center justify-center gap-y-4 px-2 py-4 lg:gap-y-8">
         <h1 className="text-center text-4xl lg:text-6xl">Riichi Tracker</h1>

@@ -18,6 +18,7 @@ export default function Tile({
   const theme = useTheme();
   const [showTileName] = useLocalStorage("showTileName");
   const isLg = useMediaQuery({ query: "(min-width: 1024px)" });
+  const [brightTiles] = useLocalStorage("brightTiles");
 
   const [text, label, color] =
     tile === "00" ? ([" ", "base"] as const) : shortForTile(tile);
@@ -44,7 +45,7 @@ export default function Tile({
     );
   }
   const file = (tile === "00" ? svgForTile("5z") : svgForTile(tile))[
-    theme === "dark" ? 1 : 0
+    brightTiles === "true" ? 0 : theme === "dark" ? 1 : 0
   ];
   return (
     <div
