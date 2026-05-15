@@ -1,28 +1,32 @@
-import { ReactNode } from 'react';
-import CircleButton from './CircleButton';
+import { type ReactNode } from "react";
+
+import CircleButton from "./CircleButton";
 
 export default function JumpButton({
-	element,
-	alignToTop = true,
-	highlight,
-	onJump,
-	children,
+  element,
+  alignToTop = true,
+  highlight,
+  onJump,
+  children,
 }: {
-	element: Element | null;
-	alignToTop?: boolean;
-	highlight?: boolean;
-	onJump?: () => void;
-	children?: ReactNode;
+  element: Element | null;
+  alignToTop?: boolean;
+  highlight?: boolean;
+  onJump?: () => void;
+  children?: ReactNode;
 }) {
-	return (
-		<CircleButton
-			highlight={highlight}
-			onClick={() => {
-				element?.scrollIntoView({ block: alignToTop ? 'start' : 'end', behavior: 'smooth' });
-				onJump?.();
-			}}
-		>
-			{children}
-		</CircleButton>
-	);
+  return (
+    <CircleButton
+      highlight={highlight}
+      onClick={() => {
+        element?.scrollIntoView({
+          block: alignToTop ? "start" : "end",
+          behavior: "smooth",
+        });
+        onJump?.();
+      }}
+    >
+      {children}
+    </CircleButton>
+  );
 }

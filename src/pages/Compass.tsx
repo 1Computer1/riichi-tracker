@@ -1,282 +1,329 @@
-import clsx from 'clsx';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import CircleButton from '../components/CircleButton';
-import TileButton from '../components/calculator/TileButton';
-import { AdvancedDialog } from '../components/compass/AdvancedDialog';
-import { DrawDialog } from '../components/compass/DrawDialog';
-import ScoreDisplay from '../components/compass/ScoreDisplay';
-import { ScoreUpdateDialog } from '../components/compass/ScoreUpdateDialog';
-import { WinnerDialog } from '../components/compass/WinnerDialog';
-import Cog from '../components/icons/heroicons/Cog';
-import Left from '../components/icons/heroicons/Left';
-import Up from '../components/icons/heroicons/Up';
-import BlocksShuffleThree from '../components/loading/react-svg-spinners/BlocksShuffleThree';
-import { Game } from '../data/interfaces';
-import { nextWind, translateWind } from '../lib/hand';
-import { CompassState } from '../lib/states';
-import { useDb } from '../providers/DbProvider';
+import clsx from "clsx";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import TileButton from "../components/calculator/TileButton";
+import CircleButton from "../components/CircleButton";
+import { AdvancedDialog } from "../components/compass/AdvancedDialog";
+import { DrawDialog } from "../components/compass/DrawDialog";
+import ScoreDisplay from "../components/compass/ScoreDisplay";
+import { ScoreUpdateDialog } from "../components/compass/ScoreUpdateDialog";
+import { WinnerDialog } from "../components/compass/WinnerDialog";
+import Cog from "../components/icons/heroicons/Cog";
+import Left from "../components/icons/heroicons/Left";
+import Up from "../components/icons/heroicons/Up";
+import BlocksShuffleThree from "../components/loading/react-svg-spinners/BlocksShuffleThree";
+import { type Game } from "../data/interfaces";
+import { nextWind, translateWind } from "../lib/hand";
+import { type CompassState } from "../lib/states";
+import { useDb } from "../providers/DbProvider";
 
 export default function Compass() {
-	const db = useDb();
-	const navigate = useNavigate();
-	const location = useLocation();
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	const locState: CompassState = (location.state ?? { t: 'load', id: '$tools' }) as any;
-	const game = db.useGame(locState.id);
+  const db = useDb();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-	useEffect(() => {
-		if (game == null) {
-			return;
-		}
-		if (!game.ok) {
-			navigate('/', { replace: true });
-		}
-	}, [game, navigate]);
+  const locState: CompassState = (location.state as CompassState | null) ?? {
+    t: "load",
+    id: "$tools",
+  };
+  const game = db.useGame(locState.id);
 
-	return (
-		<div className="h-screen w-screen bg-slate-200 dark:bg-gray-900 text-black dark:text-white">
-			{game == null ? (
-				<div className="w-screen h-screen flex flex-col justify-center items-center">
-					<div className="fill-black dark:fill-white w-24 h-24">
-						<BlocksShuffleThree />
-					</div>
-				</div>
-			) : game.ok ? (
-				<CompassWithGame locState={locState} game={game.value} />
-			) : (
-				<div className="w-screen h-screen flex flex-col justify-center items-center">
-					<div className="font-mono">Error: Game {locState.id} does not exist.</div>
-				</div>
-			)}
-		</div>
-	);
+  useEffect(() => {
+    if (game == null) {
+      return;
+    }
+    if (!game.ok) {
+      void navigate("/", { replace: true });
+    }
+  }, [game, navigate]);
+
+  return (
+    <div className="h-screen w-screen bg-slate-200 text-black dark:bg-gray-900 dark:text-white">
+      {game == null ? (
+        <div className="flex h-screen w-screen flex-col items-center justify-center">
+          <div className="h-24 w-24 fill-black dark:fill-white">
+            <BlocksShuffleThree />
+          </div>
+        </div>
+      ) : game.ok ? (
+        <CompassWithGame locState={locState} game={game.value} />
+      ) : (
+        <div className="flex h-screen w-screen flex-col items-center justify-center">
+          <div className="font-mono">
+            Error: Game {locState.id} does not exist.
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
-function CompassWithGame({ locState, game }: { locState: CompassState; game: Game }) {
-	const db = useDb();
-	const navigate = useNavigate();
+function CompassWithGame({
+  locState,
+  game,
+}: {
+  locState: CompassState;
+  game: Game;
+}) {
+  const db = useDb();
+  const navigate = useNavigate();
 
-	const { roundWind, round, repeats, scores, riichi, riichiSticks, settings } = game;
+  const { roundWind, round, repeats, scores, riichi, riichiSticks, settings } =
+    game;
 
-	const [oldScores, setOldScores] = useState<number[] | undefined>(locState.oldScores);
-	const [scoreUpdater, setScoreUpdater] = useState<number | null>(null);
-	const [winner, setWinner] = useState<number | null>(null);
-	const [openDrawDialog, setOpenDrawDialog] = useState(false);
-	const [openAdvancedDialog, setOpenAdvancedDialog] = useState(false);
+  const [oldScores, setOldScores] = useState<number[] | undefined>(
+    locState.oldScores,
+  );
+  const [scoreUpdater, setScoreUpdater] = useState<number | null>(null);
+  const [winner, setWinner] = useState<number | null>(null);
+  const [openDrawDialog, setOpenDrawDialog] = useState(false);
+  const [openAdvancedDialog, setOpenAdvancedDialog] = useState(false);
 
-	const toggleRiichiStick = async (ix: number) => {
-		if (riichi[ix]) {
-			const scores_ = scores.slice();
-			scores_[ix] = scores[ix] + 1000;
-			const riichi_ = riichi.slice();
-			riichi_[ix] = false;
-			await db.setGame(locState.id, { ...game, scores: scores_, riichiSticks: riichiSticks - 1, riichi: riichi_ });
-		} else {
-			const scores_ = scores.slice();
-			scores_[ix] = scores[ix] - 1000;
-			const riichi_ = riichi.slice();
-			riichi_[ix] = true;
-			await db.setGame(locState.id, { ...game, scores: scores_, riichiSticks: riichiSticks + 1, riichi: riichi_ });
-		}
-	};
+  const toggleRiichiStick = async (ix: number) => {
+    if (riichi[ix]) {
+      const scores_ = scores.slice();
+      scores_[ix] = scores[ix] + 1000;
+      const riichi_ = riichi.slice();
+      riichi_[ix] = false;
+      await db.setGame(locState.id, {
+        ...game,
+        scores: scores_,
+        riichiSticks: riichiSticks - 1,
+        riichi: riichi_,
+      });
+    } else {
+      const scores_ = scores.slice();
+      scores_[ix] = scores[ix] - 1000;
+      const riichi_ = riichi.slice();
+      riichi_[ix] = true;
+      await db.setGame(locState.id, {
+        ...game,
+        scores: scores_,
+        riichiSticks: riichiSticks + 1,
+        riichi: riichi_,
+      });
+    }
+  };
 
-	return (
-		<div className="relative h-screen w-screen">
-			<div className="absolute bottom-0 left-1/2 -translate-x-1/2">
-				<div className="h-fit w-[min(70vh,70vw)]">
-					<ScoreDisplayInCompass
-						ix={0}
-						oldScores={oldScores}
-						game={game}
-						onScoreClick={() => setScoreUpdater(0)}
-						onTileClick={() => setWinner(0)}
-						onRiichiClick={() => void toggleRiichiStick(0)}
-					/>
-				</div>
-			</div>
-			<div className="absolute right-0 top-1/2 -translate-y-1/2">
-				<div className="rotate-180 h-[min(70vh,70vw)] w-fit">
-					<ScoreDisplayInCompass
-						vertical
-						ix={1}
-						oldScores={oldScores}
-						game={game}
-						onScoreClick={() => setScoreUpdater(1)}
-						onTileClick={() => setWinner(1)}
-						onRiichiClick={() => void toggleRiichiStick(1)}
-					/>
-				</div>
-			</div>
-			<div className="absolute top-0 left-1/2 -translate-x-1/2">
-				<div className="rotate-180 h-fit w-[min(70vh,70vw)]">
-					<ScoreDisplayInCompass
-						ix={2}
-						oldScores={oldScores}
-						game={game}
-						onScoreClick={() => setScoreUpdater(2)}
-						onTileClick={() => setWinner(2)}
-						onRiichiClick={() => void toggleRiichiStick(2)}
-					/>
-				</div>
-			</div>
-			{settings.sanma == null && (
-				<div className="absolute left-0 top-1/2 -translate-y-1/2">
-					<div className="h-[min(70vh,70vw)] w-fit">
-						<ScoreDisplayInCompass
-							vertical
-							ix={3}
-							oldScores={oldScores}
-							game={game}
-							onScoreClick={() => setScoreUpdater(3)}
-							onTileClick={() => setWinner(3)}
-							onRiichiClick={() => void toggleRiichiStick(3)}
-						/>
-					</div>
-				</div>
-			)}
-			{scoreUpdater != null && (
-				<ScoreUpdateDialog
-					gameId={locState.id}
-					game={game}
-					scoreUpdater={scoreUpdater}
-					onScoreUpdate={(x) => setOldScores(x)}
-					onClose={() => setScoreUpdater(null)}
-				/>
-			)}
-			{winner != null && (
-				<WinnerDialog gameId={locState.id} game={game} winner={winner} onClose={() => setWinner(null)} />
-			)}
-			{openDrawDialog && (
-				<DrawDialog
-					gameId={locState.id}
-					game={game}
-					onScoreUpdate={(x) => setOldScores(x)}
-					onClose={() => setOpenDrawDialog(false)}
-				/>
-			)}
-			{openAdvancedDialog && (
-				<AdvancedDialog gameId={locState.id} game={game} onClose={() => setOpenAdvancedDialog(false)} />
-			)}
-			<div
-				data-1c1
-				className={clsx(
-					'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-300 dark:bg-sky-900 rounded-xl shadow',
-					'portrait:h-[min(min(70vw,70vh),calc(100vh_-_16rem))] portrait:lg:h-[min(min(70vw,70vh),calc(100vh_-_24rem))] portrait:p-1.5 portrait:lg:px-2 portrait:lg:py-2',
-					'landscape:w-[min(min(70vw,70vh),calc(100vw_-_16rem))] landscape:lg:w-[min(min(70vw,70vh),calc(100vw_-_24rem))] landscape:p-1.5 landscape:lg:py-2 landscape:lg:px-2',
-				)}
-			>
-				<div
-					className={clsx(
-						'flex justify-between items-center gap-4',
-						'portrait:flex-col portrait:h-full',
-						'landscape:flex-row landscape:w-full',
-					)}
-				>
-					<div
-						className={clsx(
-							'portrait:rotate-90 portrait:mx-2 portrait:-my-2',
-							'flex flex-col justify-center items-center',
-						)}
-					>
-						<TileButton
-							onClick={() => {
-								setOpenDrawDialog(true);
-							}}
-							tile={`${roundWind}z`}
-						/>
-					</div>
-					<span
-						className={clsx(
-							'flex gap-y-2 justify-between items-center text-xl lg:text-4xl',
-							'portrait:flex-col-reverse portrait:[writing-mode:vertical-lr]',
-							'landscape:flex-col',
-						)}
-					>
-						<span>
-							{translateWind(roundWind)} {round}
-						</span>
-						<span className="flex flex-row gap-x-4 justify-center items-center">
-							<span className="flex flex-row gap-x-2 justify-center items-center">
-								<span
-									className={clsx(
-										'text-slate-900 dark:text-slate-400 rotate-90',
-										'portrait:mr-0.5 portrait:lg:mr-2',
-										'landscape:mt-2 landscape:lg:mt-2',
-									)}
-								>
-									⠿
-								</span>
-								<span>{repeats}</span>
-							</span>
-							<span className="flex flex-row gap-x-2 justify-center items-center">
-								<span className={clsx('text-red-500 dark:text-red-600', 'portrait:mr-0.5 portrait:lg:mr-2')}>●</span>
-								<span>{riichiSticks}</span>
-							</span>
-						</span>
-					</span>
-					<div className={clsx('flex gap-2', 'portrait:flex-row-reverse', 'landscape:flex-col')}>
-						<div className="portrait:hidden">
-							<CircleButton
-								onClick={() => {
-									navigate('/', { replace: true });
-								}}
-							>
-								<Left />
-							</CircleButton>
-						</div>
-						<div className="landscape:hidden">
-							<CircleButton
-								onClick={() => {
-									navigate('/', { replace: true });
-								}}
-							>
-								<Up />
-							</CircleButton>
-						</div>
-						<CircleButton
-							onClick={() => {
-								setOpenAdvancedDialog(true);
-							}}
-						>
-							<Cog />
-						</CircleButton>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div className="relative h-screen w-screen">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+        <div className="h-fit w-[min(70vh,70vw)]">
+          <ScoreDisplayInCompass
+            ix={0}
+            oldScores={oldScores}
+            game={game}
+            onScoreClick={() => setScoreUpdater(0)}
+            onTileClick={() => setWinner(0)}
+            onRiichiClick={() => void toggleRiichiStick(0)}
+          />
+        </div>
+      </div>
+      <div className="absolute top-1/2 right-0 -translate-y-1/2">
+        <div className="h-[min(70vh,70vw)] w-fit rotate-180">
+          <ScoreDisplayInCompass
+            vertical
+            ix={1}
+            oldScores={oldScores}
+            game={game}
+            onScoreClick={() => setScoreUpdater(1)}
+            onTileClick={() => setWinner(1)}
+            onRiichiClick={() => void toggleRiichiStick(1)}
+          />
+        </div>
+      </div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2">
+        <div className="h-fit w-[min(70vh,70vw)] rotate-180">
+          <ScoreDisplayInCompass
+            ix={2}
+            oldScores={oldScores}
+            game={game}
+            onScoreClick={() => setScoreUpdater(2)}
+            onTileClick={() => setWinner(2)}
+            onRiichiClick={() => void toggleRiichiStick(2)}
+          />
+        </div>
+      </div>
+      {settings.sanma == null && (
+        <div className="absolute top-1/2 left-0 -translate-y-1/2">
+          <div className="h-[min(70vh,70vw)] w-fit">
+            <ScoreDisplayInCompass
+              vertical
+              ix={3}
+              oldScores={oldScores}
+              game={game}
+              onScoreClick={() => setScoreUpdater(3)}
+              onTileClick={() => setWinner(3)}
+              onRiichiClick={() => void toggleRiichiStick(3)}
+            />
+          </div>
+        </div>
+      )}
+      {scoreUpdater != null && (
+        <ScoreUpdateDialog
+          gameId={locState.id}
+          game={game}
+          scoreUpdater={scoreUpdater}
+          onScoreUpdate={(x) => setOldScores(x)}
+          onClose={() => setScoreUpdater(null)}
+        />
+      )}
+      {winner != null && (
+        <WinnerDialog
+          gameId={locState.id}
+          game={game}
+          winner={winner}
+          onClose={() => setWinner(null)}
+        />
+      )}
+      {openDrawDialog && (
+        <DrawDialog
+          gameId={locState.id}
+          game={game}
+          onScoreUpdate={(x) => setOldScores(x)}
+          onClose={() => setOpenDrawDialog(false)}
+        />
+      )}
+      {openAdvancedDialog && (
+        <AdvancedDialog
+          gameId={locState.id}
+          game={game}
+          onClose={() => setOpenAdvancedDialog(false)}
+        />
+      )}
+      <div
+        data-1c1
+        className={clsx(
+          "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-slate-300 shadow dark:bg-sky-900",
+          "portrait:h-[min(min(70vw,70vh),calc(100vh-16rem))] portrait:p-1.5 portrait:lg:h-[min(min(70vw,70vh),calc(100vh-24rem))] portrait:lg:px-2 portrait:lg:py-2",
+          "landscape:w-[min(min(70vw,70vh),calc(100vw-16rem))] landscape:p-1.5 landscape:lg:w-[min(min(70vw,70vh),calc(100vw-24rem))] landscape:lg:px-2 landscape:lg:py-2",
+        )}
+      >
+        <div
+          className={clsx(
+            "flex items-center justify-between gap-4",
+            "portrait:h-full portrait:flex-col",
+            "landscape:w-full landscape:flex-row",
+          )}
+        >
+          <div
+            className={clsx(
+              "portrait:mx-2 portrait:-my-2 portrait:rotate-90",
+              "flex flex-col items-center justify-center",
+            )}
+          >
+            <TileButton
+              onClick={() => {
+                setOpenDrawDialog(true);
+              }}
+              tile={`${roundWind}z`}
+            />
+          </div>
+          <span
+            className={clsx(
+              "flex items-center justify-between gap-y-2 text-xl lg:text-4xl",
+              "portrait:flex-col-reverse portrait:[writing-mode:vertical-lr]",
+              "landscape:flex-col",
+            )}
+          >
+            <span>
+              {translateWind(roundWind)} {round}
+            </span>
+            <span className="flex flex-row items-center justify-center gap-x-4">
+              <span className="flex flex-row items-center justify-center gap-x-2">
+                <span
+                  className={clsx(
+                    "rotate-90 text-slate-900 dark:text-slate-400",
+                    "portrait:mr-0.5 portrait:lg:mr-2",
+                    "landscape:mt-2 landscape:lg:mt-2",
+                  )}
+                >
+                  ⠿
+                </span>
+                <span>{repeats}</span>
+              </span>
+              <span className="flex flex-row items-center justify-center gap-x-2">
+                <span
+                  className={clsx(
+                    "text-red-500 dark:text-red-600",
+                    "portrait:mr-0.5 portrait:lg:mr-2",
+                  )}
+                >
+                  ●
+                </span>
+                <span>{riichiSticks}</span>
+              </span>
+            </span>
+          </span>
+          <div
+            className={clsx(
+              "flex gap-2",
+              "portrait:flex-row-reverse",
+              "landscape:flex-col",
+            )}
+          >
+            <div className="portrait:hidden">
+              <CircleButton
+                onClick={() => {
+                  void navigate("/", { replace: true });
+                }}
+              >
+                <Left />
+              </CircleButton>
+            </div>
+            <div className="landscape:hidden">
+              <CircleButton
+                onClick={() => {
+                  void navigate("/", { replace: true });
+                }}
+              >
+                <Up />
+              </CircleButton>
+            </div>
+            <CircleButton
+              onClick={() => {
+                setOpenAdvancedDialog(true);
+              }}
+            >
+              <Cog />
+            </CircleButton>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function ScoreDisplayInCompass({
-	game,
-	ix,
-	oldScores,
-	vertical = false,
-	onScoreClick,
-	onTileClick,
-	onRiichiClick,
+  game,
+  ix,
+  oldScores,
+  vertical = false,
+  onScoreClick,
+  onTileClick,
+  onRiichiClick,
 }: {
-	game: Game;
-	ix: number;
-	oldScores?: number[];
-	vertical?: boolean;
-	onScoreClick?: () => void;
-	onTileClick?: () => void;
-	onRiichiClick?: () => void;
+  game: Game;
+  ix: number;
+  oldScores?: number[];
+  vertical?: boolean;
+  onScoreClick?: () => void;
+  onTileClick?: () => void;
+  onRiichiClick?: () => void;
 }) {
-	const { bottomWind, scores, riichi, settings } = game;
-	return (
-		<ScoreDisplay
-			vertical={vertical}
-			score={scores[ix]}
-			oldScore={oldScores?.[ix]}
-			riichi={riichi[ix]}
-			isSanma={settings.sanma != null}
-			seatWind={nextWind(bottomWind, ix, settings.sanma != null)}
-			onScoreClick={onScoreClick}
-			onTileClick={onTileClick}
-			onRiichiClick={onRiichiClick}
-		/>
-	);
+  const { bottomWind, scores, riichi, settings } = game;
+  return (
+    <ScoreDisplay
+      vertical={vertical}
+      score={scores[ix]}
+      oldScore={oldScores?.[ix]}
+      riichi={riichi[ix]}
+      isSanma={settings.sanma != null}
+      seatWind={nextWind(bottomWind, ix, settings.sanma != null)}
+      onScoreClick={onScoreClick}
+      onTileClick={onTileClick}
+      onRiichiClick={onRiichiClick}
+    />
+  );
 }

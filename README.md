@@ -1,7 +1,7 @@
 # Riichi Tracker
 
 A riichi mahjong hand calculator and interactive compass.  
-Also includes a reference for yaku and scoring.  
+Also includes a reference for yaku and scoring.
 
 ## Features
 

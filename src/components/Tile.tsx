@@ -1,125 +1,80 @@
-import clsx from 'clsx';
-import { useMediaQuery } from 'react-responsive';
-import { useTheme } from '../hooks/useTheme';
-import { TileCode } from '../lib/hand';
+import clsx from "clsx";
+import { useMediaQuery } from "react-responsive";
 
-export function svgForTile(tile: TileCode): readonly [string, string] {
-	const base = import.meta.env.BASE_URL;
-	const t = (name: string) => [`${base}tiles/light/${name}.svg`, `${base}tiles/dark/${name}.svg`] as const;
-	switch (tile) {
-		case '1z':
-			return t('Ton');
-		case '2z':
-			return t('Nan');
-		case '3z':
-			return t('Shaa');
-		case '4z':
-			return t('Pei');
-		case '5z':
-			return t('Haku');
-		case '6z':
-			return t('Hatsu');
-		case '7z':
-			return t('Chun');
-		default: {
-			const suit = tile[1] === 'm' ? 'Man' : tile[1] === 'p' ? 'Pin' : 'Sou';
-			const num = tile[0] === '0' ? '5-Dora' : tile[0];
-			return t(suit + num);
-		}
-	}
-}
-
-export function shortForTile(tile: TileCode): [string, 'base' | 'blue' | 'green' | 'red'] {
-	switch (tile) {
-		case '1z':
-			return ['東', 'blue'];
-		case '2z':
-			return ['南', 'blue'];
-		case '3z':
-			return ['西', 'blue'];
-		case '4z':
-			return ['北', 'blue'];
-		case '5z':
-			return [' ', 'base'];
-		case '6z':
-			return ['發', 'green'];
-		case '7z':
-			return ['中', 'red'];
-		default: {
-			const suit = tile[1] === 'm' ? 'red' : tile[1] === 'p' ? 'blue' : 'green';
-			const num = tile[0] === '0' ? '5' : tile[0];
-			return [num, suit];
-		}
-	}
-}
+import { useTheme } from "../hooks/useTheme";
+import type { TileCode } from "../lib/hand";
+import { shortForTile, svgForTile } from "../lib/tiles";
 
 export default function Tile({
-	tile,
-	small = false,
-	rotate = false,
+  tile,
+  small = false,
+  rotate = false,
 }: {
-	tile: TileCode | '00';
-	small?: boolean;
-	rotate?: boolean;
+  tile: TileCode | "00";
+  small?: boolean;
+  rotate?: boolean;
 }) {
-	const theme = useTheme();
-	const isLg = useMediaQuery({ query: '(min-width: 1024px)' });
+  const theme = useTheme();
+  const isLg = useMediaQuery({ query: "(min-width: 1024px)" });
 
-	if (small && !isLg) {
-		const [text, color] = tile === '00' ? ([' ', 'base'] as const) : shortForTile(tile);
-		return (
-			<div
-				className={clsx(
-					'flex flex-col justify-center items-center text-lg lg:text-3xl font-bold select-none',
-					rotate
-						? 'w-8 h-6 min-h-[1.5rem] lg:w-16 lg:h-12 lg:min-h-[3rem]'
-						: 'h-8 w-6 min-w-[1.5rem] lg:h-16 lg:w-12 lg:min-w-[3rem]',
-					color === 'red'
-						? 'text-red-600 dark:text-red-700'
-						: color === 'green'
-						? 'text-green-700 dark:text-green-800'
-						: color === 'blue'
-						? 'text-blue-800 dark:text-blue-900'
-						: '',
-				)}
-			>
-				{text}
-			</div>
-		);
-	}
-	const file = (tile === '00' ? svgForTile('5z') : svgForTile(tile))[theme === 'dark' ? 1 : 0];
-	return (
-		<div
-			className={clsx(
-				'flex flex-col justify-center items-center',
-				small
-					? rotate
-						? 'w-16 h-12 min-h-[3rem]'
-						: 'h-16 w-12 min-w-[3rem]'
-					: rotate
-					? 'w-16 h-12 min-h-[3rem] lg:w-20 lg:h-[3.75rem] lg:min-h-[3.75rem]'
-					: 'h-16 w-12 min-w-[3rem] lg:h-20 lg:w-[3.75rem] lg:min-w-[3.75rem]',
-			)}
-		>
-			<img
-				src={file}
-				className={clsx(
-					'rounded-xl p-2 object-contain',
-					small
-						? rotate
-							? 'rotate-90 w-16 h-14'
-							: 'h-16 w-12 lg:h-20'
-						: rotate
-						? 'rotate-90 w-16 h-14 lg:w-20 lg:h-[4.5rem]'
-						: 'h-16 w-12 lg:h-20 lg:w-[3.75rem]',
-				)}
-			></img>
-		</div>
-	);
+  if (small && !isLg) {
+    const [text, color] =
+      tile === "00" ? ([" ", "base"] as const) : shortForTile(tile);
+    return (
+      <div
+        className={clsx(
+          "flex flex-col items-center justify-center text-lg font-bold select-none lg:text-3xl",
+          rotate
+            ? "h-6 min-h-6 w-8 lg:h-12 lg:min-h-12 lg:w-16"
+            : "h-8 w-6 min-w-6 lg:h-16 lg:w-12 lg:min-w-12",
+          color === "red"
+            ? "text-red-600 dark:text-red-700"
+            : color === "green"
+              ? "text-green-700 dark:text-green-800"
+              : color === "blue"
+                ? "text-blue-800 dark:text-blue-900"
+                : "",
+        )}
+      >
+        {text}
+      </div>
+    );
+  }
+  const file = (tile === "00" ? svgForTile("5z") : svgForTile(tile))[
+    theme === "dark" ? 1 : 0
+  ];
+  return (
+    <div
+      className={clsx(
+        "flex flex-col items-center justify-center",
+        small
+          ? rotate
+            ? "h-12 min-h-12 w-16"
+            : "h-16 w-12 min-w-12"
+          : rotate
+            ? "h-12 min-h-12 w-16 lg:h-15 lg:min-h-15 lg:w-20"
+            : "h-16 w-12 min-w-12 lg:h-20 lg:w-15 lg:min-w-15",
+      )}
+    >
+      <img
+        src={file}
+        className={clsx(
+          "rounded-xl object-contain p-2",
+          small
+            ? rotate
+              ? "h-14 w-16 rotate-90"
+              : "h-16 w-12 lg:h-20"
+            : rotate
+              ? "h-14 w-16 rotate-90 lg:h-18 lg:w-20"
+              : "h-16 w-12 lg:h-20 lg:w-15",
+        )}
+      ></img>
+    </div>
+  );
 }
 
 export function Placeholder() {
-	return (
-		<div className="h-16 w-12 min-w-[3rem] lg:h-20 lg:w-[3.75rem] lg:min-w-[3.75rem] p-2 rounded-xl border-2 border-black dark:border-white border-dashed"></div>
-	);
+  return (
+    <div className="h-16 w-12 min-w-12 rounded-xl border-2 border-dashed border-black p-2 lg:h-20 lg:w-15 lg:min-w-15 dark:border-white"></div>
+  );
 }

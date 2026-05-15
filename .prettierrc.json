@@ -1,9 +1,5 @@
 {
-	"printWidth": 120,
-	"useTabs": true,
-	"singleQuote": true,
-	"quoteProps": "consistent",
-	"trailingComma": "all",
-	"endOfLine": "lf",
-	"semi": true
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindStylesheet": "./src/index.css",
+  "tailwindFunctions": ["clsx"]
 }
