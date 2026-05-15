@@ -2,6 +2,12 @@ import { Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import {
+  HiAcademicCap,
+  HiArrowLeft,
+  HiCalculator,
+  HiCog,
+} from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
 
@@ -15,10 +21,6 @@ import { HonorRow, SuitRow } from "../components/calculator/TileRow";
 import WindSelect from "../components/calculator/WindSelect";
 import CircleButton from "../components/CircleButton";
 import Counter from "../components/Counter";
-import Calc from "../components/icons/heroicons/Calc";
-import Cap from "../components/icons/heroicons/Cap";
-import Cog from "../components/icons/heroicons/Cog";
-import Left from "../components/icons/heroicons/Left";
 import JumpButton from "../components/JumpButton";
 import HorizontalRow from "../components/layout/HorizontalRow";
 import VerticalRow from "../components/layout/VerticalRow";
@@ -562,7 +564,7 @@ function CalculatorWithGame({
               }
             }}
           >
-            <Left />
+            <HiArrowLeft />
           </CircleButton>
         </div>
         <div className="fixed top-2 right-2 z-10 flex flex-col gap-y-2 lg:top-4 lg:right-8">
@@ -572,7 +574,7 @@ function CalculatorWithGame({
                 setOpenedSettings(true);
               }}
             >
-              <Cog />
+              <HiCog />
             </CircleButton>
           )}
           <CircleButton
@@ -584,7 +586,7 @@ function CalculatorWithGame({
               }
             }}
           >
-            {prefersQuick ? <Cap /> : <Calc />}
+            {prefersQuick ? <HiAcademicCap /> : <HiCalculator />}
           </CircleButton>
         </div>
         {prefersQuick ? (

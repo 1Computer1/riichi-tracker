@@ -1,13 +1,11 @@
 import { useRef, useState } from "react";
+import { HiHashtag, HiMinus, HiPlus } from "react-icons/hi";
 
 import { type Game } from "../../data/interfaces";
 import { nextWind } from "../../lib/hand";
 import { useDb } from "../../providers/DbProvider";
 import Button from "../Button";
 import TileButton from "../calculator/TileButton";
-import Hashtag from "../icons/heroicons/Hashtag";
-import Minus from "../icons/heroicons/Minus";
-import Plus from "../icons/heroicons/Plus";
 import CustomDialog from "../layout/CustomDialog";
 import ToggleThree from "../ToggleThree";
 
@@ -67,17 +65,17 @@ export function ScoreUpdateDialog({
           <ToggleThree
             left={
               <div className="h-4 w-4 lg:h-6 lg:w-6">
-                <Minus />
+                <HiMinus />
               </div>
             }
             middle={
               <div className="h-4 w-4 lg:h-6 lg:w-6">
-                <Hashtag />
+                <HiHashtag />
               </div>
             }
             right={
               <div className="h-4 w-4 lg:h-6 lg:w-6">
-                <Plus />
+                <HiPlus />
               </div>
             }
             toggled={scoreUpdateMode}

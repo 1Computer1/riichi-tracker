@@ -1,8 +1,8 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { type ReactNode, type RefObject } from "react";
+import { HiX } from "react-icons/hi";
 
 import CircleButton from "../CircleButton";
-import X from "../icons/heroicons/X";
 
 export default function CustomDialog({
   onClose,
@@ -27,7 +27,7 @@ export default function CustomDialog({
                   {title}
                 </div>
                 <CircleButton onClick={onClose}>
-                  <X />
+                  <HiX />
                 </CircleButton>
               </div>
               <div className="overflow-auto rounded-b-xl bg-slate-200 px-4 py-4 shadow lg:px-8 dark:bg-gray-900">

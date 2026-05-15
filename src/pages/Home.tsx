@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { flushSync } from "react-dom";
+import { HiDesktopComputer, HiMoon, HiSun } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../components/Button";
 import CircleButton from "../components/CircleButton";
 import { NewCompassDialog } from "../components/home/NewCompassDialog";
-import Computer from "../components/icons/heroicons/Computer";
-import Moon from "../components/icons/heroicons/Moon";
-import Sun from "../components/icons/heroicons/Sun";
 import H from "../components/text/H";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { DefaultSettings } from "../lib/settings";
@@ -49,11 +47,11 @@ export default function App() {
           }}
         >
           {theme === "dark" ? (
-            <Moon />
+            <HiMoon />
           ) : theme === "light" ? (
-            <Sun />
+            <HiSun />
           ) : (
-            <Computer />
+            <HiDesktopComputer />
           )}
         </CircleButton>
       </div>

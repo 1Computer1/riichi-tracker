@@ -1,14 +1,12 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import clsx from "clsx";
 import { Fragment, type ReactNode, useState } from "react";
+import { HiArrowLeft, HiArrowRight, HiArrowUp } from "react-icons/hi";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import Button from "../components/Button";
 import TileButton from "../components/calculator/TileButton";
 import CircleButton from "../components/CircleButton";
-import Left from "../components/icons/heroicons/Left";
-import Right from "../components/icons/heroicons/Right";
-import Up from "../components/icons/heroicons/Up";
 import JumpButton from "../components/JumpButton";
 import VerticalRow from "../components/layout/VerticalRow";
 import H from "../components/text/H";
@@ -39,12 +37,12 @@ export default function Reference() {
                 void navigate("/", { replace: true });
               }}
             >
-              <Left />
+              <HiArrowLeft />
             </CircleButton>
           </div>
           <div className="invisible fixed right-2 bottom-2 z-10 flex flex-col gap-y-2 sm:visible lg:right-8 lg:bottom-4">
             <JumpButton element={tabsEl}>
-              <Up />
+              <HiArrowUp />
             </JumpButton>
           </div>
           <div
@@ -217,7 +215,7 @@ function YakuReference() {
                       className="relative flex w-full flex-row items-center justify-around pl-6 lg:pl-10"
                     >
                       <div className="absolute left-0 flex w-4 flex-col items-center justify-center lg:w-8">
-                        <Right />
+                        <HiArrowRight />
                       </div>
                       <YakuItem yaku={referenceToYaku(z)} />
                     </div>

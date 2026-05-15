@@ -1,13 +1,12 @@
 import clsx from "clsx";
 import { produce } from "immer";
 import { type ReactNode, useState } from "react";
+import { HiChip, HiQuestionMarkCircle } from "react-icons/hi";
 import type { DraftFunction } from "use-immer";
 
 import type { ScoreSettings } from "../../lib/settings";
 import { useDb } from "../../providers/DbProvider";
 import Button from "../Button";
-import Chip from "../icons/heroicons/Chip";
-import Question from "../icons/heroicons/Question";
 import CustomDialog from "../layout/CustomDialog";
 import H from "../text/H";
 import YakuDialog from "./YakuDialog";
@@ -663,8 +662,8 @@ function SettingRow({
         <span className="relative text-xl lg:text-2xl">
           {name}
           {compass && (
-            <span className="absolute mx-1 h-4 w-4">
-              <Chip />
+            <span className="absolute mx-1 h-4 w-4" title="Affects the compass">
+              <HiChip />
             </span>
           )}
         </span>
@@ -706,7 +705,7 @@ function HelpButton({
       }}
     >
       <div className="flex h-6 w-6 flex-col items-center justify-center lg:h-8 lg:w-8">
-        <Question />
+        <HiQuestionMarkCircle className="text-2xl" />
       </div>
     </button>
   );

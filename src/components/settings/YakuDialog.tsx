@@ -1,11 +1,11 @@
 import clsx from "clsx";
 import { produce } from "immer";
 import { useState } from "react";
+import { HiQuestionMarkCircle } from "react-icons/hi";
 import { type DraftFunction } from "use-immer";
 
 import { type Yaku, YakuList } from "../../lib/yaku";
 import Button from "../Button";
-import Question from "../icons/heroicons/Question";
 import CustomDialog from "../layout/CustomDialog";
 import H from "../text/H";
 import Tiles from "../Tiles";
@@ -211,7 +211,7 @@ function HelpButton({
       }}
     >
       <div className="flex h-6 w-6 flex-col items-center justify-center lg:h-8 lg:w-8">
-        <Question />
+        <HiQuestionMarkCircle />
       </div>
     </button>
   );

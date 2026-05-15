@@ -1,8 +1,6 @@
 import clsx from "clsx";
 import { type ReactNode } from "react";
-
-import Minus from "./icons/heroicons/Minus";
-import Plus from "./icons/heroicons/Plus";
+import { HiMinus, HiPlus } from "react-icons/hi";
 
 export default function Counter({
   onIncrement,
@@ -29,7 +27,7 @@ export default function Counter({
         className="flex w-[15%] items-center justify-center rounded-xl rounded-r-none border border-r-0 border-gray-800 bg-gray-50 shadow hover:bg-gray-200 disabled:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 dark:disabled:bg-gray-800 dark:disabled:text-gray-600"
       >
         <div className="h-4 w-4 lg:h-6 lg:w-6">
-          <Minus />
+          <HiMinus />
         </div>
       </button>
       <div className="flex w-[70%] items-center justify-center border border-gray-800 bg-gray-50 p-1 lg:p-2 dark:bg-gray-500">
@@ -41,7 +39,7 @@ export default function Counter({
         className="flex w-[15%] items-center justify-center rounded-xl rounded-l-none border border-l-0 border-gray-800 bg-gray-50 shadow hover:bg-gray-200 disabled:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 dark:disabled:bg-gray-800 dark:disabled:text-gray-600"
       >
         <div className="h-4 w-4 lg:h-6 lg:w-6">
-          <Plus />
+          <HiPlus />
         </div>
       </button>
     </div>

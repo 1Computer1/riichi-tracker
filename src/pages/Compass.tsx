@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { HiArrowLeft, HiArrowUp, HiCog } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import TileButton from "../components/calculator/TileButton";
@@ -9,9 +10,6 @@ import { DrawDialog } from "../components/compass/DrawDialog";
 import ScoreDisplay from "../components/compass/ScoreDisplay";
 import { ScoreUpdateDialog } from "../components/compass/ScoreUpdateDialog";
 import { WinnerDialog } from "../components/compass/WinnerDialog";
-import Cog from "../components/icons/heroicons/Cog";
-import Left from "../components/icons/heroicons/Left";
-import Up from "../components/icons/heroicons/Up";
 import BlocksShuffleThree from "../components/loading/react-svg-spinners/BlocksShuffleThree";
 import { type Game } from "../data/interfaces";
 import { nextWind, translateWind } from "../lib/hand";
@@ -269,7 +267,7 @@ function CompassWithGame({
                   void navigate("/", { replace: true });
                 }}
               >
-                <Left />
+                <HiArrowLeft />
               </CircleButton>
             </div>
             <div className="landscape:hidden">
@@ -278,7 +276,7 @@ function CompassWithGame({
                   void navigate("/", { replace: true });
                 }}
               >
-                <Up />
+                <HiArrowUp />
               </CircleButton>
             </div>
             <CircleButton
@@ -286,7 +284,7 @@ function CompassWithGame({
                 setOpenAdvancedDialog(true);
               }}
             >
-              <Cog />
+              <HiCog />
             </CircleButton>
           </div>
         </div>
