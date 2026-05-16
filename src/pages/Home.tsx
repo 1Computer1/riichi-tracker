@@ -36,7 +36,11 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-200 text-black dark:bg-gray-900 dark:text-white">
       <div className="fixed top-0 right-0">
-        <a href="https://github.com/1Computer1/riichi-tracker">
+        <a
+          href="https://github.com/1Computer1/riichi-tracker"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img
             src={`${import.meta.env.BASE_URL}github/github-corner-right.svg`}
           />
