@@ -353,6 +353,7 @@ function CompassWithGame({
               onScoreClick={() => setScoreUpdater(0)}
               onTileClick={() => setWinner(0)}
               onRiichiClick={() => void toggleRiichiStick(0)}
+              playerLabel="P1"
             />
           </div>
           <div className="h-fit w-[min(70vh,70vw)]">
@@ -363,6 +364,7 @@ function CompassWithGame({
               onScoreClick={() => setScoreUpdater(1)}
               onTileClick={() => setWinner(1)}
               onRiichiClick={() => void toggleRiichiStick(1)}
+              playerLabel="P2"
             />
           </div>
           <div className="h-fit w-[min(70vh,70vw)]">
@@ -373,6 +375,7 @@ function CompassWithGame({
               onScoreClick={() => setScoreUpdater(2)}
               onTileClick={() => setWinner(2)}
               onRiichiClick={() => void toggleRiichiStick(2)}
+              playerLabel="P3"
             />
           </div>
           {settings.sanma == null && (
@@ -384,6 +387,7 @@ function CompassWithGame({
                 onScoreClick={() => setScoreUpdater(3)}
                 onTileClick={() => setWinner(3)}
                 onRiichiClick={() => void toggleRiichiStick(3)}
+                playerLabel="P4"
               />
             </div>
           )}
@@ -433,6 +437,7 @@ function ScoreDisplayInCompass({
   onScoreClick,
   onTileClick,
   onRiichiClick,
+  playerLabel,
 }: {
   game: Game;
   ix: number;
@@ -441,6 +446,7 @@ function ScoreDisplayInCompass({
   onScoreClick?: () => void;
   onTileClick?: () => void;
   onRiichiClick?: () => void;
+  playerLabel?: string;
 }) {
   const { bottomWind, scores, riichi, settings } = game;
   return (
@@ -454,6 +460,7 @@ function ScoreDisplayInCompass({
       onScoreClick={onScoreClick}
       onTileClick={onTileClick}
       onRiichiClick={onRiichiClick}
+      playerLabel={playerLabel}
     />
   );
 }

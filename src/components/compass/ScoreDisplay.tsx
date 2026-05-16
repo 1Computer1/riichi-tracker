@@ -15,6 +15,7 @@ export default function ScoreDisplay({
   onScoreClick,
   onTileClick,
   onRiichiClick,
+  playerLabel,
 }: {
   score: number;
   oldScore?: number;
@@ -25,6 +26,7 @@ export default function ScoreDisplay({
   onScoreClick?: () => void;
   onTileClick?: () => void;
   onRiichiClick?: () => void;
+  playerLabel?: string;
 }) {
   const [animDone, setAnimDone] = useState(false);
   useEffect(() => {
@@ -54,22 +56,29 @@ export default function ScoreDisplay({
         "items-center justify-center gap-1",
       )}
     >
-      <button
-        onClick={onRiichiClick}
-        className={clsx(
-          "rounded-xl border border-gray-800 text-center text-sm shadow md:text-lg lg:text-2xl",
-          vertical
-            ? "h-40 w-9 px-1.5 py-8 lg:h-80 lg:w-14"
-            : "h-9 w-40 px-8 py-1.5 lg:h-14 lg:w-80",
-          riichi
-            ? "bg-amber-500 enabled:hover:bg-amber-600 dark:bg-amber-700 dark:enabled:hover:bg-amber-800"
-            : "bg-gray-50 enabled:hover:bg-gray-200 dark:bg-gray-500 dark:enabled:hover:bg-gray-600",
+      <div className="justify-centers flex flex-row items-center gap-x-2">
+        <button
+          onClick={onRiichiClick}
+          className={clsx(
+            "rounded-xl border border-gray-800 text-center text-sm shadow md:text-lg lg:text-2xl",
+            vertical
+              ? "h-40 w-9 px-1.5 py-8 lg:h-80 lg:w-14"
+              : "h-9 w-40 px-8 py-1.5 lg:h-14 lg:w-80",
+            riichi
+              ? "bg-amber-500 enabled:hover:bg-amber-600 dark:bg-amber-700 dark:enabled:hover:bg-amber-800"
+              : "bg-gray-50 enabled:hover:bg-gray-200 dark:bg-gray-500 dark:enabled:hover:bg-gray-600",
+          )}
+        >
+          <span className={clsx(vertical ? "[writing-mode:vertical-rl]" : "")}>
+            Riichi
+          </span>
+        </button>
+        {playerLabel && (
+          <div className="rounded bg-slate-300 p-0.5 shadow lg:p-1 dark:bg-sky-900">
+            <H>{playerLabel}</H>
+          </div>
         )}
-      >
-        <span className={clsx(vertical ? "[writing-mode:vertical-rl]" : "")}>
-          Riichi
-        </span>
-      </button>
+      </div>
       <div
         className={clsx(
           vertical
