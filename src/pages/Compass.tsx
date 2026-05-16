@@ -12,6 +12,7 @@ import { ScoreUpdateDialog } from "../components/compass/ScoreUpdateDialog";
 import { WinnerDialog } from "../components/compass/WinnerDialog";
 import BlocksShuffleThree from "../components/loading/react-svg-spinners/BlocksShuffleThree";
 import { type Game } from "../data/interfaces";
+import useLocalStorage from "../hooks/useLocalStorage";
 import { nextWind, translateWind } from "../lib/hand";
 import { type CompassState } from "../lib/states";
 import { useDb } from "../providers/DbProvider";
@@ -67,6 +68,8 @@ function CompassWithGame({
   const db = useDb();
   const navigate = useNavigate();
 
+  const [useFourWayCompass] = useLocalStorage("useFourWayCompass");
+
   const { roundWind, round, repeats, scores, riichi, riichiSticks, settings } =
     game;
 
@@ -104,7 +107,7 @@ function CompassWithGame({
     }
   };
 
-  return (
+  return useFourWayCompass !== "false" ? (
     <div className="relative h-screen w-screen">
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
         <div className="h-fit w-[min(70vh,70vw)]">
@@ -289,6 +292,135 @@ function CompassWithGame({
           </div>
         </div>
       </div>
+    </div>
+  ) : (
+    <div className="flex flex-row justify-center">
+      <div className="h-screen w-full overflow-y-auto">
+        <div className="flex min-h-screen w-full flex-col items-center justify-center gap-y-2 p-2">
+          <div
+            data-1c1
+            className="h-fit w-[min(70vh,70vw)] rounded-xl bg-slate-300 p-1.5 shadow lg:px-2 lg:py-2 dark:bg-sky-900"
+          >
+            <div className="flex w-full flex-row items-center justify-between gap-4">
+              <div className="flex flex-col items-center justify-center">
+                <TileButton
+                  onClick={() => {
+                    setOpenDrawDialog(true);
+                  }}
+                  tile={`${roundWind}z`}
+                />
+              </div>
+              <span className="flex flex-col items-center justify-between gap-y-2 text-xl lg:text-4xl">
+                <span>
+                  {translateWind(roundWind)} {round}
+                </span>
+                <span className="flex flex-row items-center justify-center gap-x-4">
+                  <span className="flex flex-row items-center justify-center gap-x-2">
+                    <span className="mt-2 rotate-90 text-slate-900 lg:mt-2 dark:text-slate-400">
+                      ⠿
+                    </span>
+                    <span>{repeats}</span>
+                  </span>
+                  <span className="flex flex-row items-center justify-center gap-x-2">
+                    <span className="text-red-500 dark:text-red-600">●</span>
+                    <span>{riichiSticks}</span>
+                  </span>
+                </span>
+              </span>
+              <div className="flex flex-col gap-2">
+                <CircleButton
+                  onClick={() => {
+                    void navigate("/", { replace: true });
+                  }}
+                >
+                  <HiArrowLeft />
+                </CircleButton>
+                <CircleButton
+                  onClick={() => {
+                    setOpenAdvancedDialog(true);
+                  }}
+                >
+                  <HiCog />
+                </CircleButton>
+              </div>
+            </div>
+          </div>
+          <div className="h-fit w-[min(70vh,70vw)]">
+            <ScoreDisplayInCompass
+              ix={0}
+              oldScores={oldScores}
+              game={game}
+              onScoreClick={() => setScoreUpdater(0)}
+              onTileClick={() => setWinner(0)}
+              onRiichiClick={() => void toggleRiichiStick(0)}
+            />
+          </div>
+          <div className="h-fit w-[min(70vh,70vw)]">
+            <ScoreDisplayInCompass
+              ix={1}
+              oldScores={oldScores}
+              game={game}
+              onScoreClick={() => setScoreUpdater(1)}
+              onTileClick={() => setWinner(1)}
+              onRiichiClick={() => void toggleRiichiStick(1)}
+            />
+          </div>
+          <div className="h-fit w-[min(70vh,70vw)]">
+            <ScoreDisplayInCompass
+              ix={2}
+              oldScores={oldScores}
+              game={game}
+              onScoreClick={() => setScoreUpdater(2)}
+              onTileClick={() => setWinner(2)}
+              onRiichiClick={() => void toggleRiichiStick(2)}
+            />
+          </div>
+          {settings.sanma == null && (
+            <div className="h-fit w-[min(70vh,70vw)]">
+              <ScoreDisplayInCompass
+                ix={3}
+                oldScores={oldScores}
+                game={game}
+                onScoreClick={() => setScoreUpdater(3)}
+                onTileClick={() => setWinner(3)}
+                onRiichiClick={() => void toggleRiichiStick(3)}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      {scoreUpdater != null && (
+        <ScoreUpdateDialog
+          gameId={locState.id}
+          game={game}
+          scoreUpdater={scoreUpdater}
+          onScoreUpdate={(x) => setOldScores(x)}
+          onClose={() => setScoreUpdater(null)}
+        />
+      )}
+      {winner != null && (
+        <WinnerDialog
+          gameId={locState.id}
+          game={game}
+          winner={winner}
+          onClose={() => setWinner(null)}
+        />
+      )}
+      {openDrawDialog && (
+        <DrawDialog
+          gameId={locState.id}
+          game={game}
+          onScoreUpdate={(x) => setOldScores(x)}
+          onClose={() => setOpenDrawDialog(false)}
+        />
+      )}
+      {openAdvancedDialog && (
+        <AdvancedDialog
+          gameId={locState.id}
+          game={game}
+          onClose={() => setOpenAdvancedDialog(false)}
+        />
+      )}
     </div>
   );
 }

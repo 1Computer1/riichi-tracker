@@ -23,6 +23,8 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
   const [newCompassSettings, setNewCompassSettings] = useState(DefaultSettings);
   const initialScoreInputRef = useRef<HTMLInputElement | null>(null);
 
+  const [useFourWayCompass, setUseFourWayCompass] =
+    useLocalStorage("useFourWayCompass");
   const [prefersQuick, setPrefersQuick] = useLocalStorage("prefersQuick");
 
   const submitNewCompass = async () => {
@@ -82,8 +84,20 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
             />
           </div>
           <ToggleOnOff
-            toggled={prefersQuick != null}
-            onToggle={() => setPrefersQuick(prefersQuick ? null : "true")}
+            toggled={useFourWayCompass !== "false"}
+            onToggle={() =>
+              setUseFourWayCompass(
+                useFourWayCompass === "false" ? "true" : "false",
+              )
+            }
+          >
+            Four-Way Compass
+          </ToggleOnOff>
+          <ToggleOnOff
+            toggled={prefersQuick === "true"}
+            onToggle={() =>
+              setPrefersQuick(prefersQuick === "true" ? "false" : "true")
+            }
           >
             Prefer Han &amp; Fu Input
           </ToggleOnOff>
