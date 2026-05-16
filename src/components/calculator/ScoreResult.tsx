@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { type CalculatedValue } from "../../lib/hand";
+import { type CalculatedPattern, type CalculatedValue } from "../../lib/hand";
 import H from "../text/H";
 import PointsResult from "./PointsResult";
 
@@ -101,8 +101,114 @@ function ScoreResultSheet({
               </button>
             </div>
           )}
+          {result.pattern && (
+            <ul className="mt-8 flex list-disc flex-col items-start justify-center gap-y-0.5 lg:mt-16 lg:ml-8 lg:gap-y-1">
+              {result.pattern.map((p, i) => (
+                <li key={i}>
+                  <PatternText pattern={p} />
+                </li>
+              ))}
+            </ul>
+          )}
         </>
       )}
     </div>
   );
+}
+
+function PatternText({ pattern }: { pattern: CalculatedPattern }) {
+  switch (pattern.t) {
+    case "base": {
+      return (
+        <>
+          <H>{pattern.fu}</H> base fu.
+        </>
+      );
+    }
+    case "chiitoi": {
+      return (
+        <>
+          <H>{pattern.fu}</H> base fu for Seven Pairs.
+        </>
+      );
+    }
+    case "pinfuTsumo": {
+      return (
+        <>
+          <H>+{pattern.fu}</H> fu for Pinfu tsumo.
+        </>
+      );
+    }
+    case "closedRon": {
+      return (
+        <>
+          <H>+{pattern.fu}</H> fu for closed ron.
+        </>
+      );
+    }
+    case "rinshanTsumo": {
+      return (
+        <>
+          <H>+{pattern.fu}</H> fu for After a Kan tsumo.
+        </>
+      );
+    }
+    case "tsumo": {
+      return (
+        <>
+          <H>+{pattern.fu}</H> fu for tsumo.
+        </>
+      );
+    }
+    case "openPinfu": {
+      return (
+        <>
+          <H>+{pattern.fu}</H> fu for having an open hand with 20 fu.
+        </>
+      );
+    }
+    case "yakuhaiPair": {
+      return (
+        <>
+          <H>+{pattern.fu}</H> fu for a yakuhai pair
+          {pattern.double ? " (double)" : ""}.
+        </>
+      );
+    }
+    case "quad": {
+      return (
+        <>
+          <H>+{pattern.fu}</H> fu for
+          {pattern.open ? " an open" : " a closed"}
+          {pattern.yaochuu ? " non-simple" : ""} kan.
+        </>
+      );
+    }
+    case "triplet": {
+      return (
+        <>
+          <H>+{pattern.fu}</H> fu for
+          {pattern.open ? " an open" : " a closed"}
+          {pattern.yaochuu ? " non-simple" : ""} triplet.
+        </>
+      );
+    }
+    case "wait": {
+      return (
+        <>
+          <H>+{pattern.fu}</H> fu for winning on{" "}
+          {
+            {
+              ryanmen: "an open",
+              shanpon: "a dual pair",
+              kanchan: "a closed",
+              penchan: "an edge",
+              tanki: "a pair",
+            }[pattern.w]
+          }{" "}
+          wait.
+        </>
+      );
+    }
+  }
 }

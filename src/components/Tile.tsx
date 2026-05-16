@@ -21,7 +21,7 @@ export default function Tile({
   const [brightTiles] = useLocalStorage("brightTiles");
 
   const [text, label, color] =
-    tile === "00" ? ([" ", "base"] as const) : shortForTile(tile);
+    tile === "00" ? ([" ", " "] as const) : shortForTile(tile);
 
   if (small && !isLg) {
     return (

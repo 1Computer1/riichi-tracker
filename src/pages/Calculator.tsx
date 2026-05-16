@@ -700,6 +700,7 @@ function CalculatorWithGame({
                       yaku: [],
                       han,
                       fu,
+                      pattern: null,
                       name: null,
                     }}
                     pao={locState.t === "transfer" && locState.pao != null}

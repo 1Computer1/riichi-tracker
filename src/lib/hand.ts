@@ -1,4 +1,4 @@
-import Riichi from "riichi";
+import Riichi, { type Pattern } from "riichi";
 
 import { type ScoreSettings } from "./settings";
 import { YakuList, YakuSort } from "./yaku";
@@ -303,8 +303,15 @@ export type CalculatedValue = CalculatedPoints & {
   noYaku: boolean;
   han: number;
   fu: number;
+  pattern: CalculatedPattern[] | null;
   name: string | null;
 };
+
+type ReplaceTiles<T> = T extends { v: string | string[] }
+  ? Omit<T, "v"> & { v: TileCode[] }
+  : T;
+
+export type CalculatedPattern = ReplaceTiles<Pattern>;
 
 export function convertHand(hand: Hand, sanma: boolean): string {
   let s = "";
@@ -458,6 +465,7 @@ export function convertValue(hand: Hand, res: Riichi.Result): CalculatedValue {
     noYaku: res.noYaku,
     han: res.han,
     fu: res.fu,
+    pattern: res.pattern as CalculatedPattern[],
     name: res.name ? translateScore(res.name) : null,
   };
 }
