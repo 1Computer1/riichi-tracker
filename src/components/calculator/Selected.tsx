@@ -1,6 +1,6 @@
 import { type ForwardedRef, forwardRef } from "react";
 
-import { type Hand, isDora,type Meld, type TileCode } from "../../lib/hand";
+import { type Hand, isDora, type Meld, type TileCode } from "../../lib/hand";
 import { Placeholder } from "../Tile";
 import MeldButton from "./MeldButton";
 import TileButton from "./TileButton";
@@ -22,12 +22,12 @@ export default forwardRef(function Selected(
   return (
     <div
       ref={ref}
-      className="flex min-w-min flex-row flex-wrap items-center justify-center gap-x-2 gap-y-0.5"
+      className="flex min-w-min flex-row items-center justify-center gap-x-2 gap-y-0.5"
     >
       {hand.tiles.length || hand.melds.length ? (
         <>
           {hand.tiles.length > 0 && (
-            <div className="flex flex-row flex-wrap items-center justify-center gap-0.5">
+            <div className="flex flex-row items-center justify-center gap-0.5">
               {hand.tiles.map((t, i) => (
                 <TileButton
                   key={i}

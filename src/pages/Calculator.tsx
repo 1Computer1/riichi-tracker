@@ -808,7 +808,7 @@ function CalculatorWithGame({
                     </button>
                   )}
                 </div>
-                <HorizontalRow>
+                <HorizontalRow className="overflow-x-auto overflow-y-clip">
                   <Selected
                     ref={setSelectedTilesEl}
                     hand={hand}
