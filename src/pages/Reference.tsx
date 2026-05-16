@@ -524,16 +524,24 @@ function ScoreReference() {
                   </ul>
                 </li>
                 <li>
-                  <H>+2</H> fu per triplet:
+                  <H>+4</H> fu per triplet:
                   <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                     <li>
-                      <H>x2</H> if concealed.
+                      <H>÷2</H> if open.
                     </li>
                     <li>
-                      <H>x2</H> if terminals or honors.
+                      <H>×2</H> if terminals or honors.
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <H>+16</H> fu per kan:
+                  <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
+                    <li>
+                      <H>÷2</H> if open.
                     </li>
                     <li>
-                      <H>x4</H> if kan.
+                      <H>×2</H> if terminals or honors.
                     </li>
                   </ul>
                 </li>
