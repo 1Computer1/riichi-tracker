@@ -1,0 +1,680 @@
+{
+  "calc": {
+    "addDoraIndicator": "Add Dora Indicator",
+    "addUradoraIndicator": "Add Uradora Indicator",
+    "doraIndicators": "Dora <Sm>Indicators</Sm>",
+    "error": {
+      "gameDoesNotExist": "Error: Game {{id}} does not exist.",
+      "settingsIdDoesNotExist": "Error: Settings {{id}} does not exist."
+    },
+    "extraDora": "Dora ({{extraDoraHan}})",
+    "extraYaku": "Yaku ({{extraYakuHan}})",
+    "extraYakuman": "Yakuman ({{extraYakuman}})",
+    "fromAll": "<H>{{points}}</H> from all",
+    "fromBoth": "<H>{{points}}</H> from both",
+    "fromLiable": "<H>{{points}}</H> from liable",
+    "fuReference": {
+      "$": "Fu Reference",
+      "fu": {
+        "base": "<H>20</H> base fu.",
+        "closedRon": "<H>+10</H> for winning with closed ron.",
+        "ifNonSimple": "<H>×2</H> if terminals or honors.",
+        "ifOpen": "<H>÷2</H> if open.",
+        "openPinfu": "<H>+2</H> for winning with an open hand if at 20 fu.",
+        "perKan": "<H>+16</H> fu per kan:",
+        "perTriplet": "<H>+4</H> fu per triplet:",
+        "sevenPairs": "Chiitoi is always <H>25</H> fu and not rounded.",
+        "singleWait": "<H>+2</H> for winning on a wait with one tile.",
+        "tsumo": "<H>+2</H> for winning with tsumo unless with Pinfu.",
+        "tsumoNoRinshanFu": "<H>+2</H> for winning with tsumo unless with Pinfu or Rinshan Kaihou.",
+        "yakuhaiPair": "<H>+2</H> per yakuhai pair and additional <H>+2</H> if double wind.",
+        "yakuhaiPairNoDouble": "<H>+2</H> per yakuhai pair."
+      },
+      "roundUp": "Round up to the nearest 10."
+    },
+    "kita": "Kita ({{nukidora}})",
+    "notEnoughTiles": "Not enough tiles to form a complete hand.",
+    "noYaku": "No Yaku",
+    "pattern": {
+      "base": "<H>{{fu}}</H> base fu.",
+      "chiitoi": "<H>{{fu}}</H> base fu for Chiitoi.",
+      "closedRon": "<H>+{{fu}}</H> fu for closed ron.",
+      "openPinfu": "<H>+{{fu}}</H> fu for having an open hand with 20 fu.",
+      "pinfuTsumo": "<H>+{{fu}}</H> fu for Pinfu tsumo.",
+      "quad": {
+        "closed": "<H>+{{fu}}</H> fu for a closed kan.",
+        "closedYaochuu": "<H>+{{fu}}</H> fu for a non-simple closed kan.",
+        "open": "<H>+{{fu}}</H> fu for an open kan.",
+        "openYaochuu": "<H>+{{fu}}</H> fu for a non-simple open kan."
+      },
+      "rinshanTsumo": "<H>+{{fu}}</H> fu for Rinshan Kaihou tsumo.",
+      "triplet": {
+        "closed": "<H>+{{fu}}</H> fu for a closed triplet.",
+        "closedYaochuu": "<H>+{{fu}}</H> fu for a non-simple closed triplet.",
+        "open": "<H>+{{fu}}</H> fu for an open triplet.",
+        "openYaochuu": "<H>+{{fu}}</H> fu for a non-simple open triplet."
+      },
+      "tsumo": "<H>+{{fu}}</H> fu for tsumo.",
+      "wait": {
+        "kanchan": "<H>+{{fu}}</H> fu for a winning on a kanchan wait.",
+        "penchan": "<H>+{{fu}}</H> fu for a winning on a penchan wait.",
+        "ryanmen": "<H>+{{fu}}</H> fu for a winning on a ryanmen wait.",
+        "shanpon": "<H>+{{fu}}</H> fu for a winning on a shanpon wait.",
+        "tanki": "<H>+{{fu}}</H> fu for a winning on a tanki wait."
+      },
+      "yakuhaiPair": {
+        "double": "<H>+{{fu}}</H> fu for a double wind yakuhai pair.",
+        "single": "<H>+{{fu}}</H> fu for a yakuhai pair."
+      }
+    },
+    "points": "Points",
+    "pointsCalculator": "Points Calculator",
+    "pointsToTake": "Points to take",
+    "round": "Round",
+    "scoreCalculator": "Score Calculator",
+    "seat": "Seat",
+    "selectFu": "Select Fu",
+    "selectHan": "Select Han",
+    "tilesNotValid": "Tiles do not form a valid winning hand.",
+    "transferCalculatedScore": "Transfer Calculated Score",
+    "transferPoints": "Transfer Points",
+    "uradoraIndicators": "Uradora <Sm>Indicators</Sm>"
+  },
+  "common": {
+    "baiman": "Baiman",
+    "chii": "Chii",
+    "clear": "Clear",
+    "close": "Close",
+    "closedKan": "Closed Kan",
+    "continue": "Continue",
+    "dark": "Dark",
+    "east": "East",
+    "fu": "Fu",
+    "fuvalue": "<H>{{fu}}</H> Fu",
+    "green": "Hatsu",
+    "han": "Han",
+    "haneman": "Haneman",
+    "hanfuvalue": "<H>{{han}}</H> Han <H>{{fu}}</H> Fu",
+    "hanvalue": "<H>{{han}}</H> Han",
+    "kan": "Kan",
+    "kazoeyakuman": "Kazoe Yakuman",
+    "light": "Light",
+    "mangan": "Mangan",
+    "north": "North",
+    "pon": "Pon",
+    "red": "Chun",
+    "ron": "Ron",
+    "sanbaiman": "Sanbaiman",
+    "south": "South",
+    "start": "Start",
+    "submit": "Submit",
+    "tsumo": "Tsumo",
+    "west": "West",
+    "white": "Haku",
+    "yakuman": {
+      "1": "Yakuman",
+      "2": "Double Yakuman",
+      "3": "Triple Yakuman",
+      "4": "Quadruple Yakuman",
+      "5": "Quintuple Yakuman",
+      "6": "Sextuple Yakuman",
+      "over": "{{value}}× Yakuman"
+    }
+  },
+  "compass": {
+    "abort": "Abort",
+    "calculateHand": "Calculate Hand",
+    "chombo": "Chombo",
+    "dealerRepeat": "Dealer Repeat",
+    "dealtinPlayer": "Dealt-In Player",
+    "drawType": "Draw Type",
+    "editScore": "Edit Score",
+    "exhaust": "Exhaust",
+    "gameIdDoesNotExist": "Error: Game {{id}} does not exist.",
+    "handleDraws": "Handle Draws",
+    "otherActions": "Other Actions",
+    "pao": "Pao",
+    "paysOutReverseMangan": "Pays out a <H>reverse mangan</H>.",
+    "playerInViolation": "Player in Violation",
+    "pointDistribution": "Point Distribution",
+    "readyPlayers": "Ready Players",
+    "redoesTheRound": "Redoes the round from the start.",
+    "repeatRound": "Repeat Round",
+    "repeats": "Repeats ({{repeats}})",
+    "responsiblePlayer": "Responsible Player",
+    "riichi": "Riichi",
+    "riichiSticks": "Riichi ({{riichiSticks}})",
+    "rotateSeats": "Rotate Seats",
+    "scoreRepeatSticks": "Score Repeat Sticks",
+    "scoreRiichiSticks": "Score Riichi Sticks",
+    "seatRotation": "Seat Rotation",
+    "transferPoints": "Transfer Points"
+  },
+  "home": {
+    "calculator": "Calculator",
+    "fourwayCompass": "Four-Way Compass",
+    "help": {
+      "addRiichiSticks": "Add riichi sticks by tapping on the <H>Riichi</H> button.",
+      "createCompass": "Create a <H>Compass</H> by using the <H>New Game</H> button.",
+      "drawsAndRepeats": "Handle draws and repeats by tapping on the <H>center wind tile</H>.",
+      "howToInput": "Beginners can input their hand while advanced players can input the han and fu values.<br />This can be toggled at the <H>top-right of the Calculator</H>.<br />The default input can be set with the <H>Prefer Han & Fu Input</H> option.",
+      "manuallyEditRounds": "Manually edit seats, rounds, and sticks by tapping on the <H>gear button</H>.",
+      "manuallyEditScores": "Manually edit scores by tapping on a <H>player's score display</H>.",
+      "placePhone": "Place your phone at the center of the table and enjoy!",
+      "transferScores": "Transfer scores by tapping on the <H>winning player's wind tile</H> and using the <H>Calculator</H>.",
+      "useCalculator": "You can also use the <H>Calculator</H> by itself outside of a game.",
+      "useReference": "Learn the tiles, yaku, and the scoring table in the <H>Reference</H>."
+    },
+    "initialScore": "Initial Score",
+    "keepTrackOfYourGames": "Keep track of your games!",
+    "newGame": "New Game",
+    "preferences": "Preferences",
+    "preferHanAndFuInput": "Prefer Hand & Fu Input",
+    "reference": "Reference",
+    "riichiTracker": "Riichi Tracker",
+    "settings": "Settings",
+    "yourSeatWind": "Your Seat Wind"
+  },
+  "reference": {
+    "bamboo": "Souzu",
+    "canBeRounded": "<H>3</H> han <H>60</H> fu and <H>4</H> han <H>30</H> fu can be rounded up to a <H>Mangan</H> in certain rule variations.",
+    "characters": "Manzu",
+    "circles": "Pinzu",
+    "closedOnly": "Closed only",
+    "dealer": "Dealer",
+    "dealerRon": "Dealer Ron",
+    "dealerTsumo": "Dealer Tsumo",
+    "dragons": "Dragons",
+    "easy": "Easy",
+    "formula": {
+      "baimanBasicPoints": "<H>8-10</H> = <H>Baiman</H> worth 4000 basic points.",
+      "calculateBasicPoints": "Calculate basic points with <Mono>fu×2<Sup>2+han</Sup></Mono>.",
+      "common20": "Most open hands, most closed hands tsumo, and Pinfu ron are <H>30 fu</H>.",
+      "common30": "Most closed hands ron, and most open Toitoi are <H>40 fu</H>.",
+      "common40": "Pinfu tsumo is <H>20 fu</H>.",
+      "commonFuValues": "Some common fu values:",
+      "countFuValue": "Determine fu value using hand composition, rounded up to the nearest 10:",
+      "countHanValue": "Determine yaku and dora to count up the han value.",
+      "dealerRon": "Dealer ron: <H>6x</H> from dealt-in player.",
+      "dealerTsumo": "Dealer tsumo: <H>2x</H> from all other players.",
+      "fu": {
+        "base": "<H>20</H> base fu.",
+        "closedRon": "<H>+10</H> for winning with closed ron.",
+        "ifNonSimple": "<H>×2</H> if terminals or honors.",
+        "ifOpen": "<H>÷2</H> if open.",
+        "openPinfu": "<H>+2</H> for winning with an open hand if at 20 fu.",
+        "perKan": "<H>+16</H> fu per kan:",
+        "perTriplet": "<H>+4</H> fu per triplet:",
+        "sevenPairs": "Chiitoi is always <H>25</H> fu and not rounded.",
+        "singleWait": "<H>+2</H> for winning on a wait with one tile.",
+        "tsumo": "<H>+2</H> for winning with tsumo unless with Pinfu (some rules may score <H>0</H> for Rinshan Kaihou tsumo).",
+        "yakuhaiPair": "<H>+2</H> per yakuhai pair (some rules may have <H>+4</H> for double wind pair)."
+      },
+      "hanemanBasicPoints": "<H>6-7</H> = <H>Haneman</H> worth 3000 basic points.",
+      "ifBasicPointsAboveMangan": "If above 2000 basic points but at <H>4</H> or fewer han, fix at a <H>Mangan</H> of 2000 points.",
+      "ifKiriageMangan": "If using kiriage mangan rules, round 1920 basic points to 2000.",
+      "ifManganSkip": "For han of <H>5</H> or more, counting fu is not necessary, skip to step 8:",
+      "ifYakumanSkip": "If the hand is a <H>Yakuman</H>, score 8000 basic points per <H>Yakuman</H>. Skip to step 8.",
+      "manganBasicPoints": "<H>5</H> = <H>Mangan</H> worth 2000 basic points.",
+      "nonDealerRon": "Non-dealer ron: <H>4x</H> from dealt-in player.",
+      "nonDealerTsumo": "Non-dealer tsumo: <H>1x</H> from other non-dealers, <H>2x</H> from dealer.",
+      "sanbaimanBasicPoints": "<H>11-12</H> = <H>Sanbaiman</H> worth 6000 basic points.",
+      "theGeneralFormula": "The general formula is as follows:",
+      "transferOnWin": "On a win, transfer basic points rounded up to the nearest 100:",
+      "yakumanBasicPoints": "<H>13+</H> = <H>Yakuman</H> worth 8000 basic points."
+    },
+    "gameMode": {
+      "$": "Game Mode",
+      "fourPlayer": "4-Player",
+      "threePlayer": "3-Player"
+    },
+    "hideYakuman": "Hide Yakuman",
+    "legend": "Legend",
+    "local": "Local",
+    "minusIfOpen": "-1 if open",
+    "nonDealer": "Non-Dealer",
+    "nonDealerRon": "Non-Dealer Ron",
+    "nonDealerTsumo": "Non-Dealer Tsumo",
+    "notYaku": "Not yaku",
+    "onlyEasy": "Only Easy",
+    "reference": "Reference",
+    "scoringTable": "Scoring Table",
+    "scoringTableSanma": "Scoring table in three-player is the same as four-player unless north bisection is used. In that case, points that would have been lost from the north player is redistributed.",
+    "showLocal": "Show Local",
+    "tiles": "Tiles",
+    "tsumoPoints": {
+      "$": "Tsumo Points",
+      "bisection": "Bisection",
+      "loss": "Loss"
+    },
+    "winds": "Winds",
+    "winloss": "Win/Loss",
+    "yakuList": "Yaku List"
+  },
+  "settings": {
+    "affectsTheCompass": "Affects the compass",
+    "afterKanFu": {
+      "$": "Rinshan Kaihou Fu",
+      "help": "Whether to count the <B><H>2</H> fu</B> granted by tsumo if the hand won with Rinshan Kaihou.",
+      "twoFu": "2 Fu",
+      "zeroFu": "0 Fu"
+    },
+    "allGreensDragon": {
+      "$": "Ryuuiisou Hatsu",
+      "help": "Whether to require hatsu to count Ryuuiisou.",
+      "optional": "Optional",
+      "required": "Required"
+    },
+    "brightTiles": {
+      "$": "Bright Tiles",
+      "help": "Color theme to use. Click on the currently set theme to reset to system theme."
+    },
+    "common": {
+      "allow": "Allow",
+      "disable": "Disable",
+      "disallow": "Disallow",
+      "enable": "Enable",
+      "hide": "Hide",
+      "show": "Show"
+    },
+    "copyFromCalculator": "Copy From Calculator",
+    "countedYakuman": {
+      "$": "Kazoe Yakuman",
+      "help": "Whether to count a hand worth at least <H>13</H> han as <B>Yakuman</B> or as <B>Sanbaiman</B>.",
+      "sanbaiman": "Sanbaiman",
+      "yakuman": "Yakuman"
+    },
+    "doubleWindFu": {
+      "$": "Double Wind Fu",
+      "fourFu": "4 Fu",
+      "help": "Whether to count a wind pair that is both the round wind and the seat wind as <B><H>4</H> fu</B> or <B><H>2</H> fu</B>.",
+      "twoFu": "2 Fu"
+    },
+    "doubleYakuman": {
+      "$": "Double Yakuman",
+      "help": "Whether to count certain special yaku as being worth a <H>Double Yakuman</H>.<br />These include:"
+    },
+    "gameMode": {
+      "$": "Game Mode",
+      "fourPlayer": "Four-Player",
+      "help": "The number of players in the game.<br /><B>Three-player</B> mahjong uses the sanma rules, which includes no chii, no 2 to 8 of manzu, and kita.",
+      "threePlayer": "Three-Player"
+    },
+    "language": {
+      "$": "Language",
+      "help": "The language of the interface."
+    },
+    "northTiles": {
+      "$": "North Tiles",
+      "help": "North tiles can either be called with <B>kita</B> or used as <B>yakuhai</B> regardless of wind in three-player mahjong. With <B>kita</B>, a counter will be added to count north tiles.",
+      "kita": "Kita",
+      "yakuhai": "Yakuhai"
+    },
+    "noYakuDora": {
+      "$": "No Yaku Dora",
+      "help": "Whether to calculate dora even when with no yaku."
+    },
+    "noYakuFu": {
+      "$": "No Yaku Fu",
+      "help": "Whether to calculate fu even when with no yaku. Hands will have <H>0</H> han."
+    },
+    "openAllSimples": {
+      "$": "Open Tanyao",
+      "help": "Whether to allow Tanyao to be counted if the hand has open sets."
+    },
+    "otherScoring": {
+      "$": "Other Scoring",
+      "help": "Whether to show counters to add in extra yaku han, dora, and yakuman.<br />These can be used for purposes such as extra red fives, other dora, and unsupported local yaku."
+    },
+    "paoPayment": {
+      "$": "Pao Payment",
+      "help": "Whether to show the ability to distribute points using pao.<br />This is used when a player aids in the creation of a <H>Yakuman</H>.<br />With tsumo, the responsible player will pay full amount.<br />With ron, the responsible player and the player who dealt in will each pay half."
+    },
+    "redFives": {
+      "$": "Akadora",
+      "disable": "0 Akadora",
+      "enable": "{{fives}} Akadora",
+      "help": "The number of akadora available in the calculator when building a hand."
+    },
+    "roundedMangan": {
+      "$": "Kiriage Mangan",
+      "help": "Whether to round up hands worth <H>4</H> han <H>30</H> fu or <H>3</H> han <H>60</H> fu to a <H>Mangan</H>.<br />Otherwise, they are worth the usual 2000/3900 and 7700 (non-dealer) or 3900 and 11600 (dealer).",
+      "noRounding": "No Rounding",
+      "rounded": "Rounded"
+    },
+    "showTileNames": {
+      "$": "Show Tile Names",
+      "help": "Whether to show a short abbreviation of the name of the tile in the corner of tiles."
+    },
+    "theme": {
+      "$": "Theme",
+      "help": "The color theme of the interface. Toggle the currently selected to theme to reset to the system's theme."
+    },
+    "toggleAll": "Toggle All",
+    "toggleLocalYaku": "Toggle Local Yaku",
+    "toggleYaku": {
+      "$": "Toggle Yaku",
+      "help": "Toggle the yaku available in the calculator.<br /><B>Optional yaku</B> are some of the usual yaku, enabled by default. They may be disabled if needed.<br /><B>Local yaku</B> are generally less common and are disabled by default.",
+      "local": "Local Yaku (+{{length}})",
+      "optional": "Optional Yaku (-{{length}})"
+    },
+    "tsumoPoints": {
+      "$": "Tsumo Points",
+      "bisection": "Bisection",
+      "help": "The distribution of points when a player wins with tsumo.<br />If <B>Loss</B> is enabled the base points are the same as in four player. In effect, the winning player loses the points from the missing north player. If <B>Bisection</B> is enabled, the base points will include the points from the north player that should have been paid. In effect, the other two players will pay more.",
+      "loss": "Loss"
+    },
+    "yakumanStacking": {
+      "$": "Yakuman Stacking",
+      "help": "Whether to allow stacking multiple <H>Yakuman</H> together or cap the max at a single <H>Yakuman</H>.<br /><H>Double Yakuman</H> are also disabled if this is disabled."
+    }
+  },
+  "yaku": {
+    "akadora": {
+      "$": "Akadora",
+      "help": ""
+    },
+    "bakazeEast": {
+      "$": "Prevalent Wind (East)",
+      "help": ""
+    },
+    "bakazeNorth": {
+      "$": "Prevalent Wind (North)",
+      "help": ""
+    },
+    "bakazeSouth": {
+      "$": "Prevalent Wind (South)",
+      "help": ""
+    },
+    "bakazeWest": {
+      "$": "Prevalent Wind (West)",
+      "help": ""
+    },
+    "benikujaku": {
+      "$": "Benikujaku",
+      "help": "A hand composed using only red souzu tiles (1, 5, 7, 9) and/or chun."
+    },
+    "chankan": {
+      "$": "Chankan",
+      "help": "Win off a player upgrading a pon into a kan."
+    },
+    "chiihou": {
+      "$": "Chiihou",
+      "help": "Call tsumo on your first as a non-dealer. Calls invalidate."
+    },
+    "chiitoitsu": {
+      "$": "Chiitoi",
+      "help": "A hand consisting of seven pairs. An exception to the usual hand composition of four sets and a pair."
+    },
+    "chiniisou": {
+      "$": "Chinitsu",
+      "help": "A hand composed out of only one suit."
+    },
+    "chinroutou": {
+      "$": "Chinroutou",
+      "help": "A hand composed entirely out of terminal tiles."
+    },
+    "chun": {
+      "$": "Chun",
+      "help": ""
+    },
+    "chuurenpoutou": {
+      "$": "Chuuren Poutou",
+      "help": "A hand consisting of the tiles <B>1112345678999</B> in the same suit plus an extra tile of the same suit."
+    },
+    "daichiishin": {
+      "$": "Daichiishin",
+      "help": "A Chiitoi consisting of all seven of the honor tiles. Does not combine with all honors."
+    },
+    "daichikurin": {
+      "$": "Daichikurin",
+      "help": "A Chiitoi consisting of 2 to 8 of souzu."
+    },
+    "daisangen": {
+      "$": "Daisangen",
+      "help": "A set of each dragon."
+    },
+    "daisharin": {
+      "$": "Daisharin",
+      "help": "A Chiitoi hand consisting of 2 to 8 of pinzu."
+    },
+    "daisuurin": {
+      "$": "Daisuurin",
+      "help": "A Chiitoi hand consisting of 2 to 8 of manzu."
+    },
+    "daisuushii": {
+      "$": "Four Big Winds",
+      "help": "A set of each wind."
+    },
+    "dora": {
+      "$": "Dora",
+      "help": ""
+    },
+    "doubleriichi": {
+      "$": "Double Riichi",
+      "help": "Declare riichi with a 1000 point bet when in tenpai on your first turn. Calls invalidate. Can no longer change your hand; draws are discarded unless they are a win."
+    },
+    "haiteiraoyue": {
+      "$": "Haitei Raoyue",
+      "help": "Win on the final draw from the wall."
+    },
+    "haku": {
+      "$": "Haku",
+      "help": ""
+    },
+    "hatsu": {
+      "$": "Hatsu",
+      "help": ""
+    },
+    "honchantaiyaochuu": {
+      "$": "Chanta",
+      "help": "All tile sets in the hand contains a terminal or an honor."
+    },
+    "honiisou": {
+      "$": "Honitsu",
+      "help": "A hand composed out of only one suit and honors."
+    },
+    "honroutou": {
+      "$": "Honroutou",
+      "help": "A hand composed entirely out of terminal and honor tiles."
+    },
+    "houteiraoyui": {
+      "$": "Houtei Raoyui",
+      "help": "Win on the final discard from the wall."
+    },
+    "hyakumangoku": {
+      "$": "Hyakumangoku",
+      "help": "A full flush hand of characters, such that the numeric values sum up to at least 100."
+    },
+    "iipeikou": {
+      "$": "Iipeikou",
+      "help": "A hand with two identical sequences."
+    },
+    "ikkitsuukan": {
+      "$": "Ittsuu",
+      "help": "The sequences <B>123</B>, <B>456</B>, <B>789</B> in a single suit."
+    },
+    "ippatsu": {
+      "$": "Ippatsu",
+      "help": "Additional <H>1</H> han if you win before your next discard after calling riichi. Calls invalidate."
+    },
+    "isshokusanjun": {
+      "$": "Isshoku Sanjun",
+      "help": "A hand containing three identical sequences in the same suit."
+    },
+    "jikazeEast": {
+      "$": "Seat Wind (East)",
+      "help": ""
+    },
+    "jikazeNorth": {
+      "$": "Seat Wind (North)",
+      "help": ""
+    },
+    "jikazeSouth": {
+      "$": "Seat Wind (South)",
+      "help": ""
+    },
+    "jikazeWest": {
+      "$": "Seat Wind (West)",
+      "help": ""
+    },
+    "junchantaiyaochuu": {
+      "$": "Junchan",
+      "help": "All tile sets in the hand contains a terminal."
+    },
+    "junseichuurenpoutou": {
+      "$": "Junsei Chuuren Poutou",
+      "help": "With nine gates, win with a nine-sided wait. That is, your tenpai hand is exactly <B>1112345678999</B>."
+    },
+    "kita": {
+      "$": "Kita",
+      "help": ""
+    },
+    "kokuiisou": {
+      "$": "Kokuiisou",
+      "help": "A hand composed using only black circles tiles (2, 4, 8) and/or the wind tiles."
+    },
+    "kokushimusou": {
+      "$": "Kokushi Musou",
+      "help": "A hand with each of the thirteen different terminal and honor tiles plus an extra terminal or honor. In some rule variations, ron may be allowed on a closed kan of the winning tile."
+    },
+    "kokushimusoujuusanmenmachi": {
+      "$": "Kokushi Musou Juusanmenmachi",
+      "help": "With thirteen orphans, win with a thirteen-sided wait. That is, your tenpai hand already has one of each terminal and honor."
+    },
+    "menzenchintsumohou": {
+      "$": "Menzen Tsumo",
+      "help": "Win with tsumo with a closed hand."
+    },
+    "otakazeNorth": {
+      "$": "Guest Wind (North)",
+      "help": ""
+    },
+    "other": {
+      "dora": {
+        "$": "Dora",
+        "help": "A dora indicator is flipped at the start of each hand, pointing to the dora. Another dora indicator is flipped per kan. Ura dora indicators underneath are revealed on a riichi win.<br />Red fives are also dora. Each dora in hand counts as <H>1</H> han.<br />Winds go East → South → West → North → East.<br />Dragons go Haku → Hatsu → Chun → Haku."
+      },
+      "kazehai": {
+        "$": "Yakuhai (Winds)",
+        "help": "The round wind and/or the seat wind. Gain <H>1</H> han for each set. Gain <H>2</H> han if wind is both round and seat wind."
+      },
+      "kita": {
+        "$": "Kita",
+        "help": "In three-player mahjong, north tiles that were called counts as dora. In certain rule variations, north instead counts as yakuhai for every player."
+      },
+      "nagashimangan": {
+        "$": "Nagashi Mangan",
+        "help": "At an exhaustive draw, a <H>Mangan</H> is awarded if your discards are only terminals and honors and none were called by other players. This may be scored as a <H>Mangan</H>, <H>5</H> han, etc. depending on rule variations."
+      },
+      "sangenpai": {
+        "$": "Yakuhai (Dragons)",
+        "help": "Any of the three dragons. Gain <H>1</H> han for each set."
+      }
+    },
+    "otherDora": {
+      "$": "Other Dora",
+      "help": ""
+    },
+    "otherYaku": {
+      "$": "Other Yaku",
+      "help": ""
+    },
+    "otherYakuman": {
+      "$": "Other Yakuman",
+      "help": ""
+    },
+    "pinfu": {
+      "$": "Pinfu",
+      "help": "A hand worth <H>0</H> fu based on its composition. That is, it contains only sequences, a non-yakuhai pair (not a dragon or round/seat wind), and a two-sided open wait."
+    },
+    "renhou": {
+      "$": "Renhou",
+      "help": "Call ron before your first turn. Calls invalidate."
+    },
+    "riichi": {
+      "$": "Riichi",
+      "help": "Declare riichi with a 1000 point bet when in tenpai (one away from winning). Can no longer change your hand; draws are discarded unless they are a win."
+    },
+    "rinshankaihou": {
+      "$": "Rinshan Kaihou",
+      "help": "Win on the dead wall draw after calling kan. In three-player mahjong, a win on the dead wall draw after calling kita also counts."
+    },
+    "ryanpeikou": {
+      "$": "Ryanpeikou",
+      "help": "Two separate instances of two identical sequences. Does not combine with Chiitoi."
+    },
+    "ryuuiisou": {
+      "$": "Ryuuiisou",
+      "help": "A hand composed using only green bamboo tiles (2, 3, 4, 6, 8) and/or the green dragon. Green dragon may be required in certain rule variations."
+    },
+    "sanankou": {
+      "$": "Sanankou",
+      "help": "Three concealed triplets (not called with pon, open kan, or ron). Other sets may be open."
+    },
+    "sankantsu": {
+      "$": "Sankantsu",
+      "help": "A hand containing three kans."
+    },
+    "sanrenkou": {
+      "$": "Sanrenkou",
+      "help": "A hand containing three triplets in the same suit where their number steps by one."
+    },
+    "sanshokudoujun": {
+      "$": "Sanshoku",
+      "help": "The same sequence in each suit."
+    },
+    "sanshokudoukou": {
+      "$": "Sanshoku Doukou",
+      "help": "A hand containing the same triplet in each suit."
+    },
+    "shiiaruraotai": {
+      "$": "Shiiaru Raotai",
+      "help": "A hand with four open sets (i.e. not including closed kan) waiting for a single tile to complete. Can win on tsumo or ron."
+    },
+    "shousangen": {
+      "$": "Shousangen",
+      "help": "Two sets and a pair of each dragon. The <H>2</H> han from having two dragon triplets are still included."
+    },
+    "shousuushii": {
+      "$": "Shousuushii",
+      "help": "Three sets and a pair of each wind."
+    },
+    "suuankan": {
+      "$": "Suuankan",
+      "help": "A hand containing four kans."
+    },
+    "suuankou": {
+      "$": "Suuankou",
+      "help": "Four concealed triplets (not called with pon, open kan, or ron)."
+    },
+    "suuankoutankimachi": {
+      "$": "Suuankou Tanki",
+      "help": "With four concealed triplets, win with a single-tile wait (making a pair, allowing ron)."
+    },
+    "tanyaochuu": {
+      "$": "Tanyao",
+      "help": "A hand composed of only tiles 2 through 8. This yaku may be closed only in certain rule variations."
+    },
+    "tenhou": {
+      "$": "Tenhou",
+      "help": "Call tsumo on your first turn as the dealer. Calls invalidate."
+    },
+    "toitoihou": {
+      "$": "Toitoi",
+      "help": "A hand consisting of only triplets."
+    },
+    "tsuuiisou": {
+      "$": "Tsuuiisou",
+      "help": "A hand composed entirely out of honor tiles."
+    },
+    "uradora": {
+      "$": "Uradora",
+      "help": ""
+    },
+    "uumensai": {
+      "$": "Uumensai",
+      "help": "A hand containing all five different suits (characters, circles, bamboo, winds, and dragons)."
+    }
+  }
+}

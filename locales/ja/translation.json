@@ -1,0 +1,363 @@
+{
+  "calc": {
+    "addDoraIndicator": "",
+    "addUradoraIndicator": "",
+    "doraIndicators": "",
+    "error": {
+      "gameDoesNotExist": "",
+      "settingsIdDoesNotExist": ""
+    },
+    "extraDora": "",
+    "extraYaku": "",
+    "extraYakuman": "",
+    "fromAll": "",
+    "fromBoth": "",
+    "fromLiable": "",
+    "fuReference": {
+      "$": "",
+      "fu": {
+        "base": "",
+        "closedRon": "",
+        "ifNonSimple": "",
+        "ifOpen": "",
+        "openPinfu": "",
+        "perKan": "",
+        "perTriplet": "",
+        "sevenPairs": "",
+        "singleWait": "",
+        "tsumo": "",
+        "tsumoNoRinshanFu": "",
+        "yakuhaiPair": "",
+        "yakuhaiPairNoDouble": ""
+      },
+      "roundUp": ""
+    },
+    "kita": "",
+    "notEnoughTiles": "",
+    "noYaku": "",
+    "pattern": {
+      "base": "",
+      "chiitoi": "",
+      "closedRon": "",
+      "openPinfu": "",
+      "pinfuTsumo": "",
+      "quad": {
+        "closed": "",
+        "closedYaochuu": "",
+        "open": "",
+        "openYaochuu": ""
+      },
+      "rinshanTsumo": "",
+      "triplet": {
+        "closed": "",
+        "closedYaochuu": "",
+        "open": "",
+        "openYaochuu": ""
+      },
+      "tsumo": "",
+      "wait": {
+        "kanchan": "",
+        "penchan": "",
+        "ryanmen": "",
+        "shanpon": "",
+        "tanki": ""
+      },
+      "yakuhaiPair": {
+        "double": "",
+        "single": ""
+      }
+    },
+    "points": "",
+    "pointsCalculator": "",
+    "pointsToTake": "",
+    "round": "",
+    "scoreCalculator": "",
+    "seat": "",
+    "selectFu": "",
+    "selectHan": "",
+    "tilesNotValid": "",
+    "transferCalculatedScore": "",
+    "transferPoints": "",
+    "uradoraIndicators": ""
+  },
+  "common": {
+    "baiman": "",
+    "chii": "",
+    "clear": "",
+    "close": "",
+    "closedKan": "",
+    "continue": "",
+    "dark": "",
+    "east": "",
+    "fu": "",
+    "fuvalue": "",
+    "green": "",
+    "han": "",
+    "haneman": "",
+    "hanfuvalue": "",
+    "hanvalue": "",
+    "kan": "",
+    "kazoeyakuman": "",
+    "light": "",
+    "mangan": "",
+    "north": "",
+    "pon": "",
+    "red": "",
+    "ron": "",
+    "sanbaiman": "",
+    "south": "",
+    "start": "",
+    "submit": "",
+    "tsumo": "",
+    "west": "",
+    "white": ""
+  },
+  "compass": {
+    "abort": "",
+    "calculateHand": "",
+    "chombo": "",
+    "dealerRepeat": "",
+    "dealtinPlayer": "",
+    "drawType": "",
+    "editScore": "",
+    "exhaust": "",
+    "gameIdDoesNotExist": "",
+    "handleDraws": "",
+    "otherActions": "",
+    "pao": "",
+    "paysOutReverseMangan": "",
+    "playerInViolation": "",
+    "pointDistribution": "",
+    "readyPlayers": "",
+    "redoesTheRound": "",
+    "repeatRound": "",
+    "repeats": "",
+    "responsiblePlayer": "",
+    "riichi": "",
+    "riichiSticks": "",
+    "rotateSeats": "",
+    "scoreRepeatSticks": "",
+    "scoreRiichiSticks": "",
+    "seatRotation": "",
+    "transferPoints": ""
+  },
+  "home": {
+    "calculator": "",
+    "fourwayCompass": "",
+    "help": {
+      "addRiichiSticks": "",
+      "createCompass": "",
+      "drawsAndRepeats": "",
+      "howToInput": "",
+      "manuallyEditRounds": "",
+      "manuallyEditScores": "",
+      "placePhone": "",
+      "transferScores": "",
+      "useCalculator": "",
+      "useReference": ""
+    },
+    "initialScore": "",
+    "keepTrackOfYourGames": "",
+    "newGame": "",
+    "preferences": "",
+    "preferHanAndFuInput": "",
+    "reference": "",
+    "riichiTracker": "",
+    "settings": "",
+    "yourSeatWind": ""
+  },
+  "reference": {
+    "bamboo": "",
+    "canBeRounded": "",
+    "characters": "",
+    "circles": "",
+    "closedOnly": "",
+    "dealer": "",
+    "dealerRon": "",
+    "dealerTsumo": "",
+    "dragons": "",
+    "easy": "",
+    "formula": {
+      "baimanBasicPoints": "",
+      "calculateBasicPoints": "",
+      "common20": "",
+      "common30": "",
+      "common40": "",
+      "commonFuValues": "",
+      "countFuValue": "",
+      "countHanValue": "",
+      "dealerRon": "",
+      "dealerTsumo": "",
+      "fu": {
+        "base": "",
+        "closedRon": "",
+        "ifNonSimple": "",
+        "ifOpen": "",
+        "openPinfu": "",
+        "perKan": "",
+        "perTriplet": "",
+        "sevenPairs": "",
+        "singleWait": "",
+        "tsumo": "",
+        "yakuhaiPair": ""
+      },
+      "hanemanBasicPoints": "",
+      "ifBasicPointsAboveMangan": "",
+      "ifKiriageMangan": "",
+      "ifManganSkip": "",
+      "ifYakumanSkip": "",
+      "manganBasicPoints": "",
+      "nonDealerRon": "",
+      "nonDealerTsumo": "",
+      "sanbaimanBasicPoints": "",
+      "theGeneralFormula": "",
+      "transferOnWin": "",
+      "yakumanBasicPoints": ""
+    },
+    "gameMode": {
+      "$": "",
+      "fourPlayer": "",
+      "threePlayer": ""
+    },
+    "hideYakuman": "",
+    "legend": "",
+    "local": "",
+    "minusIfOpen": "",
+    "nonDealer": "",
+    "nonDealerRon": "",
+    "nonDealerTsumo": "",
+    "notYaku": "",
+    "onlyEasy": "",
+    "reference": "",
+    "scoringTable": "",
+    "scoringTableSanma": "",
+    "showLocal": "",
+    "tiles": "",
+    "tsumoPoints": {
+      "$": "",
+      "bisection": "",
+      "loss": ""
+    },
+    "winds": "",
+    "winloss": "",
+    "yakuList": ""
+  },
+  "settings": {
+    "affectsTheCompass": "",
+    "afterKanFu": {
+      "$": "",
+      "help": "",
+      "twoFu": "",
+      "zeroFu": ""
+    },
+    "allGreensDragon": {
+      "$": "",
+      "help": "",
+      "optional": "",
+      "required": ""
+    },
+    "brightTiles": {
+      "$": "",
+      "help": ""
+    },
+    "common": {
+      "allow": "",
+      "disable": "",
+      "disallow": "",
+      "enable": "",
+      "hide": "",
+      "show": ""
+    },
+    "copyFromCalculator": "",
+    "countedYakuman": {
+      "$": "",
+      "help": "",
+      "sanbaiman": "",
+      "yakuman": ""
+    },
+    "doubleWindFu": {
+      "$": "",
+      "fourFu": "",
+      "help": "",
+      "twoFu": ""
+    },
+    "doubleYakuman": {
+      "$": "",
+      "help": ""
+    },
+    "gameMode": {
+      "$": "",
+      "fourPlayer": "",
+      "help": "",
+      "threePlayer": ""
+    },
+    "language": {
+      "$": "",
+      "help": ""
+    },
+    "northTiles": {
+      "$": "",
+      "help": "",
+      "kita": "",
+      "yakuhai": ""
+    },
+    "noYakuDora": {
+      "$": "",
+      "help": ""
+    },
+    "noYakuFu": {
+      "$": "",
+      "help": ""
+    },
+    "openAllSimples": {
+      "$": "",
+      "help": ""
+    },
+    "otherScoring": {
+      "$": "",
+      "help": ""
+    },
+    "paoPayment": {
+      "$": "",
+      "help": ""
+    },
+    "redFives": {
+      "$": "",
+      "disable": "",
+      "enable": "",
+      "help": ""
+    },
+    "roundedMangan": {
+      "$": "",
+      "help": "",
+      "noRounding": "",
+      "rounded": ""
+    },
+    "showTileNames": {
+      "$": "",
+      "help": ""
+    },
+    "theme": {
+      "$": "",
+      "help": ""
+    },
+    "toggleAll": "",
+    "toggleLocalYaku": "",
+    "toggleYaku": {
+      "$": "",
+      "help": "",
+      "local": "",
+      "optional": ""
+    },
+    "tsumoPoints": {
+      "$": "",
+      "bisection": "",
+      "help": "",
+      "loss": ""
+    },
+    "yakumanStacking": {
+      "$": "",
+      "help": ""
+    }
+  }
+}
