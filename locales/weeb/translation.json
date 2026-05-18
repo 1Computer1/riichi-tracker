@@ -443,7 +443,7 @@
       "help": "A Chiitoi hand consisting of 2 to 8 of manzu."
     },
     "daisuushii": {
-      "$": "Four Big Winds",
+      "$": "Daisuushii",
       "help": "A set of each wind."
     },
     "dora": {
@@ -553,7 +553,7 @@
     "other": {
       "dora": {
         "$": "Dora",
-        "help": "A dora indicator is flipped at the start of each hand, pointing to the dora. Another dora indicator is flipped per kan. Ura dora indicators underneath are revealed on a riichi win.<br />Red fives are also dora. Each dora in hand counts as <H>1</H> han.<br />Winds go East → South → West → North → East.<br />Dragons go Haku → Hatsu → Chun → Haku."
+        "help": "A dora indicator is flipped at the start of each hand, pointing to the dora. Another dora indicator is flipped per kan. Uradora indicators underneath are revealed on a riichi win.<br />Red fives are also dora. Each dora in hand counts as <H>1</H> han.<br />Winds go East → South → West → North → East.<br />Dragons go Haku → Hatsu → Chun → Haku."
       },
       "kazehai": {
         "$": "Yakuhai (Winds)",

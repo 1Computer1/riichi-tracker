@@ -553,7 +553,7 @@
     "other": {
       "dora": {
         "$": "Dora",
-        "help": "A dora indicator is flipped at the start of each hand, pointing to the dora. Another dora indicator is flipped per kan. Ura dora indicators underneath are revealed on a riichi win.<br />Red fives are also dora. Each dora in hand counts as <H>1</H> han.<br />Winds go East → South → West → North → East.<br />Dragons go White → Green → Red → White."
+        "help": "A dora indicator is flipped at the start of each hand, pointing to the dora. Another dora indicator is flipped per kan. Uradora indicators underneath are revealed on a riichi win.<br />Red fives are also dora. Each dora in hand counts as <H>1</H> han.<br />Winds go East → South → West → North → East.<br />Dragons go White → Green → Red → White."
       },
       "kazehai": {
         "$": "Yakuhai (Winds)",
