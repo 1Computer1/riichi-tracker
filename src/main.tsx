@@ -1,4 +1,5 @@
 import "./index.css";
+import "./i18n";
 
 import { enableMapSet } from "immer";
 import React from "react";

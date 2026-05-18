@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { type Wind } from "../../lib/hand";
 import TileButton from "../calculator/TileButton";
@@ -28,6 +29,7 @@ export default function ScoreDisplay({
   onRiichiClick?: () => void;
   playerLabel?: string;
 }) {
+  const { t } = useTranslation();
   const [animDone, setAnimDone] = useState(false);
   useEffect(() => {
     if (oldScore !== score) {
@@ -70,7 +72,7 @@ export default function ScoreDisplay({
           )}
         >
           <span className={clsx(vertical ? "[writing-mode:vertical-rl]" : "")}>
-            Riichi
+            {t("compass.riichi")}
           </span>
         </button>
         {playerLabel && (

@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { produce } from "immer";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { HiQuestionMarkCircle } from "react-icons/hi";
 import { type DraftFunction } from "use-immer";
 
@@ -8,6 +9,7 @@ import { type Yaku, YakuList } from "../../lib/yaku";
 import Button from "../Button";
 import CustomDialog from "../layout/CustomDialog";
 import H from "../text/H";
+import { HanValue } from "../text/Localized";
 import Tiles from "../Tiles";
 
 export default function YakuDialog({
@@ -27,9 +29,10 @@ export default function YakuDialog({
   onChange?: (xs: Set<string>) => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   return (
     <CustomDialog
-      title={local ? "Toggle Local Yaku" : "Toggle Yaku"}
+      title={local ? t("settings.toggleLocalYaku") : t("settings.toggleYaku.$")}
       onClose={onClose}
     >
       <div className="flex flex-col items-center justify-center gap-y-8">
@@ -48,7 +51,7 @@ export default function YakuDialog({
               }
             }}
           >
-            Toggle All
+            {t("settings.toggleAll")}
           </Button>
         )}
         <div className="flex flex-col gap-2">
@@ -69,7 +72,7 @@ export default function YakuDialog({
             onClose();
           }}
         >
-          Close
+          {t("common.close")}
         </Button>
       </div>
     </CustomDialog>
@@ -87,6 +90,7 @@ function YakuToggle({
   yaku: Yaku;
   onChange?: (xs: Set<string>) => void;
 }) {
+  const { t } = useTranslation();
   function change(f: DraftFunction<Set<string>>) {
     const updated = produce(f)(yakuList);
     onChange?.(updated);
@@ -133,7 +137,7 @@ function YakuToggle({
           });
         }}
       >
-        {yaku.name}
+        {yaku.text}
       </button>
       {yaku.help && (
         <HelpButton
@@ -142,37 +146,33 @@ function YakuToggle({
         />
       )}
       {helpOpened && (
-        <CustomDialog title={yaku.name} onClose={() => setHelpOpened(false)}>
+        <CustomDialog title={yaku.text} onClose={() => setHelpOpened(false)}>
           <div className="flex flex-col gap-2">
             <div className="flex w-full flex-row items-center justify-between">
               {yaku.yakuman ? (
                 <span className="text-lg lg:text-xl">
                   <H>
-                    {[
-                      "",
-                      "Double",
-                      "Triple",
-                      "Quadruple",
-                      "Quintuple",
-                      "Sextuple",
-                    ][yaku.value - 1] ?? `${yaku.value}x`}{" "}
-                    Yakuman
+                    {yaku.value > 6
+                      ? t(`common.yakuman.over`, "{{value}}× Yakuman", {
+                          value: yaku.value,
+                        })
+                      : t(`common.yakuman.${yaku.value}`)}
                   </H>
                 </span>
               ) : (
                 <span className="text-lg lg:text-xl">
-                  <H>{yaku.value}</H> Han
+                  <HanValue han={yaku.value.toString()} />
                 </span>
               )}
               <div className="flex flex-row items-center justify-end">
                 {yaku.closedOnly && (
                   <span className="text-lg lg:text-xl">
-                    <H.Red>Closed only</H.Red>
+                    <H.Red>{t("reference.closedOnly")}</H.Red>
                   </span>
                 )}
                 {yaku.openMinus && (
                   <span className="text-lg lg:text-xl">
-                    <H.Red>-1 if open</H.Red>
+                    <H.Red>{t("reference.minusIfOpen")}</H.Red>
                   </span>
                 )}
               </div>
@@ -211,7 +211,7 @@ function HelpButton({
       }}
     >
       <div className="flex h-6 w-6 flex-col items-center justify-center lg:h-8 lg:w-8">
-        <HiQuestionMarkCircle />
+        <HiQuestionMarkCircle className="text-2xl" />
       </div>
     </button>
   );

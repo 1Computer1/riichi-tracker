@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import useLocalStorage from "../../hooks/useLocalStorage";
@@ -14,6 +15,7 @@ import SettingsDialog from "../settings/SettingsDialog";
 import ToggleOnOff from "../ToggleOnOff";
 
 export function NewCompassDialog({ onClose }: { onClose: () => void }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const db = useDb();
 
@@ -49,7 +51,7 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
     <CustomDialog
       initialFocus={initialScoreInputRef}
       onClose={onClose}
-      title="New Game"
+      title={t("home.newGame")}
     >
       <div className="flex flex-col items-center justify-center gap-y-8">
         <form
@@ -59,7 +61,7 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
             void submitNewCompass();
           }}
         >
-          <p className="text-xl lg:text-2xl">Initial Score</p>
+          <p className="text-xl lg:text-2xl">{t("home.initialScore")}</p>
           <input
             ref={initialScoreInputRef}
             key="scoreInput"
@@ -74,7 +76,7 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
               }
             }}
           />
-          <p className="text-xl lg:text-2xl">Your Seat Wind</p>
+          <p className="text-xl lg:text-2xl">{t("home.yourSeatWind")}</p>
           <div>
             <WindSelect
               value={newCompassBottomWind}
@@ -91,7 +93,7 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
               )
             }
           >
-            Four-Way Compass
+            {t("home.fourwayCompass")}
           </ToggleOnOff>
           <ToggleOnOff
             toggled={prefersQuick === "true"}
@@ -99,13 +101,13 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
               setPrefersQuick(prefersQuick === "true" ? "false" : "true")
             }
           >
-            Prefer Han &amp; Fu Input
+            {t("home.preferHanAndFuInput")}
           </ToggleOnOff>
           <ToggleOnOff
             toggled={openedSettings}
             onToggle={() => setOpenedSettings(true)}
           >
-            Settings
+            {t("home.settings")}
           </ToggleOnOff>
           {openedSettings && (
             <SettingsDialog
@@ -131,7 +133,7 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
             void submitNewCompass();
           }}
         >
-          Create Compass
+          {t("common.start")}
         </Button>
       </div>
     </CustomDialog>

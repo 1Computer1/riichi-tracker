@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { HiArrowLeft, HiArrowUp, HiCog } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -13,11 +14,12 @@ import { WinnerDialog } from "../components/compass/WinnerDialog";
 import BlocksShuffleThree from "../components/loading/react-svg-spinners/BlocksShuffleThree";
 import { type Game } from "../data/interfaces";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { nextWind, translateWind } from "../lib/hand";
+import { getWindNameTranslated, nextWind } from "../lib/hand";
 import { type CompassState } from "../lib/states";
 import { useDb } from "../providers/DbProvider";
 
 export default function Compass() {
+  const { t } = useTranslation();
   const db = useDb();
   const navigate = useNavigate();
   const location = useLocation();
@@ -50,7 +52,11 @@ export default function Compass() {
       ) : (
         <div className="flex h-screen w-screen flex-col items-center justify-center">
           <div className="font-mono">
-            Error: Game {locState.id} does not exist.
+            {t(
+              "compass.gameIdDoesNotExist",
+              "Error: Game {{id}} does not exist.",
+              { id: locState.id },
+            )}
           </div>
         </div>
       )}
@@ -65,6 +71,7 @@ function CompassWithGame({
   locState: CompassState;
   game: Game;
 }) {
+  const { t } = useTranslation();
   const db = useDb();
   const navigate = useNavigate();
 
@@ -229,7 +236,7 @@ function CompassWithGame({
             )}
           >
             <span>
-              {translateWind(roundWind)} {round}
+              {getWindNameTranslated(roundWind)(t)} {round}
             </span>
             <span className="flex flex-row items-center justify-center gap-x-4">
               <span className="flex flex-row items-center justify-center gap-x-2">
@@ -312,7 +319,7 @@ function CompassWithGame({
               </div>
               <span className="flex flex-col items-center justify-between gap-y-2 text-xl lg:text-4xl">
                 <span>
-                  {translateWind(roundWind)} {round}
+                  {getWindNameTranslated(roundWind)(t)} {round}
                 </span>
                 <span className="flex flex-row items-center justify-center gap-x-4">
                   <span className="flex flex-row items-center justify-center gap-x-2">

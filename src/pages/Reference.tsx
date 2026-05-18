@@ -1,6 +1,7 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import clsx from "clsx";
 import { Fragment, type ReactNode, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { HiArrowLeft, HiArrowRight, HiArrowUp } from "react-icons/hi";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -10,6 +11,12 @@ import CircleButton from "../components/CircleButton";
 import JumpButton from "../components/JumpButton";
 import VerticalRow from "../components/layout/VerticalRow";
 import H from "../components/text/H";
+import {
+  FuValue,
+  HanFuValue,
+  HanValue,
+  HTrans,
+} from "../components/text/Localized";
 import Tiles from "../components/Tiles";
 import Toggle from "../components/Toggle";
 import { calculateHanFu, type TileCode, TilesBySuit } from "../lib/hand";
@@ -22,6 +29,7 @@ import {
 } from "../lib/yaku";
 
 export default function Reference() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const tabs = ["tiles", "yaku", "scoring"];
   const [params, setSearchParams] = useSearchParams();
@@ -50,7 +58,9 @@ export default function Reference() {
             className="flex w-full flex-col items-center justify-center gap-y-2"
           >
             <div className="flex w-full flex-col items-center justify-center gap-y-2 px-2 py-2">
-              <h1 className="text-2xl lg:text-4xl">Reference</h1>
+              <h1 className="text-2xl lg:text-4xl">
+                {t("reference.reference")}
+              </h1>
             </div>
             <TabGroup
               defaultIndex={
@@ -62,9 +72,9 @@ export default function Reference() {
               as={Fragment}
             >
               <TabList className="mb-2 flex flex-row flex-wrap items-center justify-center gap-2">
-                <StyledTab>Tiles</StyledTab>
-                <StyledTab>Yaku List</StyledTab>
-                <StyledTab>Scoring Table</StyledTab>
+                <StyledTab>{t("reference.tiles")}</StyledTab>
+                <StyledTab>{t("reference.yakuList")}</StyledTab>
+                <StyledTab>{t("reference.scoringTable")}</StyledTab>
               </TabList>
               <TabPanels className="flex min-h-screen w-full flex-col justify-center bg-slate-300 px-2 py-4 lg:py-8 dark:bg-sky-900">
                 <TabPanel>
@@ -104,29 +114,30 @@ function StyledTab({ children }: { children: ReactNode }) {
 }
 
 function TileReference() {
+  const { t } = useTranslation();
   return (
     <VerticalRow>
-      <h2 className="text-xl lg:text-3xl">Characters</h2>
+      <h2 className="text-xl lg:text-3xl">{t("reference.characters")}</h2>
       <LabeledTiles suited tiles={TilesBySuit.m.map((t) => [t, t[0]])} />
-      <h2 className="text-xl lg:text-3xl">Circles</h2>
+      <h2 className="text-xl lg:text-3xl">{t("reference.circles")}</h2>
       <LabeledTiles suited tiles={TilesBySuit.p.map((t) => [t, t[0]])} />
-      <h2 className="text-xl lg:text-3xl">Bamboo</h2>
+      <h2 className="text-xl lg:text-3xl">{t("reference.bamboo")}</h2>
       <LabeledTiles suited tiles={TilesBySuit.s.map((t) => [t, t[0]])} />
-      <h2 className="text-xl lg:text-3xl">Winds</h2>
+      <h2 className="text-xl lg:text-3xl">{t("reference.winds")}</h2>
       <LabeledTiles
         tiles={[
-          ["1z", "East"],
-          ["2z", "South"],
-          ["3z", "West"],
-          ["4z", "North"],
+          ["1z", t("common.east")],
+          ["2z", t("common.south")],
+          ["3z", t("common.west")],
+          ["4z", t("common.north")],
         ]}
       />
-      <h2 className="text-xl lg:text-3xl">Dragons</h2>
+      <h2 className="text-xl lg:text-3xl">{t("reference.dragons")}</h2>
       <LabeledTiles
         tiles={[
-          ["5z", "White"],
-          ["6z", "Green"],
-          ["7z", "Red"],
+          ["5z", t("common.white")],
+          ["6z", t("common.green")],
+          ["7z", t("common.red")],
         ]}
       />
     </VerticalRow>
@@ -172,6 +183,7 @@ function LabeledTiles({
 }
 
 function YakuReference() {
+  const { t } = useTranslation();
   const [showLocal, setShowLocal] = useState(false);
   const [onlyBasic, setOnlyBasic] = useState(false);
   const [hideYakuman, setHideYakuman] = useState(false);
@@ -189,16 +201,16 @@ function YakuReference() {
     <div className="flex flex-col gap-y-4 lg:gap-y-8">
       <div className="flex flex-row flex-wrap items-center justify-center gap-2">
         <Button active={showLocal} onClick={() => setShowLocal(!showLocal)}>
-          Show Local
+          {t("reference.showLocal")}
         </Button>
         <Button active={onlyBasic} onClick={() => setOnlyBasic(!onlyBasic)}>
-          Only Easy
+          {t("reference.onlyEasy")}
         </Button>
         <Button
           active={hideYakuman}
           onClick={() => setHideYakuman(!hideYakuman)}
         >
-          Hide Yakuman
+          {t("reference.hideYakuman")}
         </Button>
       </div>
       <div className="flex flex-col gap-y-1 lg:gap-y-2">
@@ -231,59 +243,57 @@ function YakuReference() {
 }
 
 function YakuItem({ yaku }: { yaku: Omit<Yaku, "id"> }) {
+  const { t } = useTranslation();
   return (
     <div className="w-full rounded bg-slate-200 p-2 shadow lg:p-4 dark:bg-gray-900">
       <div className="flex w-full flex-row items-center justify-between">
         {yaku.yakuman ? (
           <span className="text-base lg:text-xl">
             <H>
-              {["", "Double", "Triple", "Quadruple", "Quintuple", "Sextuple"][
-                yaku.value - 1
-              ] ?? `${yaku.value}x`}{" "}
-              Yakuman
+              {yaku.value > 6
+                ? t(`common.yakuman.over`, "{{value}}× Yakuman", {
+                    value: yaku.value,
+                  })
+                : t(`common.yakuman.${yaku.value}`)}
             </H>
           </span>
         ) : (
           <span className="text-base lg:text-xl">
-            <H>
-              {yaku.value}
-              {yaku.per && "x"}{" "}
-            </H>
-            Han
+            <HanValue han={`${yaku.value}${yaku.per ? "×" : ""}`} />
           </span>
         )}
         <div className="flex flex-row items-center justify-end">
           {yaku.closedOnly && (
             <span className="text-base lg:text-xl">
-              <H.Red>Closed only</H.Red>
+              <H.Red>{t("reference.closedOnly")}</H.Red>
             </span>
           )}
           {yaku.openMinus && (
             <span className="text-base lg:text-xl">
-              <H.Red>-1 if open</H.Red>
+              <H.Red>{t("reference.minusIfOpen")}</H.Red>
             </span>
           )}
           {yaku.type === "extra" && (
             <span className="text-base lg:text-xl">
-              <H.Red>Not yaku</H.Red>
+              <H.Red>{t("reference.notYaku")}</H.Red>
             </span>
           )}
         </div>
       </div>
       <div className="flex w-full flex-col items-start justify-center gap-2">
         <h2 className="flex flex-row gap-x-2 text-lg font-medium lg:text-2xl">
-          {yaku.name}{" "}
+          {yaku.text}{" "}
           {(yaku.basic || yaku.type === "local") && (
             <H>
               <span className="flex flex-row items-center justify-center gap-x-2 text-sm lg:text-base">
                 {yaku.basic && (
                   <span className="rounded bg-slate-300 p-0.5 shadow lg:p-1 dark:bg-sky-900">
-                    Easy
+                    {t("reference.easy")}
                   </span>
                 )}
                 {yaku.type === "local" && (
                   <span className="rounded bg-slate-300 p-0.5 shadow lg:p-1 dark:bg-sky-900">
-                    Local
+                    {t("reference.local")}
                   </span>
                 )}
               </span>
@@ -302,6 +312,7 @@ function YakuItem({ yaku }: { yaku: Omit<Yaku, "id"> }) {
 }
 
 function ScoreReference() {
+  const { t } = useTranslation();
   const [sanma, setSanma] = useState<"loss" | "bisection" | null>(null);
   const settings = { ...DefaultSettings, sanma };
 
@@ -316,36 +327,36 @@ function ScoreReference() {
       <div className="flex flex-row flex-wrap items-center justify-center gap-4 lg:gap-6">
         <div className="flex h-40 w-40 flex-col items-center justify-center gap-2 rounded bg-slate-200 p-0.5 shadow lg:h-48 lg:w-48 lg:gap-4 dark:bg-gray-900">
           <span className="text-lg font-semibold">
-            <H>Legend</H>
+            <H>{t("reference.legend")}</H>
           </span>
           <div className="flex w-full flex-row items-center justify-center text-xs italic lg:text-sm">
             <span className="flex w-1/2 flex-row items-center justify-center">
-              Dealer
+              {t("reference.dealer")}
             </span>
             <span className="flex w-1/2 flex-row items-center justify-center">
-              Non-Dealer
+              {t("reference.nonDealer")}
             </span>
           </div>
           <div className="relative flex w-full flex-col items-center justify-center gap-2 text-sm lg:text-base">
             <div className="flex w-full flex-row items-center justify-center">
               <span className="flex w-1/2 flex-row items-center justify-center text-center">
-                Tsumo
+                {t("common.tsumo")}
                 <br />
-                Win/Loss
+                {t("reference.winloss")}
               </span>
               <span className="flex w-1/2 flex-row items-center justify-center text-center">
-                Tsumo
+                {t("common.tsumo")}
                 <br />
-                Win/Loss
+                {t("reference.winloss")}
               </span>
             </div>
             <div className="absolute h-full w-0 border border-gray-800"></div>
             <div className="flex w-full flex-row items-center justify-center">
               <span className="flex w-1/2 flex-row items-center justify-center">
-                Ron
+                {t("common.ron")}
               </span>
               <span className="flex w-1/2 flex-row items-center justify-center">
-                Ron
+                {t("common.ron")}
               </span>
             </div>
           </div>
@@ -353,12 +364,14 @@ function ScoreReference() {
         <div className="flex flex-col items-center justify-center gap-2">
           <div className="flex flex-row flex-wrap items-center justify-center gap-2 lg:flex-nowrap">
             <div className="flex w-30 flex-row items-center justify-between gap-2 lg:w-36">
-              <span className="text-xl lg:text-2xl">Game Mode</span>
+              <span className="text-xl lg:text-2xl">
+                {t("reference.gameMode.$")}
+              </span>
             </div>
             <div className="flex w-52 flex-row flex-wrap items-start justify-center gap-2 md:w-82">
               <Toggle
-                left="4-Player"
-                right="3-Player"
+                left={t("reference.gameMode.fourPlayer")}
+                right={t("reference.gameMode.threePlayer")}
                 toggled={sanma != null}
                 onToggle={() => setSanma(sanma ? null : "loss")}
               />
@@ -367,12 +380,14 @@ function ScoreReference() {
           {sanma != null && (
             <div className="flex flex-row flex-wrap items-center justify-center gap-2 lg:flex-nowrap">
               <div className="flex w-30 flex-row items-center justify-between gap-2 lg:w-36">
-                <span className="text-xl lg:text-2xl">Tsumo Points</span>
+                <span className="text-xl lg:text-2xl">
+                  {t("reference.tsumoPoints.$")}
+                </span>
               </div>
               <div className="flex w-52 flex-row flex-wrap items-start justify-center gap-2 md:w-82">
                 <Toggle
-                  left="Loss"
-                  right="Bisection"
+                  left={t("reference.tsumoPoints.loss")}
+                  right={t("reference.tsumoPoints.bisection")}
                   toggled={sanma === "bisection"}
                   onToggle={() =>
                     setSanma(sanma === "loss" ? "bisection" : "loss")
@@ -385,222 +400,225 @@ function ScoreReference() {
       </div>
       <ul className="flex flex-col items-center justify-center gap-2">
         <li>
-          <Han
+          <HanSection
             han={1}
             fus={[20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110]}
             settings={settings}
           />
         </li>
         <li>
-          <Han
+          <HanSection
             han={2}
             fus={[20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110]}
             settings={settings}
           />
         </li>
         <li>
-          <Han han={3} fus={[20, 25, 30, 40, 50, 60]} settings={settings} />
+          <HanSection
+            han={3}
+            fus={[20, 25, 30, 40, 50, 60]}
+            settings={settings}
+          />
         </li>
         <li>
-          <Han han={4} fus={[20, 25, 30]} settings={settings} />
+          <HanSection han={4} fus={[20, 25, 30]} settings={settings} />
         </li>
         <li>
           <ScoreSection
             title={
               <span>
-                <H>3</H> Han <H>70+</H> Fu, <H>4</H> Han <H>40+</H> Fu, <H>5</H>{" "}
-                Han
+                <HanFuValue han="3" fu="70+" />・
+                <HanFuValue han="4" fu="40+" />・
+                <HanValue han="5" />
               </span>
             }
           >
-            <ScoreCard title={<H>Mangan</H>} points={mangan} />
+            <ScoreCard title={<H>{t("common.mangan")}</H>} points={mangan} />
           </ScoreSection>
         </li>
         <li>
           <ScoreSection
             title={
               <span>
-                <H>6-7</H> Han
+                <HanValue han="6-7" />
               </span>
             }
           >
-            <ScoreCard title={<H>Haneman</H>} points={haneman} />
+            <ScoreCard title={<H>{t("common.haneman")}</H>} points={haneman} />
           </ScoreSection>
         </li>
         <li>
           <ScoreSection
             title={
               <span>
-                <H>8-10</H> Han
+                <HanValue han="8-10" />
               </span>
             }
           >
-            <ScoreCard title={<H>Baiman</H>} points={baiman} />
+            <ScoreCard title={<H>{t("common.baiman")}</H>} points={baiman} />
           </ScoreSection>
         </li>
         <li>
           <ScoreSection
             title={
               <span>
-                <H>11-12</H> Han
+                <HanValue han="11-12" />
               </span>
             }
           >
-            <ScoreCard title={<H>Sanbaiman</H>} points={sanbaiman} />
+            <ScoreCard
+              title={<H>{t("common.sanbaiman")}</H>}
+              points={sanbaiman}
+            />
           </ScoreSection>
         </li>
         <li>
           <ScoreSection
             title={
               <span>
-                <H>13+</H> Han
+                <HanValue han="13+" />
               </span>
             }
           >
-            <ScoreCard title={<H>Yakuman</H>} points={yakuman} />
+            <ScoreCard
+              title={<H>{t("common.yakuman.1")}</H>}
+              points={yakuman}
+            />
           </ScoreSection>
         </li>
       </ul>
       <ul className="flex list-disc flex-col items-start justify-center gap-y-1 px-6 text-base lg:gap-y-2 lg:text-xl">
         <li>
-          <H>3</H> han <H>60</H> fu and <H>4</H> han <H>30</H> fu can be rounded
-          up to a <H>mangan</H> in certain rule variations.
+          <HTrans i18nKey="reference.canBeRounded" />
         </li>
         <li>
-          Scoring table in three-player is the same as four-player unless north
-          bisection is used. In that case, points that would have been lost from
-          the north player is redistributed.
+          <HTrans i18nKey="reference.scoringTableSanma" />
         </li>
         <li>
-          The general formula is as follows:
+          <HTrans i18nKey="reference.formula.theGeneralFormula" />
           <ol className="mt-1 ml-4 flex list-decimal flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
             <li>
-              If the hand is a <H>yakuman</H>, score 8000 basic points per{" "}
-              <H>yakuman</H>. Skip to step 8.
+              <HTrans i18nKey="reference.formula.ifYakumanSkip" />
             </li>
-            <li>Determine yaku and dora to count up the han value.</li>
             <li>
-              For han of <H>5</H> or more, counting fu is not necessary, skip to
-              step 8:
+              <HTrans i18nKey="reference.formula.countHanValue" />
+            </li>
+            <li>
+              <HTrans i18nKey="reference.formula.ifManganSkip" />
               <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                 <li>
-                  <H>5</H> = <H>mangan</H> worth 2000 basic points.
+                  <HTrans i18nKey="reference.formula.manganBasicPoints" />
                 </li>
                 <li>
-                  <H>6-7</H> = <H>haneman</H> worth 3000 basic points.
+                  <HTrans i18nKey="reference.formula.hanemanBasicPoints" />
                 </li>
                 <li>
-                  <H>8-10</H> = <H>baiman</H> worth 4000 basic points.
+                  <HTrans i18nKey="reference.formula.baimanBasicPoints" />
                 </li>
                 <li>
-                  <H>11-12</H> = <H>sanbaiman</H> worth 6000 basic points.
+                  <HTrans i18nKey="reference.formula.sanbaimanBasicPoints" />
                 </li>
                 <li>
-                  <H>13+</H> = <H>yakuman</H> worth 8000 basic points.
+                  <HTrans i18nKey="reference.formula.yakumanBasicPoints" />
                 </li>
               </ul>
             </li>
             <li>
-              Determine fu value using hand composition, rounded up to the
-              nearest 10:
+              <HTrans i18nKey="reference.formula.countFuValue" />
               <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                 <li>
-                  <H>20</H> base fu.
+                  <HTrans i18nKey="reference.formula.fu.base" />
                   <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                     <li>
-                      <H>+2</H> for winning with tsumo unless with Pinfu (some
-                      rules may score <H>0</H> for tsumo after a kan).
+                      <HTrans i18nKey="reference.formula.fu.tsumo" />
                     </li>
                     <li>
-                      <H>+10</H> for winning with closed ron.
+                      <HTrans i18nKey="reference.formula.fu.closedRon" />
                     </li>
                     <li>
-                      <H>+2</H> for winning on a wait with one tile.
+                      <HTrans i18nKey="reference.formula.fu.singleWait" />
                     </li>
                     <li>
-                      <H>+2</H> per yakuhai pair (some rules may have <H>+4</H>{" "}
-                      for double wind pair).
+                      <HTrans i18nKey="reference.formula.fu.yakuhaiPair" />
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <H>+4</H> fu per triplet:
+                  <HTrans i18nKey="reference.formula.fu.perTriplet" />
                   <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                     <li>
-                      <H>÷2</H> if open.
+                      <HTrans i18nKey="reference.formula.fu.ifOpen" />
                     </li>
                     <li>
-                      <H>×2</H> if terminals or honors.
+                      <HTrans i18nKey="reference.formula.fu.ifNonSimple" />
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <H>+16</H> fu per kan:
+                  <HTrans i18nKey="reference.formula.fu.perKan" />
                   <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                     <li>
-                      <H>÷2</H> if open.
+                      <HTrans i18nKey="reference.formula.fu.ifOpen" />
                     </li>
                     <li>
-                      <H>×2</H> if terminals or honors.
+                      <HTrans i18nKey="reference.formula.fu.ifNonSimple" />
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <H>+2</H> for winning with an open hand if at 20 fu.
+                  <HTrans i18nKey="reference.formula.fu.openPinfu" />
                 </li>
                 <li>
-                  Seven Pairs is always <H>25</H> fu and not rounded.
+                  <HTrans i18nKey="reference.formula.fu.sevenPairs" />
                 </li>
               </ul>
             </li>
             <li>
-              Calculate basic points with{" "}
-              <span className="font-mono">
-                fu×2<sup>2+han</sup>
-              </span>
-              .
+              <Trans
+                t={t}
+                i18nKey="reference.formula.calculateBasicPoints"
+                components={{
+                  Sup: <sup></sup>,
+                  Mono: <span className="font-mono"></span>,
+                }}
+              />
             </li>
             <li>
-              If using rounded <H>mangan</H> rules, round 1920 basic points to
-              2000.
+              <HTrans i18nKey="reference.formula.ifKiriageMangan" />
             </li>
             <li>
-              If above 2000 basic points but at <H>4</H> or fewer han, fix at a{" "}
-              <H>mangan</H> of 2000 points.
+              <HTrans i18nKey="reference.formula.ifBasicPointsAboveMangan" />
             </li>
             <li>
-              On a win, transfer basic points rounded up to the nearest 100:
+              <HTrans i18nKey="reference.formula.transferOnWin" />
               <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                 <li>
-                  Non-dealer tsumo: <H>1x</H> from other non-dealers, <H>2x</H>{" "}
-                  from dealer.
+                  <HTrans i18nKey="reference.formula.nonDealerTsumo" />
                 </li>
                 <li>
-                  Non-dealer ron: <H>4x</H> from dealt-in player.
+                  <HTrans i18nKey="reference.formula.nonDealerRon" />
                 </li>
                 <li>
-                  Dealer tsumo: <H>2x</H> from all other players.
+                  <HTrans i18nKey="reference.formula.dealerTsumo" />
                 </li>
                 <li>
-                  Dealer ron: <H>6x</H> from dealt-in player.
+                  <HTrans i18nKey="reference.formula.dealerRon" />
                 </li>
               </ul>
             </li>
           </ol>
         </li>
         <li>
-          Some common fu values:
+          <HTrans i18nKey="reference.formula.commonFuValues" />
           <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
             <li>
-              Most open hands, most closed hands tsumo, and pinfu ron are{" "}
-              <H>30 fu</H>.
+              <HTrans i18nKey="reference.formula.common30" />
             </li>
             <li>
-              Most closed hands ron, and most open All Triplets are <H>40 fu</H>
-              .
+              <HTrans i18nKey="reference.formula.common40" />
             </li>
             <li>
-              Pinfu tsumo is <H>20 fu</H>.
+              <HTrans i18nKey="reference.formula.common20" />
             </li>
           </ul>
         </li>
@@ -609,7 +627,7 @@ function ScoreReference() {
   );
 }
 
-function Han({
+function HanSection({
   han,
   fus,
   settings,
@@ -622,14 +640,14 @@ function Han({
     <ScoreSection
       title={
         <span>
-          <H>{han}</H> Han
+          <HanValue han={han.toString()} />
         </span>
       }
     >
       <ul className="flex flex-row flex-wrap items-center justify-center gap-1">
         {fus.map((fu) => (
           <li key={fu}>
-            <Fu han={han} fu={fu} settings={settings} />
+            <FuSection han={han} fu={fu} settings={settings} />
           </li>
         ))}
       </ul>
@@ -637,7 +655,7 @@ function Han({
   );
 }
 
-function Fu({
+function FuSection({
   han,
   fu,
   settings,
@@ -661,7 +679,7 @@ function Fu({
     <ScoreCard
       title={
         <span>
-          <H>{fu}</H> Fu
+          <FuValue fu={fu.toString()} />
         </span>
       }
       noTsumo={noTsumo}
@@ -702,6 +720,7 @@ function ScoreCard({
     ronAsKo: number;
   };
 }) {
+  const { t } = useTranslation();
   return (
     <div className="flex h-28 w-28 flex-col items-center justify-center gap-1 rounded bg-slate-200 p-0.5 shadow lg:h-32 lg:w-32 lg:gap-3 dark:bg-gray-900">
       <span className="text-lg font-semibold xl:text-xl">{title}</span>
@@ -709,13 +728,13 @@ function ScoreCard({
         <div className="flex w-full flex-row items-center justify-center">
           <span
             className="flex w-1/2 flex-row items-center justify-center"
-            title="Dealer Tsumo"
+            title={t("reference.dealerTsumo")}
           >
             {noTsumo ? "--" : points.tsumoAsFromOya}
           </span>
           <span
             className="flex w-1/2 flex-row items-center justify-center"
-            title="Non-Dealer Tsumo"
+            title={t("reference.nonDealerTsumo")}
           >
             {noTsumo ? "--" : points.tsumoAsKo}
           </span>
@@ -724,13 +743,13 @@ function ScoreCard({
         <div className="flex w-full flex-row items-center justify-center">
           <span
             className="flex w-1/2 flex-row items-center justify-center"
-            title="Dealer Ron"
+            title={t("reference.dealerRon")}
           >
             {noRon ? "--" : points.ronAsOya}
           </span>
           <span
             className="flex w-1/2 flex-row items-center justify-center"
-            title="Non-Dealer Ron"
+            title={t("reference.nonDealerRon")}
           >
             {noRon ? "--" : points.ronAsKo}
           </span>

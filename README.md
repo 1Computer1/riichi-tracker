@@ -1,6 +1,6 @@
 # Riichi Tracker
 
-A riichi mahjong hand calculator and interactive compass.  
+A riichi mahjong hand calculator and interactive compass.
 Also includes a reference for yaku and scoring.
 
 ## Features
@@ -33,9 +33,3 @@ Also includes a reference for yaku and scoring.
 - Tile reference
 - Yaku reference with examples and filters
 - Scoring table and scoring formula
-
-### Planned
-
-- Language switcher (English, English w/ Romaji, Japanese, other?).
-- Tracking multiple games?
-- Game history?

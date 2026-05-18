@@ -1,8 +1,9 @@
 import { type ReactNode, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { possibleHanFuValues } from "../../lib/hand";
 import CustomDialog from "../layout/CustomDialog";
-import H from "../text/H";
+import { FuValue, HanValue } from "../text/Localized";
 
 export default function HanFu({
   han,
@@ -17,6 +18,8 @@ export default function HanFu({
   onHanChange: (n: number) => void;
   onFuChange: (n: number) => void;
 }) {
+  const { t } = useTranslation();
+
   const allValues = possibleHanFuValues(agari);
   const [openSelectHan, setOpenSelectHan] = useState(false);
   const [openSelectFu, setOpenSelectFu] = useState(false);
@@ -25,7 +28,7 @@ export default function HanFu({
     <div className="w-full">
       <div className="flex flex-row flex-wrap items-center justify-center gap-x-2">
         <div className="flex flex-col items-center justify-center gap-1 lg:gap-2">
-          <p className="text-2xl lg:text-4xl">Han</p>
+          <p className="text-2xl lg:text-4xl">{t("common.han")}</p>
           <button
             className="w-24 rounded-xl border border-gray-800 bg-slate-300 px-1 py-4 text-center text-2xl font-bold text-amber-700 shadow hover:bg-slate-400 lg:w-32 lg:px-2 lg:py-6 lg:text-4xl dark:bg-sky-900 dark:text-amber-500 hover:dark:bg-sky-800"
             onClick={() => setOpenSelectHan(true)}
@@ -42,7 +45,7 @@ export default function HanFu({
           </button>
           {openSelectHan && (
             <CustomDialog
-              title="Select Han"
+              title={t("calc.selectHan")}
               onClose={() => setOpenSelectHan(false)}
             >
               <div className="flex w-72 flex-row flex-wrap items-center justify-center gap-1 lg:w-96 lg:gap-2">
@@ -58,7 +61,7 @@ export default function HanFu({
                       setOpenSelectHan(false);
                     }}
                   >
-                    <H>{han2}</H> Han
+                    <HanValue han={han2.toString()} />
                   </Button>
                 ))}
                 <Button
@@ -68,7 +71,7 @@ export default function HanFu({
                     setOpenSelectHan(false);
                   }}
                 >
-                  <H>5</H> Han
+                  <HanValue han="5" />
                 </Button>
                 <Button
                   onClick={() => {
@@ -77,7 +80,7 @@ export default function HanFu({
                     setOpenSelectHan(false);
                   }}
                 >
-                  <H>6-7</H> Han
+                  <HanValue han="6-7" />
                 </Button>
                 <Button
                   onClick={() => {
@@ -86,9 +89,7 @@ export default function HanFu({
                     setOpenSelectHan(false);
                   }}
                 >
-                  <span className="text-xl font-semibold lg:text-2xl">
-                    <H>8-10</H> Han
-                  </span>
+                  <HanValue han="8-10" />
                 </Button>
                 <Button
                   onClick={() => {
@@ -97,7 +98,7 @@ export default function HanFu({
                     setOpenSelectHan(false);
                   }}
                 >
-                  <H>11-12</H> Han
+                  <HanValue han="11-12" />
                 </Button>
                 <Button
                   onClick={() => {
@@ -106,14 +107,14 @@ export default function HanFu({
                     setOpenSelectHan(false);
                   }}
                 >
-                  <H>13+</H> Han
+                  <HanValue han="13+" />
                 </Button>
               </div>
             </CustomDialog>
           )}
         </div>
         <div className="flex flex-col items-center justify-center gap-1 lg:gap-2">
-          <p className="text-2xl lg:text-4xl">Fu</p>
+          <p className="text-2xl lg:text-4xl">{t("common.fu")}</p>
           <button
             className="w-24 rounded-xl border border-gray-800 bg-slate-300 px-1 py-4 text-center text-2xl font-bold text-amber-700 shadow enabled:hover:bg-slate-400 lg:w-32 lg:px-2 lg:py-6 lg:text-4xl dark:bg-sky-900 dark:text-amber-500 enabled:hover:dark:bg-sky-800"
             disabled={han >= 5}
@@ -129,7 +130,7 @@ export default function HanFu({
           </button>
           {openSelectFu && (
             <CustomDialog
-              title="Select Fu"
+              title={t("calc.selectFu")}
               onClose={() => setOpenSelectFu(false)}
             >
               <div className="flex w-72 flex-row flex-wrap items-center justify-center gap-1 lg:w-96 lg:gap-2">
@@ -141,7 +142,7 @@ export default function HanFu({
                       setOpenSelectFu(false);
                     }}
                   >
-                    <H>{fu2}</H> Fu
+                    <FuValue fu={fu2.toString()} />
                   </Button>
                 ))}
                 {(han === 3 || han === 4) && (
@@ -151,7 +152,7 @@ export default function HanFu({
                       setOpenSelectFu(false);
                     }}
                   >
-                    <H>{han === 3 ? "70+" : "40+"}</H> Fu
+                    <FuValue fu={han === 3 ? "70+" : "40+"} />
                   </Button>
                 )}
               </div>

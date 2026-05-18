@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { type Game } from "../../data/interfaces";
@@ -22,6 +23,7 @@ export function WinnerDialog({
   game: Game;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const { bottomWind, roundWind, settings } = game;
@@ -58,7 +60,7 @@ export function WinnerDialog({
   };
 
   return (
-    <CustomDialog onClose={onClose} title="Transfer Points">
+    <CustomDialog onClose={onClose} title={t("compass.transferPoints")}>
       <div className="flex flex-col items-center justify-center gap-y-8">
         <form
           className="flex flex-col items-center justify-center gap-y-2"
@@ -67,7 +69,9 @@ export function WinnerDialog({
             submitWinner();
           }}
         >
-          <p className="text-xl lg:text-2xl">Point Distribution</p>
+          <p className="text-xl lg:text-2xl">
+            {t("compass.pointDistribution")}
+          </p>
           <Toggle
             toggled={agari.t === "ron"}
             onToggle={(b) => {
@@ -82,12 +86,14 @@ export function WinnerDialog({
                   : { t: "tsumo" },
               );
             }}
-            left="Tsumo"
-            right="Ron"
+            left={t("common.tsumo")}
+            right={t("common.ron")}
           />
           {agari.t === "ron" && (
             <>
-              <p className="text-xl lg:text-2xl">Dealt-In Player</p>
+              <p className="text-xl lg:text-2xl">
+                {t("compass.dealtinPlayer")}
+              </p>
               <HorizontalRow>
                 {(isSanma ? [0, 1, 2] : [0, 1, 2, 3])
                   .filter((i) => i !== winner)
@@ -115,13 +121,13 @@ export function WinnerDialog({
             toggled={scoreRiichiSticks}
             onToggle={(b) => setScoreRiichiSticks(b)}
           >
-            Score Riichi Sticks
+            {t("compass.scoreRiichiSticks")}
           </ToggleOnOff>
           <ToggleOnOff
             toggled={scoreRepeatSticks}
             onToggle={(b) => setScoreRepeatSticks(b)}
           >
-            Score Repeat Sticks
+            {t("compass.scoreRepeatSticks")}
           </ToggleOnOff>
           {settings.usePao && (
             <>
@@ -142,11 +148,13 @@ export function WinnerDialog({
                   }
                 }}
               >
-                Pao
+                {t("compass.pao")}
               </ToggleOnOff>
               {isPao && (
                 <>
-                  <p className="text-xl lg:text-2xl">Responsible Player</p>
+                  <p className="text-xl lg:text-2xl">
+                    {t("compass.responsiblePlayer")}
+                  </p>
                   <HorizontalRow>
                     {(isSanma ? [0, 1, 2] : [0, 1, 2, 3])
                       .filter(
@@ -167,7 +175,7 @@ export function WinnerDialog({
               )}
             </>
           )}
-          <p className="text-xl lg:text-2xl">Seat Rotation</p>
+          <p className="text-xl lg:text-2xl">{t("compass.seatRotation")}</p>
           {seatWind === "1" && (
             <ToggleOnOff
               toggled={dealerRepeat}
@@ -179,7 +187,7 @@ export function WinnerDialog({
                 }
               }}
             >
-              Dealer Repeat
+              {t("compass.dealerRepeat")}
             </ToggleOnOff>
           )}
           <ToggleOnOff
@@ -194,7 +202,7 @@ export function WinnerDialog({
               }
             }}
           >
-            Rotate Seats
+            {t("compass.rotateSeats")}
           </ToggleOnOff>
         </form>
         <Button
@@ -202,7 +210,7 @@ export function WinnerDialog({
             void submitWinner();
           }}
         >
-          Calculate Hand
+          {t("compass.calculateHand")}
         </Button>
       </div>
     </CustomDialog>

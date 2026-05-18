@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { produce } from "immer";
 import { type ReactNode, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { HiChip, HiQuestionMarkCircle } from "react-icons/hi";
 import type { DraftFunction } from "use-immer";
 
@@ -8,7 +9,7 @@ import type { ScoreSettings } from "../../lib/settings";
 import { useDb } from "../../providers/DbProvider";
 import Button from "../Button";
 import CustomDialog from "../layout/CustomDialog";
-import H from "../text/H";
+import { HTrans } from "../text/Localized";
 import YakuDialog from "./YakuDialog";
 
 export default function SettingsDialog({
@@ -24,6 +25,7 @@ export default function SettingsDialog({
   onSettingsChange?: (s: ScoreSettings) => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const db = useDb();
   const globalSettings = db.useSettings("$global", { enabled: allowCopy });
 
@@ -40,12 +42,10 @@ export default function SettingsDialog({
       <div className="flex flex-col items-center justify-center gap-y-8">
         <div className="flex flex-col items-center justify-center gap-y-2">
           <SettingRow
-            name="Game Mode"
+            name={t("settings.gameMode.$")}
             help={
               <span>
-                The number of players in the game. <br />
-                <H.B>Three-player</H.B> mahjong uses the sanma rules, which
-                includes no chii, no 2 to 8 of characters, and kita.
+                <HTrans i18nKey="settings.gameMode.help" />
               </span>
             }
           >
@@ -57,7 +57,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              Four-Player
+              {t("settings.gameMode.fourPlayer")}
             </Button>
             <Button
               active={settings.sanma != null}
@@ -67,24 +67,16 @@ export default function SettingsDialog({
                 })
               }
             >
-              Three-Player
+              {t("settings.gameMode.threePlayer")}
             </Button>
           </SettingRow>
           {settings.sanma != null && (
             <>
               <SettingRow
-                name="Tsumo Points"
+                name={t("settings.tsumoPoints.$")}
                 help={
                   <span>
-                    The distribution of points when a player wins with tsumo.
-                    <br />
-                    If <H.B>Loss</H.B> is enabled, the base points are the same
-                    as in four player. In effect, the winning player loses the
-                    points from the missing north player.
-                    <br />
-                    If <H.B>Bisection</H.B> is enabled, the base points will
-                    include the points from the north player that should have
-                    been paid. In effect, the other two players will pay more.
+                    <HTrans i18nKey="settings.tsumoPoints.help" />
                   </span>
                 }
               >
@@ -96,7 +88,7 @@ export default function SettingsDialog({
                     })
                   }
                 >
-                  Loss
+                  {t("settings.tsumoPoints.loss")}
                 </Button>
                 <Button
                   active={settings.sanma === "bisection"}
@@ -106,17 +98,14 @@ export default function SettingsDialog({
                     })
                   }
                 >
-                  Bisection
+                  {t("settings.tsumoPoints.bisection")}
                 </Button>
               </SettingRow>
               <SettingRow
-                name="North Tiles"
+                name={t("settings.northTiles.$")}
                 help={
                   <span>
-                    North tiles can either be called with <H.B>kita</H.B> or
-                    used as <H.B>yakuhai</H.B> regardless of wind in
-                    three-player mahjong. With <H.B>kita</H.B>, a counter will
-                    be added to count north tiles.
+                    <HTrans i18nKey="settings.northTiles.help" />
                   </span>
                 }
               >
@@ -128,7 +117,7 @@ export default function SettingsDialog({
                     })
                   }
                 >
-                  Kita
+                  {t("settings.northTiles.kita")}
                 </Button>
                 <Button
                   active={settings.northYakuhai}
@@ -138,17 +127,16 @@ export default function SettingsDialog({
                     })
                   }
                 >
-                  Yakuhai
+                  {t("settings.northTiles.yakuhai")}
                 </Button>
               </SettingRow>
             </>
           )}
           <SettingRow
-            name="Red Fives"
+            name={t("settings.redFives.$")}
             help={
               <span>
-                The number of red fives available in the calculator when
-                building a hand.
+                <HTrans i18nKey="settings.redFives.help" />
               </span>
             }
           >
@@ -160,7 +148,9 @@ export default function SettingsDialog({
                 })
               }
             >
-              {settings.sanma ? "2" : "3"} Red Fives
+              {t("settings.redFives.enable", {
+                fives: settings.sanma ? "2" : "3",
+              })}
             </Button>
             <Button
               active={!settings.akadora}
@@ -170,26 +160,26 @@ export default function SettingsDialog({
                 })
               }
             >
-              0 Red Fives
+              {t("settings.redFives.disable")}
             </Button>
           </SettingRow>
           <SettingRow
-            name="Toggle Yaku"
+            name={t("settings.toggleYaku.$")}
             help={
               <span>
-                Toggle the yaku available in the calculator. <br />
-                <H.B>Optional yaku</H.B> are some of the usual yaku, enabled by
-                default. They may be disabled if needed. <br />
-                <H.B>Local yaku</H.B> are generally less common and are disabled
-                by default. <br />
+                <HTrans i18nKey="settings.toggleYaku.help" />
               </span>
             }
           >
             <Button onClick={() => setOptionalYakuOpened(true)}>
-              Optional Yaku (-{settings.disabledYaku.length})
+              {t("settings.toggleYaku.optional", {
+                length: settings.disabledYaku.length,
+              })}
             </Button>
             <Button onClick={() => setLocalYakuOpened(true)}>
-              Local Yaku (+{settings.enabledLocalYaku.length})
+              {t("settings.toggleYaku.local", {
+                length: settings.enabledLocalYaku.length,
+              })}
             </Button>
             {optionalYakuOpened && (
               <YakuDialog
@@ -219,13 +209,10 @@ export default function SettingsDialog({
             )}
           </SettingRow>
           <SettingRow
-            name="Other Scoring"
+            name={t("settings.otherScoring.$")}
             help={
               <span>
-                Whether to show counters to add in extra yaku han, dora, and
-                yakuman. <br />
-                These can be used for purposes such as extra red fives, other
-                dora, and unsupported local yaku.
+                <HTrans i18nKey="settings.otherScoring.help" />
               </span>
             }
           >
@@ -237,7 +224,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              Show
+              {t("settings.common.show")}
             </Button>
             <Button
               active={!settings.otherScoring}
@@ -247,23 +234,16 @@ export default function SettingsDialog({
                 })
               }
             >
-              Hide
+              {t("settings.common.hide")}
             </Button>
           </SettingRow>
           {!inCalculator && (
             <SettingRow
-              name="Pao Payment"
+              name={t("settings.paoPayment.$")}
               compass
               help={
                 <span>
-                  Whether to show the ability to distribute points using pao.{" "}
-                  <br />
-                  This is used when a player aids in the creation of a{" "}
-                  <H>yakuman</H>. <br />
-                  With tsumo, the responsible player will pay full amount.{" "}
-                  <br />
-                  With ron, the responsible player and the player who dealt in
-                  will each pay half.
+                  <HTrans i18nKey="settings.paoPayment.help" />
                 </span>
               }
             >
@@ -275,7 +255,7 @@ export default function SettingsDialog({
                   })
                 }
               >
-                Show
+                {t("settings.common.show")}
               </Button>
               <Button
                 active={!settings.usePao}
@@ -285,18 +265,15 @@ export default function SettingsDialog({
                   })
                 }
               >
-                Hide
+                {t("settings.common.hide")}
               </Button>
             </SettingRow>
           )}
           <SettingRow
-            name="Rounded Mangan"
+            name={t("settings.roundedMangan.$")}
             help={
               <span>
-                Whether to round up hands worth <H>4</H> han <H>30</H> fu or{" "}
-                <H>3</H> han <H>60</H> fu to a <H>mangan</H>. <br />
-                Otherwise, they are worth the usual 2000/3900 and 7700
-                (non-dealer) or 3900 and 11600 (dealer).
+                <HTrans i18nKey="settings.roundedMangan.help" />
               </span>
             }
           >
@@ -308,7 +285,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              Rounded
+              {t("settings.roundedMangan.rounded")}
             </Button>
             <Button
               active={!settings.kiriageMangan}
@@ -318,15 +295,14 @@ export default function SettingsDialog({
                 })
               }
             >
-              No Rounding
+              {t("settings.roundedMangan.noRounding")}
             </Button>
           </SettingRow>
           <SettingRow
-            name="Counted Yakuman"
+            name={t("settings.countedYakuman.$")}
             help={
               <span>
-                Whether to count a hand worth at least <H>13</H> han as{" "}
-                <H.B>yakuman</H.B> or as <H.B>sanbaiman</H.B>.
+                <HTrans i18nKey="settings.countedYakuman.help" />
               </span>
             }
           >
@@ -338,7 +314,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              Yakuman
+              {t("settings.countedYakuman.yakuman")}
             </Button>
             <Button
               active={!settings.kazoeYakuman}
@@ -348,16 +324,14 @@ export default function SettingsDialog({
                 })
               }
             >
-              Sanbaiman
+              {t("settings.countedYakuman.sanbaiman")}
             </Button>
           </SettingRow>
           <SettingRow
-            name="Yakuman Stacking"
+            name={t("settings.yakumanStacking.$")}
             help={
               <span>
-                Whether to allow stacking multiple <H>yakuman</H> together or
-                cap the max at a single <H>yakuman</H>. <br />
-                <H>Double yakuman</H> are also disabled if this is disabled.
+                <HTrans i18nKey="settings.yakumanStacking.help" />
               </span>
             }
           >
@@ -369,7 +343,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              Allow
+              {t("settings.common.allow")}
             </Button>
             <Button
               active={!settings.multiYakuman}
@@ -379,25 +353,26 @@ export default function SettingsDialog({
                 })
               }
             >
-              Disallow
+              {t("settings.common.disallow")}
             </Button>
           </SettingRow>
+
           {settings.multiYakuman && (
             <SettingRow
-              name="Double Yakuman"
+              name={t("settings.doubleYakuman.$")}
               help={
                 <span>
-                  Whether to count certain special yaku as being worth a{" "}
-                  <H>double yakuman</H>. <br />
-                  These include: <br />
+                  <HTrans i18nKey="settings.doubleYakuman.help" />
                   <ul className="list-inside list-disc">
-                    <li className="list-item">Big Four Winds</li>
+                    <li className="list-item">{t("yaku.daisuushii.$")}</li>
                     <li className="list-item">
-                      Thirteen-Wait Thirteen Orphans
+                      {t("yaku.kokushimusoujuusanmenmachi.$")}
                     </li>
-                    <li className="list-item">True Nine Gates</li>
                     <li className="list-item">
-                      Single-Wait Four Concealed Triplets
+                      {t("yaku.junseichuurenpoutou.$")}
+                    </li>
+                    <li className="list-item">
+                      {t("yaku.suuankoutankimachi.$")}
                     </li>
                   </ul>
                 </span>
@@ -411,7 +386,7 @@ export default function SettingsDialog({
                   })
                 }
               >
-                Allow
+                {t("settings.common.allow")}
               </Button>
               <Button
                 active={!settings.doubleYakuman}
@@ -421,16 +396,15 @@ export default function SettingsDialog({
                   })
                 }
               >
-                Disallow
+                {t("settings.common.disallow")}
               </Button>
             </SettingRow>
           )}
           <SettingRow
-            name="Open All Simples"
+            name={t("settings.openAllSimples.$")}
             help={
               <span>
-                Whether to allow the all simples yaku to be counted if the hand
-                has open sets.
+                <HTrans i18nKey="settings.openAllSimples.help" />
               </span>
             }
           >
@@ -442,7 +416,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              Allow
+              {t("settings.common.allow")}
             </Button>
             <Button
               active={!settings.openTanyao}
@@ -452,14 +426,14 @@ export default function SettingsDialog({
                 })
               }
             >
-              Disallow
+              {t("settings.common.disallow")}
             </Button>
           </SettingRow>
           <SettingRow
-            name="All Green's Dragon"
+            name={t("settings.allGreensDragon.$")}
             help={
               <span>
-                Whether to require the green dragon to count the all green yaku.
+                <HTrans i18nKey="settings.allGreensDragon.help" />
               </span>
             }
           >
@@ -471,7 +445,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              Required
+              {t("settings.allGreensDragon.required")}
             </Button>
             <Button
               active={!settings.ryuuiisouHatsu}
@@ -481,23 +455,14 @@ export default function SettingsDialog({
                 })
               }
             >
-              Optional
+              {t("settings.allGreensDragon.optional")}
             </Button>
           </SettingRow>
           <SettingRow
-            name="Double Wind Fu"
+            name={t("settings.doubleWindFu.$")}
             help={
               <span>
-                Whether to count a wind pair that is both the round wind and the
-                seat wind as{" "}
-                <H.B>
-                  <H>4</H> fu
-                </H.B>{" "}
-                or{" "}
-                <H.B>
-                  <H>2</H> fu
-                </H.B>
-                .
+                <HTrans i18nKey="settings.doubleWindFu.help" />
               </span>
             }
           >
@@ -509,7 +474,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              4 Fu
+              {t("settings.doubleWindFu.fourFu")}
             </Button>
             <Button
               active={!settings.doubleWindFu}
@@ -519,18 +484,14 @@ export default function SettingsDialog({
                 })
               }
             >
-              2 Fu
+              {t("settings.doubleWindFu.twoFu")}
             </Button>
           </SettingRow>
           <SettingRow
-            name="After a Kan Fu"
+            name={t("settings.afterKanFu.$")}
             help={
               <span>
-                Whether to count the{" "}
-                <H.B>
-                  <H>2</H> fu
-                </H.B>{" "}
-                granted by tsumo if the hand won with after a kan.
+                <HTrans i18nKey="settings.afterKanFu.help" />
               </span>
             }
           >
@@ -542,7 +503,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              2 Fu
+              {t("settings.afterKanFu.twoFu")}
             </Button>
             <Button
               active={!settings.rinshanFu}
@@ -552,15 +513,14 @@ export default function SettingsDialog({
                 })
               }
             >
-              0 Fu
+              {t("settings.afterKanFu.zeroFu")}
             </Button>
           </SettingRow>
           <SettingRow
-            name="No Yaku Fu"
+            name={t("settings.noYakuFu.$")}
             help={
               <span>
-                Whether to calculate fu even when with no yaku. Hands will have{" "}
-                <H>0</H> han.
+                <HTrans i18nKey="settings.noYakuFu.help" />
               </span>
             }
           >
@@ -572,7 +532,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              Allow
+              {t("settings.common.allow")}
             </Button>
             <Button
               active={!settings.noYakuFu}
@@ -582,14 +542,16 @@ export default function SettingsDialog({
                 })
               }
             >
-              Disallow
+              {t("settings.common.disallow")}
             </Button>
           </SettingRow>
           <SettingRow
             last
-            name="No Yaku Dora"
+            name={t("settings.noYakuDora.$")}
             help={
-              <span>Whether to calculate dora even when with no yaku.</span>
+              <span>
+                <HTrans i18nKey="settings.noYakuDora.help" />
+              </span>
             }
           >
             <Button
@@ -600,7 +562,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              Allow
+              {t("settings.common.allow")}
             </Button>
             <Button
               active={!settings.noYakuDora}
@@ -610,7 +572,7 @@ export default function SettingsDialog({
                 })
               }
             >
-              Disallow
+              {t("settings.common.disallow")}
             </Button>
           </SettingRow>
         </div>
@@ -621,7 +583,7 @@ export default function SettingsDialog({
                 change(() => globalSettings.value);
               }}
             >
-              Copy From Calculator
+              {t("settings.copyFromCalculator")}
             </Button>
           )}
           <Button
@@ -629,7 +591,7 @@ export default function SettingsDialog({
               onClose();
             }}
           >
-            Close
+            {t("common.close")}
           </Button>
         </div>
       </div>
@@ -650,6 +612,7 @@ function SettingRow({
   last?: boolean;
   children?: ReactNode;
 }) {
+  const { t } = useTranslation();
   const [helpOpened, setHelpOpened] = useState(false);
   return (
     <div
@@ -662,7 +625,10 @@ function SettingRow({
         <span className="relative text-xl lg:text-2xl">
           {name}
           {compass && (
-            <span className="absolute mx-1 h-4 w-4" title="Affects the compass">
+            <span
+              className="absolute mx-1 h-4 w-4"
+              title={t("settings.affectsTheCompass")}
+            >
               <HiChip />
             </span>
           )}

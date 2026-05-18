@@ -2,6 +2,7 @@ import { Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { Trans, useTranslation } from "react-i18next";
 import {
   HiAcademicCap,
   HiArrowLeft,
@@ -27,6 +28,7 @@ import VerticalRow from "../components/layout/VerticalRow";
 import BlocksShuffleThree from "../components/loading/react-svg-spinners/BlocksShuffleThree";
 import SettingsDialog from "../components/settings/SettingsDialog";
 import H from "../components/text/H";
+import { HTrans } from "../components/text/Localized";
 import Tiles from "../components/Tiles";
 import Toggle from "../components/Toggle";
 import ToggleOnOff from "../components/ToggleOnOff";
@@ -51,6 +53,7 @@ import { replicate } from "../lib/util";
 import { useDb } from "../providers/DbProvider";
 
 export default function Calculator() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -94,7 +97,13 @@ export default function Calculator() {
         ) : (
           <div className="flex h-screen w-screen flex-col items-center justify-center">
             <div className="font-mono">
-              <H.Red>Error: Game {locState.id} does not exist.</H.Red>
+              <H.Red>
+                {t(
+                  "calc.error.gameDoesNotExist",
+                  "Error: Game {{id}} does not exist.",
+                  { id: locState.id },
+                )}
+              </H.Red>
             </div>
           </div>
         )
@@ -113,7 +122,13 @@ export default function Calculator() {
       ) : (
         <div className="flex h-screen w-screen flex-col items-center justify-center">
           <div className="font-mono">
-            <H.Red>Error: Settings {locState.id} does not exist.</H.Red>
+            <H.Red>
+              {t(
+                "calc.error.settingsIdDoesNotExist",
+                "Error: Settings {{id}} does not exist.",
+                { id: locState.id },
+              )}
+            </H.Red>
           </div>
         </div>
       )}
@@ -130,6 +145,7 @@ function CalculatorWithGame({
   globalSettings: ScoreSettings | null;
   game: Game | null;
 }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const db = useDb();
 
@@ -626,11 +642,13 @@ function CalculatorWithGame({
                 className="flex min-h-screen w-full flex-col justify-center px-4 py-4 lg:py-8"
               >
                 <div className="flex flex-col items-center justify-center gap-y-2 lg:gap-y-4">
-                  <h1 className="text-3xl lg:text-4xl">Points Calculator</h1>
+                  <h1 className="text-3xl lg:text-4xl">
+                    {t("calc.pointsCalculator")}
+                  </h1>
                   <div className="flex min-w-min flex-row flex-wrap items-center justify-center gap-x-8">
                     {game != null && (
                       <div className="flex flex-col flex-wrap items-center justify-center gap-x-8 gap-y-1">
-                        <span className="text-xl">Round</span>
+                        <span className="text-xl">{t("calc.round")}</span>
                         <WindSelect
                           forced={locState.t === "transfer"}
                           value={hand.roundWind}
@@ -680,8 +698,8 @@ function CalculatorWithGame({
                           }
                         });
                       }}
-                      left="Tsumo"
-                      right="Ron"
+                      left={t("common.tsumo")}
+                      right={t("common.ron")}
                     />
                   </div>
                   <HanFu
@@ -717,7 +735,7 @@ function CalculatorWithGame({
                           void transferScores(hanFuScores);
                         }}
                       >
-                        Transfer Points
+                        {t("calc.transferPoints")}
                       </button>
                     </div>
                   )}
@@ -727,69 +745,69 @@ function CalculatorWithGame({
                 ref={setFuReferenceEl}
                 className="flex min-h-screen w-full flex-col items-center justify-center gap-y-2 bg-slate-300 p-2 dark:bg-sky-900"
               >
-                <h1 className="text-3xl lg:text-4xl">Fu Reference</h1>
+                <h1 className="text-3xl lg:text-4xl">
+                  {t("calc.fuReference.$")}
+                </h1>
                 <span className="text-lg lg:text-xl">
-                  Round up to the nearest 10.
+                  <HTrans i18nKey="calc.fuReference.roundUp" />
                 </span>
                 <ul className="ml-4 flex list-disc flex-col items-start justify-center gap-y-1 text-xl lg:ml-8 lg:gap-y-2 lg:text-2xl">
                   <li>
-                    <H>20</H> base fu.
+                    <HTrans i18nKey="calc.fuReference.fu.base" />
                     <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                       {settings.rinshanFu ? (
                         <li>
-                          <H>+2</H> for winning with tsumo unless with Pinfu.
+                          <HTrans i18nKey="calc.fuReference.fu.tsumo" />
                         </li>
                       ) : (
                         <li>
-                          <H>+2</H> for winning with tsumo unless with Pinfu or
-                          after a kan.
+                          <HTrans i18nKey="calc.fuReference.fu.tsumoNoRinshanFu" />
                         </li>
                       )}
                       <li>
-                        <H>+10</H> for winning with closed ron.
+                        <HTrans i18nKey="calc.fuReference.fu.closedRon" />
                       </li>
                       <li>
-                        <H>+2</H> for winning on a wait with one tile.
+                        <HTrans i18nKey="calc.fuReference.fu.singleWait" />
                       </li>
                       {settings.doubleWindFu ? (
                         <li>
-                          <H>+2</H> per yakuhai pair and additional <H>+2</H> if
-                          double wind.
+                          <HTrans i18nKey="calc.fuReference.fu.yakuhaiPair" />
                         </li>
                       ) : (
                         <li>
-                          <H>+2</H> per yakuhai pair.
+                          <HTrans i18nKey="calc.fuReference.fu.yakuhaiPairNoDouble" />
                         </li>
                       )}
                     </ul>
                   </li>
                   <li>
-                    <H>+4</H> fu per triplet:
+                    <HTrans i18nKey="calc.fuReference.fu.perTriplet" />
                     <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                       <li>
-                        <H>÷2</H> if open.
+                        <HTrans i18nKey="calc.fuReference.fu.ifOpen" />
                       </li>
                       <li>
-                        <H>×2</H> if terminals or honors.
+                        <HTrans i18nKey="calc.fuReference.fu.ifNonSimple" />
                       </li>
                     </ul>
                   </li>
                   <li>
-                    <H>+16</H> fu per kan:
+                    <HTrans i18nKey="calc.fuReference.fu.perKan" />
                     <ul className="mt-1 ml-4 flex list-disc flex-col items-start justify-center gap-y-1 lg:ml-8 lg:gap-y-2">
                       <li>
-                        <H>÷2</H> if open.
+                        <HTrans i18nKey="calc.fuReference.fu.ifOpen" />
                       </li>
                       <li>
-                        <H>×2</H> if terminals or honors.
+                        <HTrans i18nKey="calc.fuReference.fu.ifNonSimple" />
                       </li>
                     </ul>
                   </li>
                   <li>
-                    <H>+2</H> for winning with an open hand if at 20 fu.
+                    <HTrans i18nKey="calc.fuReference.fu.openPinfu" />
                   </li>
                   <li>
-                    Seven Pairs is always <H>25</H> fu and not rounded.
+                    <HTrans i18nKey="calc.fuReference.fu.sevenPairs" />
                   </li>
                 </ul>
               </div>
@@ -801,7 +819,9 @@ function CalculatorWithGame({
                 className="flex min-h-screen w-full flex-col items-center justify-center gap-y-2 px-2 py-2"
               >
                 <div className="flex flex-row items-end gap-x-2">
-                  <h1 className="text-3xl lg:text-4xl">Score Calculator</h1>
+                  <h1 className="text-3xl lg:text-4xl">
+                    {t("calc.scoreCalculator")}
+                  </h1>
                   {(tileCount > 0 ||
                     hand.dora.length > 0 ||
                     hand.uradora.length > 0) && (
@@ -812,7 +832,7 @@ function CalculatorWithGame({
                       }}
                       className="text-red-600 hover:text-red-700 dark:text-red-700 dark:hover:text-red-800"
                     >
-                      Clear
+                      {t("common.clear")}
                     </button>
                   )}
                 </div>
@@ -860,7 +880,7 @@ function CalculatorWithGame({
                       onActionChange={updateAction}
                       small
                     >
-                      Chii
+                      {t("common.chii")}
                     </ActionButton>
                   )}
                   <ActionButton
@@ -872,7 +892,7 @@ function CalculatorWithGame({
                     onActionChange={updateAction}
                     small
                   >
-                    Pon
+                    {t("common.pon")}
                   </ActionButton>
                   <ActionButton
                     t="kan"
@@ -883,7 +903,7 @@ function CalculatorWithGame({
                     onActionChange={updateAction}
                     small
                   >
-                    Kan
+                    {t("common.kan")}
                   </ActionButton>
                   <ActionButton
                     t="closedKan"
@@ -892,7 +912,7 @@ function CalculatorWithGame({
                     onActionChange={updateAction}
                     small
                   >
-                    Closed Kan
+                    {t("common.closedKan")}
                   </ActionButton>
                 </HorizontalRow>
                 <VerticalRow ref={setTileSelectEl} className="scroll-mb-4">
@@ -939,7 +959,7 @@ function CalculatorWithGame({
                   <div className="flex min-w-min flex-row flex-wrap items-center justify-center gap-x-8">
                     <div className="flex min-w-min flex-row flex-wrap items-center justify-center gap-x-8">
                       <div className="flex flex-col flex-wrap items-center justify-center gap-x-8 gap-y-1">
-                        <span className="text-xl">Round</span>
+                        <span className="text-xl">{t("calc.round")}</span>
                         <WindSelect
                           forced={locState.t === "transfer"}
                           value={hand.roundWind}
@@ -954,7 +974,7 @@ function CalculatorWithGame({
                         />
                       </div>
                       <div className="flex flex-col items-center justify-center gap-y-1">
-                        <span className="text-xl">Seat</span>
+                        <span className="text-xl">{t("calc.seat")}</span>
                         <WindSelect
                           forced={locState.t === "transfer"}
                           value={hand.seatWind}
@@ -972,7 +992,13 @@ function CalculatorWithGame({
                     <div className="flex flex-row flex-wrap items-center justify-center gap-x-8 gap-y-1">
                       <div className="flex flex-col items-center justify-center gap-y-1">
                         <span className="text-xl">
-                          Dora <span className="text-xs">Indicators</span>
+                          <Trans
+                            t={t}
+                            i18nKey="calc.doraIndicators"
+                            components={{
+                              Sm: <span className="text-xs"></span>,
+                            }}
+                          />
                         </span>
                         <SelectedDora
                           dora={hand.dora}
@@ -987,7 +1013,13 @@ function CalculatorWithGame({
                       </div>
                       <div className="flex flex-col items-center justify-center gap-y-1">
                         <span className="text-xl">
-                          Uradora <span className="text-xs">Indicators</span>
+                          <Trans
+                            t={t}
+                            i18nKey="calc.uradoraIndicators"
+                            components={{
+                              Sm: <span className="text-xs"></span>,
+                            }}
+                          />
                         </span>
                         <SelectedDora
                           dora={hand.uradora}
@@ -1021,8 +1053,8 @@ function CalculatorWithGame({
                           }
                         });
                       }}
-                      left="Tsumo"
-                      right="Ron"
+                      left={t("common.tsumo")}
+                      right={t("common.ron")}
                     />
                     <ActionButton
                       t="dora"
@@ -1030,7 +1062,7 @@ function CalculatorWithGame({
                       currentAction={action}
                       onActionChange={updateAction}
                     >
-                      Add Dora Indicator
+                      {t("calc.addDoraIndicator")}
                     </ActionButton>
                     <ActionButton
                       t="uradora"
@@ -1038,7 +1070,7 @@ function CalculatorWithGame({
                       currentAction={action}
                       onActionChange={updateAction}
                     >
-                      Add Uradora Indicator
+                      {t("calc.addUradoraIndicator")}
                     </ActionButton>
                     {isSanma && !settings.northYakuhai && (
                       <Counter
@@ -1061,7 +1093,9 @@ function CalculatorWithGame({
                           });
                         }}
                       >
-                        Kita ({hand.nukidora})
+                        {t("calc.kita", {
+                          nukidora: hand.nukidora,
+                        })}
                       </Counter>
                     )}
                   </HorizontalRow>
@@ -1090,7 +1124,7 @@ function CalculatorWithGame({
                         });
                       }}
                     >
-                      Riichi
+                      {t("yaku.riichi.$")}
                     </ToggleOnOff>
                     {!settings.disabledYaku.includes("ダブル立直") && (
                       <ToggleOnOff
@@ -1130,7 +1164,7 @@ function CalculatorWithGame({
                           });
                         }}
                       >
-                        Double Riichi
+                        {t("yaku.doubleriichi.$")}
                       </ToggleOnOff>
                     )}
                     {!settings.disabledYaku.includes("一発") && (
@@ -1181,7 +1215,7 @@ function CalculatorWithGame({
                           });
                         }}
                       >
-                        Ippatsu
+                        {t("yaku.ippatsu.$")}
                       </ToggleOnOff>
                     )}
                   </HorizontalRow>
@@ -1224,7 +1258,9 @@ function CalculatorWithGame({
                           });
                         }}
                       >
-                        {hand.agari === "ron" ? "Robbing a Kan" : "After a Kan"}
+                        {hand.agari === "ron"
+                          ? t("yaku.chankan.$")
+                          : t("yaku.rinshankaihou.$")}
                       </ToggleOnOff>
                     )}
                     {(!settings.disabledYaku.includes("海底摸月") ||
@@ -1256,8 +1292,8 @@ function CalculatorWithGame({
                         }}
                       >
                         {hand.agari === "tsumo"
-                          ? "Under the Sea"
-                          : "Under the River"}
+                          ? t("yaku.haiteiraoyue.$")
+                          : t("yaku.houteiraoyui.$")}
                       </ToggleOnOff>
                     )}
                     {(!settings.disabledYaku.includes("天和") ||
@@ -1290,11 +1326,11 @@ function CalculatorWithGame({
                         }}
                       >
                         {hand.seatWind === "1"
-                          ? "Blessing of Heaven"
+                          ? t("yaku.tenhou.$")
                           : settings.enabledLocalYaku.includes("人和") &&
                               hand.agari === "ron"
-                            ? "Blessing of Man"
-                            : "Blessing of Earth"}
+                            ? t("yaku.renhou.$")
+                            : t("yaku.chiihou.$")}
                       </ToggleOnOff>
                     )}
                   </HorizontalRow>
@@ -1315,7 +1351,9 @@ function CalculatorWithGame({
                           });
                         }}
                       >
-                        Yaku ({hand.extraYakuHan})
+                        {t("calc.extraYaku", {
+                          extraYakuHan: hand.extraYakuHan,
+                        })}
                       </Counter>
                       <Counter
                         canDecrement={hand.extraDoraHan > 0}
@@ -1332,7 +1370,9 @@ function CalculatorWithGame({
                           });
                         }}
                       >
-                        Dora ({hand.extraDoraHan})
+                        {t("calc.extraDora", {
+                          extraDoraHan: hand.extraDoraHan,
+                        })}
                       </Counter>
                       <Counter
                         canDecrement={hand.extraYakuman > 0}
@@ -1349,7 +1389,9 @@ function CalculatorWithGame({
                           });
                         }}
                       >
-                        Yakuman ({hand.extraYakuman})
+                        {t("calc.extraYakuman", {
+                          extraYakuman: hand.extraYakuman,
+                        })}
                       </Counter>
                     </HorizontalRow>
                   )}

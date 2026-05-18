@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { HiHashtag, HiMinus, HiPlus } from "react-icons/hi";
 
 import { type Game } from "../../data/interfaces";
@@ -22,6 +23,7 @@ export function ScoreUpdateDialog({
   onScoreUpdate: (oldScores: number[]) => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const db = useDb();
 
   const { bottomWind, scores, settings } = game;
@@ -53,7 +55,7 @@ export function ScoreUpdateDialog({
     <CustomDialog
       initialFocus={scoreDeltaInputRef}
       onClose={onClose}
-      title="Edit Score"
+      title={t("compass.editScore")}
     >
       <div className="flex flex-col items-center justify-center gap-y-2">
         <TileButton
@@ -106,7 +108,7 @@ export function ScoreUpdateDialog({
               void submitScoreUpdate();
             }}
           >
-            Submit
+            {t("common.submit")}
           </Button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useImmer } from "use-immer";
 
 import { type Game } from "../../data/interfaces";
@@ -9,7 +10,7 @@ import Button from "../Button";
 import TileButton from "../calculator/TileButton";
 import CustomDialog from "../layout/CustomDialog";
 import HorizontalRow from "../layout/HorizontalRow";
-import H from "../text/H";
+import { HTrans } from "../text/Localized";
 import ToggleOnOff from "../ToggleOnOff";
 import ToggleThree from "../ToggleThree";
 
@@ -24,6 +25,7 @@ export function DrawDialog({
   onClose: () => void;
   onScoreUpdate: (oldScores: number[]) => void;
 }) {
+  const { t } = useTranslation();
   const db = useDb();
 
   const { bottomWind, roundWind, round, repeats, settings } = game;
@@ -117,7 +119,7 @@ export function DrawDialog({
   };
 
   return (
-    <CustomDialog onClose={onClose} title="Handle Draws">
+    <CustomDialog onClose={onClose} title={t("compass.handleDraws")}>
       <div className="flex flex-col items-center justify-center gap-y-8">
         <form
           className="flex flex-col items-center justify-center gap-y-2"
@@ -126,17 +128,17 @@ export function DrawDialog({
             void submitDraw();
           }}
         >
-          <p className="text-xl lg:text-2xl">Draw Type</p>
+          <p className="text-xl lg:text-2xl">{t("compass.drawType")}</p>
           <ToggleThree
-            left="Exhaust"
-            middle="Abort"
-            right="Chombo"
+            left={t("compass.exhaust")}
+            middle={t("compass.abort")}
+            right={t("compass.chombo")}
             toggled={drawType}
             onToggle={(b) => setDrawType(b)}
           />
           {drawType === 0 && (
             <>
-              <p className="text-xl lg:text-2xl">Ready Players</p>
+              <p className="text-xl lg:text-2xl">{t("compass.readyPlayers")}</p>
               <HorizontalRow>
                 {playerIxes.map((i) => (
                   <TileButton
@@ -163,13 +165,15 @@ export function DrawDialog({
                 toggled={drawRepeat}
                 onToggle={(b) => setDrawRepeat(b)}
               >
-                Repeat Round
+                {t("compass.repeatRound")}
               </ToggleOnOff>
             </>
           )}
           {drawType === 2 && (
             <>
-              <p className="text-xl lg:text-2xl">Player in Violation</p>
+              <p className="text-xl lg:text-2xl">
+                {t("compass.playerInViolation")}
+              </p>
               <HorizontalRow>
                 {playerIxes.map((i) => (
                   <TileButton
@@ -185,9 +189,9 @@ export function DrawDialog({
               </HorizontalRow>
               <ul className="text-base lg:text-xl">
                 <li>
-                  Pays out a <H>reverse mangan</H>.
+                  <HTrans i18nKey="compass.paysOutReverseMangan" />
                 </li>
-                <li>Redoes the round from the start.</li>
+                <li>{t("compass.redoesTheRound")}</li>
               </ul>
             </>
           )}
@@ -197,7 +201,7 @@ export function DrawDialog({
             void submitDraw();
           }}
         >
-          Submit
+          {t("common.submit")}
         </Button>
       </div>
     </CustomDialog>

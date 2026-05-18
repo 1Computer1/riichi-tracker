@@ -1,5 +1,7 @@
+import { useTranslation } from "react-i18next";
+
 import { type Game } from "../../data/interfaces";
-import { nextWind, translateWind } from "../../lib/hand";
+import { getWindNameTranslated, nextWind } from "../../lib/hand";
 import { useDb } from "../../providers/DbProvider";
 import Button from "../Button";
 import Counter from "../Counter";
@@ -14,6 +16,7 @@ export function AdvancedDialog({
   game: Game;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const db = useDb();
 
   const {
@@ -30,7 +33,7 @@ export function AdvancedDialog({
   const roundCap = isSanma ? 3 : 4;
 
   return (
-    <CustomDialog title="Other Actions" onClose={onClose}>
+    <CustomDialog title={t("compass.otherActions")} onClose={onClose}>
       <div className="flex flex-col items-center justify-center gap-y-2">
         <div className="flex flex-col items-center justify-center gap-y-2">
           <Button
@@ -41,7 +44,7 @@ export function AdvancedDialog({
               });
             }}
           >
-            Rotate Seats
+            {t("compass.rotateSeats")}
           </Button>
           <Counter
             onDecrement={async () => {
@@ -63,7 +66,7 @@ export function AdvancedDialog({
               });
             }}
           >
-            {translateWind(roundWind)} {round}
+            {getWindNameTranslated(roundWind)(t)} {round}
           </Counter>
           <Counter
             canDecrement={repeats > 0}
@@ -80,7 +83,7 @@ export function AdvancedDialog({
               });
             }}
           >
-            Repeats ({repeats})
+            {t("compass.repeats", { repeats })}
           </Counter>
           <Counter
             canDecrement={riichiSticks > riichi.filter((r) => r).length}
@@ -97,7 +100,9 @@ export function AdvancedDialog({
               });
             }}
           >
-            Riichi ({riichiSticks})
+            {t("compass.riichiSticks", {
+              riichiSticks,
+            })}
           </Counter>
         </div>
       </div>

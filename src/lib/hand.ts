@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import Riichi, { type Pattern } from "riichi";
 
 import { type ScoreSettings } from "./settings";
@@ -100,8 +101,17 @@ export function nextDoraTile(t: TileCode, k = 1, sanma: boolean): TileCode {
   return `${((num + d - 1) % 9) + 1}${suit}` as TileCode;
 }
 
-export function translateWind(w: Wind): string {
-  return { 1: "East", 2: "South", 3: "West", 4: "North" }[w];
+export function getWindNameTranslated(
+  w: Wind,
+): (t: TFunction<"translation", undefined>) => string {
+  return (t) => {
+    return {
+      1: t("common.east"),
+      2: t("common.south"),
+      3: t("common.west"),
+      4: t("common.north"),
+    }[w];
+  };
 }
 
 export interface Hand {
@@ -138,23 +148,31 @@ export interface Hand {
   seatWind: Wind;
 }
 
-export function translateYaku(yaku: keyof typeof YakuList): string {
-  return YakuList[yaku].name;
+export function getYakuTranslated(
+  yaku: keyof typeof YakuList,
+): (t: TFunction<"translation", undefined>) => string {
+  return (t) => t(`${YakuList[yaku].key}.$`);
 }
 
-export function translateScore(name: string): string {
-  const n = parseInt(name, 10);
-  if (n && name.endsWith("役満")) {
-    return `${["Double", "Triple", "Quadruple", "Quintuple", "Sextuple"][n - 2] ?? `${n}x`} Yakuman`;
-  }
-  return {
-    満貫: "Mangan",
-    跳満: "Haneman",
-    倍満: "Baiman",
-    三倍満: "Sanbaiman",
-    数え役満: "Counted Yakuman",
-    役満: "Yakuman",
-  }[name]!;
+export function getScoreNameTranslated(
+  name: string,
+): (t: TFunction<"translation", undefined>) => string {
+  return (t) => {
+    const n = parseInt(name, 10);
+    if (n && name.endsWith("役満")) {
+      return n > 6
+        ? t("common.yakuman.over", { value: n })
+        : t(`common.yakuman.${n}`);
+    }
+    return {
+      満貫: t("common.mangan"),
+      跳満: t("common.haneman"),
+      倍満: t("common.baiman"),
+      三倍満: t("common.sanbaiman"),
+      数え役満: t("common.kazoeyakuman"),
+      役満: t("common.yakuman.1"),
+    }[name]!;
+  };
 }
 
 export type CalculatedPoints =
@@ -299,12 +317,17 @@ export function possibleHanFuValues(
 export type CalculatedValue = CalculatedPoints & {
   isOya: boolean;
   yakuman: number;
-  yaku: [string, number, boolean][];
+  yaku: {
+    id: string;
+    name: (t: TFunction<"translation", undefined>) => string;
+    value: number;
+    yakuman: boolean;
+  }[];
   noYaku: boolean;
   han: number;
   fu: number;
   pattern: CalculatedPattern[] | null;
-  name: string | null;
+  name: ((t: TFunction<"translation", undefined>) => string) | null;
 };
 
 type ReplaceTiles<T> = T extends { v: string | string[] }
@@ -455,18 +478,23 @@ export function convertValue(hand: Hand, res: Riichi.Result): CalculatedValue {
     yakuman: res.yakuman,
     yaku: Object.entries(res.yaku)
       .sort((x, y) => YakuSort[x[0]] - YakuSort[y[0]])
-      .map(([name, vs]) => {
-        const trans = translateYaku(name as keyof typeof YakuList);
+      .map(([id, vs]) => {
+        const trans = getYakuTranslated(id as keyof typeof YakuList);
         const value = vs.endsWith("役満")
           ? parseInt(vs, 10) || 1
           : Number(/\d+/.exec(vs)?.[0]);
-        return [trans, value, vs.endsWith("役満")];
+        return {
+          id,
+          name: trans,
+          value,
+          yakuman: vs.endsWith("役満"),
+        };
       }),
     noYaku: res.noYaku,
     han: res.han,
     fu: res.fu,
     pattern: res.pattern as CalculatedPattern[],
-    name: res.name ? translateScore(res.name) : null,
+    name: res.name ? getScoreNameTranslated(res.name) : null,
   };
 }
 

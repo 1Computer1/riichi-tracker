@@ -1,37 +1,26 @@
 import { useState } from "react";
-import { flushSync } from "react-dom";
-import { HiDesktopComputer, HiMoon, HiSun } from "react-icons/hi";
-import {
-  MdFlashlightOff,
-  MdFlashlightOn,
-  MdFontDownload,
-  MdFontDownloadOff,
-} from "react-icons/md";
+import { useTranslation } from "react-i18next";
+import { HiCog } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../components/Button";
 import CircleButton from "../components/CircleButton";
 import { NewCompassDialog } from "../components/home/NewCompassDialog";
-import H from "../components/text/H";
-import useLocalStorage from "../hooks/useLocalStorage";
-import { useTheme } from "../hooks/useTheme";
+import PreferencesDialog from "../components/home/PreferencesDialog";
+import { HTrans } from "../components/text/Localized";
 import { DefaultSettings } from "../lib/settings";
 import { type CalculatorState, type CompassState } from "../lib/states";
-import { updateTheme } from "../lib/util";
 import { useDb } from "../providers/DbProvider";
 
 export default function App() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const db = useDb();
   const toolsGame = db.useGame("$tools");
 
-  const [theme, setTheme] = useLocalStorage("theme");
-  const actualTheme = useTheme();
-
-  const [showTileName, setShowTileName] = useLocalStorage("showTileName");
-  const [brightTiles, setBrightTiles] = useLocalStorage("brightTiles");
   const [openNewCompassDialog, setOpenNewCompassDialog] = useState(false);
+  const [openPreferencesDialog, setOpenPreferencesDialog] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-200 text-black dark:bg-gray-900 dark:text-white">
@@ -49,61 +38,24 @@ export default function App() {
       <div className="fixed top-2 left-2 flex flex-col gap-y-2 lg:top-4 lg:left-4">
         <CircleButton
           onClick={() => {
-            flushSync(() => {
-              if (theme === "dark") {
-                setTheme(null);
-              } else if (theme === "light") {
-                setTheme("dark");
-              } else {
-                setTheme("light");
-              }
-            });
-            updateTheme();
+            setOpenPreferencesDialog(true);
           }}
         >
-          {theme === "dark" ? (
-            <HiMoon />
-          ) : theme === "light" ? (
-            <HiSun />
-          ) : (
-            <HiDesktopComputer />
-          )}
+          <HiCog />
         </CircleButton>
-        <CircleButton
-          onClick={() => {
-            if (showTileName === "true") {
-              setShowTileName("false");
-            } else {
-              setShowTileName("true");
-            }
-          }}
-        >
-          {showTileName === "true" ? <MdFontDownload /> : <MdFontDownloadOff />}
-        </CircleButton>
-        {actualTheme === "dark" && (
-          <CircleButton
-            onClick={() => {
-              if (brightTiles === "true") {
-                setBrightTiles("false");
-              } else {
-                setBrightTiles("true");
-              }
-            }}
-          >
-            {brightTiles === "true" ? <MdFlashlightOn /> : <MdFlashlightOff />}
-          </CircleButton>
-        )}
       </div>
       <div className="flex min-h-screen flex-col items-center justify-center gap-y-4 px-2 py-4 lg:gap-y-8">
-        <h1 className="text-center text-4xl lg:text-6xl">Riichi Tracker</h1>
+        <h1 className="text-center text-4xl lg:text-6xl">
+          {t("home.riichiTracker")}
+        </h1>
         <h2 className="text-center text-xl lg:text-2xl">
-          Keep track of your games!
+          {t("home.keepTrackOfYourGames")}
         </h2>
         <div className="flex flex-row items-start justify-center gap-x-8">
           <div className="flex flex-col items-center justify-center gap-y-2 lg:gap-y-4">
             <div className="flex flex-col items-center justify-center gap-y-2 lg:gap-y-4">
               <Button onClick={() => setOpenNewCompassDialog(true)}>
-                New Game
+                {t("home.newGame")}
               </Button>
               <Button
                 disabled={toolsGame == null || !toolsGame.ok}
@@ -112,7 +64,7 @@ export default function App() {
                   void navigate("/compass", { state, replace: true });
                 }}
               >
-                Continue
+                {t("common.continue")}
               </Button>
               <Button
                 onClick={async () => {
@@ -124,62 +76,56 @@ export default function App() {
                   void navigate("/calculator", { state, replace: true });
                 }}
               >
-                Calculator
+                {t("home.calculator")}
               </Button>
               <Button
                 onClick={() => {
                   void navigate("/reference", { replace: true });
                 }}
               >
-                Reference
+                {t("home.reference")}
               </Button>
             </div>
           </div>
         </div>
         <ul className="flex list-disc flex-col items-start justify-center gap-y-1 px-6 text-base lg:gap-y-2 lg:text-xl">
           <li>
-            Create a <H>Compass</H> by using the <H>New Game</H> button.
+            <HTrans i18nKey="home.help.createCompass" />
           </li>
           <li>
-            Add riichi sticks by tapping on the <H>Riichi</H> button.
+            <HTrans i18nKey="home.help.addRiichiSticks" />
           </li>
           <li>
-            Transfer scores by tapping on the{" "}
-            <H>winning player&apos;s wind tile</H> and using the{" "}
-            <H>Calculator</H>.
+            <HTrans i18nKey="home.help.transferScores" />
           </li>
           <li>
-            Beginners can input their hand while advanced players can input the
-            han and fu values.
-            <br />
-            This can be toggled at the <H>top-right of the Calculator</H>.
-            <br />
-            The default input can be set with the{" "}
-            <H>Prefer Han &amp; Fu Input</H> option.
+            <HTrans i18nKey="home.help.howToInput" />
           </li>
           <li>
-            Handle draws and repeats by tapping on the <H>center wind tile</H>.
+            <HTrans i18nKey="home.help.drawsAndRepeats" />
           </li>
           <li>
-            Manually edit scores by tapping on a{" "}
-            <H>player&apos;s score display</H>.
+            <HTrans i18nKey="home.help.manuallyEditScores" />
           </li>
           <li>
-            Manually edit seats, rounds, and sticks by tapping on the{" "}
-            <H>gear button</H>.
-          </li>
-          <li>Place your phone at the center of the table and enjoy!</li>
-          <li>
-            You can also use the <H>Calculator</H> by itself outside of a game.
+            <HTrans i18nKey="home.help.manuallyEditRounds" />
           </li>
           <li>
-            Learn the tiles, yaku, and the scoring table in the <H>Reference</H>
-            .
+            <HTrans i18nKey="home.help.placePhone" />
+          </li>
+          <li>
+            <HTrans i18nKey="home.help.useCalculator" />
+          </li>
+          <li>
+            <HTrans i18nKey="home.help.useReference" />
           </li>
         </ul>
       </div>
       {openNewCompassDialog && (
         <NewCompassDialog onClose={() => setOpenNewCompassDialog(false)} />
+      )}
+      {openPreferencesDialog && (
+        <PreferencesDialog onClose={() => setOpenPreferencesDialog(false)} />
       )}
     </div>
   );

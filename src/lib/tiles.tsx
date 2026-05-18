@@ -2,30 +2,30 @@ import type { TileCode } from "./hand";
 
 export function svgForTile(tile: TileCode): readonly [string, string] {
   const base = import.meta.env.BASE_URL;
-  const t = (name: string) =>
+  const get = (name: string) =>
     [
       `${base}tiles/light/${name}.svg`,
       `${base}tiles/dark/${name}.svg`,
     ] as const;
   switch (tile) {
     case "1z":
-      return t("Ton");
+      return get("Ton");
     case "2z":
-      return t("Nan");
+      return get("Nan");
     case "3z":
-      return t("Shaa");
+      return get("Shaa");
     case "4z":
-      return t("Pei");
+      return get("Pei");
     case "5z":
-      return t("Haku");
+      return get("Haku");
     case "6z":
-      return t("Hatsu");
+      return get("Hatsu");
     case "7z":
-      return t("Chun");
+      return get("Chun");
     default: {
       const suit = tile[1] === "m" ? "Man" : tile[1] === "p" ? "Pin" : "Sou";
       const num = tile[0] === "0" ? "5-Dora" : tile[0];
-      return t(suit + num);
+      return get(suit + num);
     }
   }
 }
