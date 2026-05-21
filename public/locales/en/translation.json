@@ -267,7 +267,7 @@
     },
     "brightTiles": {
       "$": "Bright Tiles",
-      "help": "Color theme to use. Click on the currently set theme to reset to system theme."
+      "help": "Whether to use light theme tiles in dark theme."
     },
     "common": {
       "allow": "Allow",
