@@ -89,6 +89,15 @@ export default function PreferencesDialog({
             >
               日本語
             </Button> */}
+            <Button
+              active={language === "it"}
+              onClick={() => {
+                setLanguage("it");
+                void i18n.changeLanguage("it");
+              }}
+            >
+              Italiano
+            </Button>
           </SettingRow>
           <SettingRow
             name={t("settings.showTileNames.$")}
