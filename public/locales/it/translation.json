@@ -1,0 +1,680 @@
+﻿{
+  "calc": {
+    "addDoraIndicator": "Aggiungi indicatore dora",
+    "addUradoraIndicator": "Aggiungi indicatore uradora",
+    "doraIndicators": "Indicatori <Sm>dora</Sm>",
+    "error": {
+      "gameDoesNotExist": "Errore: La partita {{id}} non esiste.",
+      "settingsIdDoesNotExist": "Errore: Le impostazioni {{id}} non esistono."
+    },
+    "extraDora": "Dora ({{extraDoraHan}})",
+    "extraYaku": "Yaku ({{extraYakuHan}})",
+    "extraYakuman": "Yakuman ({{extraYakuman}})",
+    "fromAll": "<H>{{points}}</H> da tutti",
+    "fromBoth": "<H>{{points}}</H> da entrambi",
+    "fromLiable": "<H>{{points}}</H> dal responsabile",
+    "fuReference": {
+      "$": "Riferimento Fu",
+      "fu": {
+        "base": "<H>20</H> fu base.",
+        "closedRon": "<H>+10</H> per vittoria con ron da mano chiusa.",
+        "ifNonSimple": "<H>×2</H> se terminali o onori.",
+        "ifOpen": "<H>÷2</H> se aperta.",
+        "openPinfu": "<H>+2</H> per vittoria con mano aperta a 20 fu.",
+        "perKan": "<H>+16</H> fu per kan:",
+        "perTriplet": "<H>+4</H> fu per tripletta:",
+        "sevenPairs": "Sette Coppie vale sempre <H>25</H> fu e non si arrotonda.",
+        "singleWait": "<H>+2</H> per vittoria con attesa su una sola tessera.",
+        "tsumo": "<H>+2</H> per vittoria con tsumo, tranne che con Pinfu.",
+        "tsumoNoRinshanFu": "<H>+2</H> per vittoria con tsumo, tranne che con Pinfu o dopo un Kan.",
+        "yakuhaiPair": "<H>+2</H> per coppia yakuhai e ulteriori <H>+2</H> se vento doppio.",
+        "yakuhaiPairNoDouble": "<H>+2</H> per coppia yakuhai."
+      },
+      "roundUp": "Arrotonda per eccesso alla decina più vicina."
+    },
+    "kita": "Kita ({{nukidora}})",
+    "notEnoughTiles": "Tessere insufficienti per formare una mano completa.",
+    "noYaku": "Nessuno Yaku",
+    "pattern": {
+      "base": "<H>{{fu}}</H> fu base.",
+      "chiitoi": "<H>{{fu}}</H> fu base per Sette Coppie.",
+      "closedRon": "<H>+{{fu}}</H> fu per ron da mano chiusa.",
+      "openPinfu": "<H>+{{fu}}</H> fu per mano aperta con 20 fu.",
+      "pinfuTsumo": "<H>+{{fu}}</H> fu per tsumo con Pinfu.",
+      "quad": {
+        "closed": "<H>+{{fu}}</H> fu per un kan chiuso.",
+        "closedYaochuu": "<H>+{{fu}}</H> fu per un kan chiuso non semplice.",
+        "open": "<H>+{{fu}}</H> fu per un kan aperto.",
+        "openYaochuu": "<H>+{{fu}}</H> fu per un kan aperto non semplice."
+      },
+      "rinshanTsumo": "<H>+{{fu}}</H> fu per tsumo dopo un Kan.",
+      "triplet": {
+        "closed": "<H>+{{fu}}</H> fu per una tripletta chiusa.",
+        "closedYaochuu": "<H>+{{fu}}</H> fu per una tripletta chiusa non semplice.",
+        "open": "<H>+{{fu}}</H> fu per una tripletta aperta.",
+        "openYaochuu": "<H>+{{fu}}</H> fu per una tripletta aperta non semplice."
+      },
+      "tsumo": "<H>+{{fu}}</H> fu per tsumo.",
+      "wait": {
+        "kanchan": "<H>+{{fu}}</H> fu per vittoria con attesa interna.",
+        "penchan": "<H>+{{fu}}</H> fu per vittoria con attesa terminale.",
+        "ryanmen": "<H>+{{fu}}</H> fu per vittoria con attesa bilaterale.",
+        "shanpon": "<H>+{{fu}}</H> fu per vittoria con attesa su due coppie.",
+        "tanki": "<H>+{{fu}}</H> fu per vittoria con attesa sulla coppia."
+      },
+      "yakuhaiPair": {
+        "double": "<H>+{{fu}}</H> fu per una coppia yakuhai di vento doppio.",
+        "single": "<H>+{{fu}}</H> fu per una coppia yakuhai."
+      }
+    },
+    "points": "Punti",
+    "pointsCalculator": "Calcolatore punti",
+    "pointsToTake": "Punti da prendere",
+    "round": "Round",
+    "scoreCalculator": "Calcolatore punteggio",
+    "seat": "Posto",
+    "selectFu": "Seleziona Fu",
+    "selectHan": "Seleziona Han",
+    "tilesNotValid": "Le tessere non formano una mano vincente valida.",
+    "transferCalculatedScore": "Trasferisci punteggio calcolato",
+    "transferPoints": "Trasferisci punti",
+    "uradoraIndicators": "Indicatori <Sm>uradora</Sm>"
+  },
+  "common": {
+    "baiman": "Baiman",
+    "chii": "Chii",
+    "clear": "Cancella",
+    "close": "Chiudi",
+    "closedKan": "Kan chiuso",
+    "continue": "Continua",
+    "dark": "Scuro",
+    "east": "Est",
+    "fu": "Fu",
+    "fuvalue": "<H>{{fu}}</H> Fu",
+    "green": "Verde",
+    "han": "Han",
+    "haneman": "Haneman",
+    "hanfuvalue": "<H>{{han}}</H> Han <H>{{fu}}</H> Fu",
+    "hanvalue": "<H>{{han}}</H> Han",
+    "kan": "Kan",
+    "kazoeyakuman": "Yakuman conteggiato",
+    "light": "Chiaro",
+    "mangan": "Mangan",
+    "north": "Nord",
+    "pon": "Pon",
+    "red": "Rosso",
+    "ron": "Ron",
+    "sanbaiman": "Sanbaiman",
+    "south": "Sud",
+    "start": "Inizia",
+    "submit": "Invia",
+    "tsumo": "Tsumo",
+    "west": "Ovest",
+    "white": "Bianco",
+    "yakuman": {
+      "1": "Yakuman",
+      "2": "Doppio Yakuman",
+      "3": "Triplo Yakuman",
+      "4": "Quadruplo Yakuman",
+      "5": "Quintuplo Yakuman",
+      "6": "Sestuplo Yakuman",
+      "over": "{{value}}× Yakuman"
+    }
+  },
+  "compass": {
+    "abort": "Annulla",
+    "calculateHand": "Calcola mano",
+    "chombo": "Chombo",
+    "dealerRepeat": "Ripetizione dealer",
+    "dealtinPlayer": "Giocatore che ha scartato",
+    "drawType": "Tipo di pareggio",
+    "editScore": "Modifica punteggio",
+    "exhaust": "Esaurimento tessere",
+    "gameIdDoesNotExist": "Errore: La partita {{id}} non esiste.",
+    "handleDraws": "Gestisci pareggi",
+    "otherActions": "Altre azioni",
+    "pao": "Pao",
+    "paysOutReverseMangan": "Paga un <H>mangan inverso</H>.",
+    "playerInViolation": "Giocatore in fallo",
+    "pointDistribution": "Distribuzione punti",
+    "readyPlayers": "Giocatori in tenpai",
+    "redoesTheRound": "Ricomincia il round dall'inizio.",
+    "repeatRound": "Ripeti round",
+    "repeats": "Ripetizioni ({{repeats}})",
+    "responsiblePlayer": "Giocatore responsabile",
+    "riichi": "Riichi",
+    "riichiSticks": "Bastoncini riichi ({{riichiSticks}})",
+    "rotateSeats": "Ruota posti",
+    "scoreRepeatSticks": "Punteggio bastoncini ripetizione",
+    "scoreRiichiSticks": "Punteggio bastoncini riichi",
+    "seatRotation": "Rotazione posti",
+    "transferPoints": "Trasferisci punti"
+  },
+  "home": {
+    "calculator": "Calcolatore",
+    "fourwayCompass": "Bussola a 4 direzioni",
+    "help": {
+      "addRiichiSticks": "Aggiungi bastoncini riichi toccando il pulsante <H>Riichi</H>.",
+      "createCompass": "Crea una <H>Bussola</H> usando il pulsante <H>Nuova Partita</H>.",
+      "drawsAndRepeats": "Gestisci pareggi e ripetizioni toccando la <H>tessera del vento centrale</H>.",
+      "howToInput": "I principianti possono inserire la propria mano, mentre i giocatori avanzati possono inserire direttamente i valori di han e fu.<br />Questa opzione può essere attivata in alto a destra nel Calcolatore.<br />L'inserimento predefinito può essere impostato tramite l'opzione <H>Preferisci inserimento Han e Fu</H>.",
+      "manuallyEditRounds": "Modifica manualmente posti, round e bastoncini toccando il <H>pulsante ingranaggio</H>.",
+      "manuallyEditScores": "Modifica manualmente i punteggi toccando la <H>schermata del punteggio di un giocatore</H>.",
+      "placePhone": "Posiziona il telefono al centro del tavolo e buon divertimento!",
+      "transferScores": "Trasferisci i punteggi toccando la <H>tessera del vento del giocatore vincente</H> e usando il <H>Calcolatore</H>.",
+      "useCalculator": "Puoi anche usare il <H>Calcolatore</H> da solo al di fuori di una partita.",
+      "useReference": "Impara a conoscere le tessere, gli yaku e la tabella dei punteggi nella sezione <H>Riferimento</H>."
+    },
+    "initialScore": "Punteggio iniziale",
+    "keepTrackOfYourGames": "Tieni traccia delle tue partite!",
+    "newGame": "Nuova Partita",
+    "preferences": "Preferenze",
+    "preferHanAndFuInput": "Preferisci inserimento Han e Fu",
+    "reference": "Riferimento",
+    "riichiTracker": "Tracciatore Riichi",
+    "settings": "Impostazioni",
+    "yourSeatWind": "Vento del tuo posto"
+  },
+  "reference": {
+    "bamboo": "Bambù",
+    "canBeRounded": "<H>3</H> han <H>60</H> fu e <H>4</H> han <H>30</H> fu possono essere arrotondati a un <H>Mangan</H> in alcune varianti delle regole.",
+    "characters": "Caratteri",
+    "circles": "Cerchi",
+    "closedOnly": "Solo mano chiusa",
+    "dealer": "Dealer",
+    "dealerRon": "Ron del Dealer",
+    "dealerTsumo": "Tsumo del Dealer",
+    "dragons": "Draghi",
+    "easy": "Facile",
+    "formula": {
+      "baimanBasicPoints": "<H>8-10</H> = <H>Baiman</H> dal valore di 4000 punti base.",
+      "calculateBasicPoints": "Calcola i punti base con la formula <Mono>fu×2<Sup>2+han</Sup></Mono>.",
+      "common20": "La maggior parte delle mani aperte, delle mani chiuse vinte con tsumo e delle Pinfu vinte con ron valgono <H>30 fu</H>.",
+      "common30": "La maggior parte delle mani chiuse vinte con ron e la maggior parte delle mani aperte con Solo Triplette valgono <H>40 fu</H>.",
+      "common40": "La Pinfu con tsumo vale <H>20 fu</H>.",
+      "commonFuValues": "Alcuni valori di fu comuni:",
+      "countFuValue": "Determina il valore dei fu usando la composizione della mano, arrotondando per eccesso alla decina più vicina:",
+      "countHanValue": "Determina gli yaku e le dora per calcolare il valore totale degli han.",
+      "dealerRon": "Ron del dealer: <H>6x</H> dal giocatore che ha scartato.",
+      "dealerTsumo": "Tsumo del dealer: <H>2x</H> da tutti gli altri giocatori.",
+      "fu": {
+        "base": "<H>20</H> fu base.",
+        "closedRon": "<H>+10</H> per vittoria con ron da mano chiusa.",
+        "ifNonSimple": "<H>×2</H> se terminali o onori.",
+        "ifOpen": "<H>÷2</H> se aperta.",
+        "openPinfu": "<H>+2</H> per vittoria con mano aperta a 20 fu.",
+        "perKan": "<H>+16</H> fu per kan:",
+        "perTriplet": "<H>+4</H> fu per tripletta:",
+        "sevenPairs": "Sette Coppie vale sempre <H>25</H> fu e non si arrotonda.",
+        "singleWait": "<H>+2</H> per vittoria con attesa su una sola tessera.",
+        "tsumo": "<H>+2</H> per vittoria con tsumo, tranne che con Pinfu (alcune regole potrebbero assegnare <H>0</H> per lo tsumo dopo un kan).",
+        "yakuhaiPair": "<H>+2</H> per coppia yakuhai (alcune regole potrebbero prevedere <H>+4</H> per la coppia di vento doppio)."
+      },
+      "hanemanBasicPoints": "<H>6-7</H> = <H>Haneman</H> dal valore di 3000 punti base.",
+      "ifBasicPointsAboveMangan": "Se superiore a 2000 punti base ma con <H>4</H> o meno han, si fissa su un <H>Mangan</H> di 2000 punti.",
+      "ifKiriageMangan": "Se si utilizzano le regole del mangan arrotondato, arrotonda 1920 punti base a 2000.",
+      "ifManganSkip": "Per han pari o superiori a <H>5</H>, il calcolo dei fu non è necessario, passa al punto 8:",
+      "ifYakumanSkip": "Se la mano è uno <H>Yakuman</H>, assegna 8000 punti base per ciascun <H>Yakuman</H>. Passa al punto 8.",
+      "manganBasicPoints": "<H>5</H> = <H>Mangan</H> dal valore di 2000 punti base.",
+      "nonDealerRon": "Ron non-dealer: <H>4x</H> dal giocatore che ha scartato.",
+      "nonDealerTsumo": "Tsumo non-dealer: <H>1x</H> dagli altri non-dealer, <H>2x</H> dal dealer.",
+      "sanbaimanBasicPoints": "<H>11-12</H> = <H>Sanbaiman</H> dal valore di 6000 punti base.",
+      "theGeneralFormula": "La formula generale è la seguente:",
+      "transferOnWin": "In caso di vittoria, trasferisci i punti base arrotondati per eccesso ai 100 più vicini:",
+      "yakumanBasicPoints": "<H>13+</H> = <H>Yakuman</H> dal valore di 8000 punti base."
+    },
+    "gameMode": {
+      "$": "Modalità di gioco",
+      "fourPlayer": "4 Giocatori",
+      "threePlayer": "3 Giocatori"
+    },
+    "hideYakuman": "Nascondi Yakuman",
+    "legend": "Legenda",
+    "local": "Locale",
+    "minusIfOpen": "-1 se aperta",
+    "nonDealer": "Non-Dealer",
+    "nonDealerRon": "Ron Non-Dealer",
+    "nonDealerTsumo": "Tsumo Non-Dealer",
+    "notYaku": "Non è uno yaku",
+    "onlyEasy": "Solo Facile",
+    "reference": "Riferimento",
+    "scoringTable": "Tabella dei punteggi",
+    "scoringTableSanma": "La tabella dei punteggi a tre giocatori è la stessa di quella a quattro, a meno che non si utilizzi il dimezzamento del Nord. In tal caso, i punti che sarebbero andati persi dal giocatore del Nord vengono ridistribuiti.",
+    "showLocal": "Mostra Locali",
+    "tiles": "Tessere",
+    "tsumoPoints": {
+      "$": "Punti Tsumo",
+      "bisection": "Dimezzamento",
+      "loss": "Perdita"
+    },
+    "winds": "Venti",
+    "winloss": "Vittoria/Sconfitta",
+    "yakuList": "Lista degli Yaku"
+  },
+  "settings": {
+    "affectsTheCompass": "Influisce sulla bussola",
+    "afterKanFu": {
+      "$": "Fu dopo un Kan",
+      "help": "Se conteggiare i <B><H>2</H> fu</B> concessi dallo tsumo se la mano ha vinto dopo un kan.",
+      "twoFu": "2 Fu",
+      "zeroFu": "0 Fu"
+    },
+    "allGreensDragon": {
+      "$": "Tutto Verde con Drago",
+      "help": "Se richiedere il drago verde per conteggiare lo yaku Tutto Verde.",
+      "optional": "Opzionale",
+      "required": "Richiesto"
+    },
+    "brightTiles": {
+      "$": "Tessere Chiare",
+      "help": "Se utilizzare le tessere del tema chiaro all'interno del tema scuro."
+    },
+    "common": {
+      "allow": "Consenti",
+      "disable": "Disattiva",
+      "disallow": "Vietato",
+      "enable": "Attiva",
+      "hide": "Nascondi",
+      "show": "Mostra"
+    },
+    "copyFromCalculator": "Copia dal Calcolatore",
+    "countedYakuman": {
+      "$": "Yakuman conteggiato",
+      "help": "Se considerare una mano del valore di almeno <H>13</H> han come <B>Yakuman</B> o come <B>Sanbaiman</B>.",
+      "sanbaiman": "Sanbaiman",
+      "yakuman": "Yakuman"
+    },
+    "doubleWindFu": {
+      "$": "Fu Vento Doppio",
+      "fourFu": "4 Fu",
+      "help": "Se conteggiare una coppia di venti che sia sia il vento del round che il vento del proprio posto come <B><H>4</H> fu</B> o <B><H>2</H> fu</B>.",
+      "twoFu": "2 Fu"
+    },
+    "doubleYakuman": {
+      "$": "Doppio Yakuman",
+      "help": "Se considerare determinati yaku speciali come valevoli di un <H>Doppio Yakuman</H>.<br />Questi includono:"
+    },
+    "gameMode": {
+      "$": "Modalità di gioco",
+      "fourPlayer": "Quattro Giocatori",
+      "help": "Il numero di giocatori nella partita.<br />Il mahjong a <B>Tre giocatori</B> utilizza le regole del sanma, che includono l'assenza di chii, l'assenza delle tessere da 2 a 8 dei caratteri, e il kita.",
+      "threePlayer": "Tre Giocatori"
+    },
+    "language": {
+      "$": "Lingua",
+      "help": "La lingua dell'interfaccia."
+    },
+    "northTiles": {
+      "$": "Tessere del Nord",
+      "help": "Nel mahjong a tre giocatori, le tessere del Nord possono essere dichiarate con il <B>kita</B> oppure usate come <B>yakuhai</B> indipendentemente dal vento. Con il <B>kita</B>, verrà aggiunto un contatore per calcolare le tessere del Nord.",
+      "kita": "Kita",
+      "yakuhai": "Yakuhai"
+    },
+    "noYakuDora": {
+      "$": "Dora senza Yaku",
+      "help": "Se calcolare le dora anche in assenza di yaku."
+    },
+    "noYakuFu": {
+      "$": "Fu senza Yaku",
+      "help": "Se calcolare i fu anche in assenza di yaku. Le mani avranno <H>0</H> han."
+    },
+    "openAllSimples": {
+      "$": "Tutte Semplici Aperta",
+      "help": "Se consentire il conteggio dello yaku Tutte Semplici se la mano contiene combinazioni aperte."
+    },
+    "otherScoring": {
+      "$": "Altri Punteggi",
+      "help": "Se mostrare i contatori per aggiungere han extra di yaku, dora e yakuman.<br />Questi possono essere utilizzati per scopi come i cinque rossi extra, altre dora e yaku locali non supportati."
+    },
+    "paoPayment": {
+      "$": "Pagamento Pao",
+      "help": "Se mostrare la possibilità di distribuire i punti utilizzando la regola del pao.<br />Questa viene utilizzata quando un giocatore contribuisce alla creazione di uno <H>Yakuman</H>.<br />Con lo tsumo, il giocatore responsabile pagherà l'intero importo.<br />Con il ron, il giocatore responsabile e il giocatore che ha scartato pagheranno metà ciascuno."
+    },
+    "redFives": {
+      "$": "Cinque Rossi",
+      "disable": "0 Cinque Rossi",
+      "enable": "{{fives}} Cinque Rossi",
+      "help": "Il numero di cinque rossi disponibili nel calcolatore durante la creazione di una mano."
+    },
+    "roundedMangan": {
+      "$": "Mangan Arrotondato",
+      "help": "Se arrotondare per eccesso a <H>Mangan</H> le mani che valgono <H>4</H> han <H>30</H> fu o <H>3</H> han <H>60</H> fu.<br />In caso contrario, varranno i consueti 2000/3900 e 7700 (non-dealer) oppure 3900 e 11600 (dealer).",
+      "noRounding": "Nessun Arrotondamento",
+      "rounded": "Arrotondato"
+    },
+    "showTileNames": {
+      "$": "Mostra Nomi delle Tessere",
+      "help": "Se mostrare una breve abbreviazione del nome della tessera nell'angolo delle tessere."
+    },
+    "theme": {
+      "$": "Tema",
+      "help": "Il tema dei colori dell'interfaccia. Disattiva il tema attualmente selezionato per ripristinare il tema di sistema."
+    },
+    "toggleAll": "Inverti Tutti",
+    "toggleLocalYaku": "Inverti Yaku Locali",
+    "toggleYaku": {
+      "$": "Inverti Yaku",
+      "help": "Attiva o disattiva gli yaku disponibili nel calcolatore.<br />Gli <B>Yaku opzionali</B> sono alcuni dei consueti yaku, attivi di default. Possono essere disattivati se necessario.<br />Gli <B>Yaku locali</B> sono generalmente meno comuni e sono disattivati di default.",
+      "local": "Yaku Locali (+{{length}})",
+      "optional": "Yaku Opzionali (-{{length}})"
+    },
+    "tsumoPoints": {
+      "$": "Punti Tsumo",
+      "bisection": "Dimezzamento",
+      "help": "La distribuzione dei punti quando un giocatore vince con tsumo.<br />Se è attiva la <B>Perdita</B>, i punti base sono gli stessi di una partita a quattro giocatori. Di fatto, il giocatore vincente perde i punti derivanti dal giocatore del Nord mancante. Se è attivo il <B>Dimezzamento</B>, i punti base includeranno i punti del giocatore del Nord che sarebbero dovuti essere pagati. Di fatto, gli altri due giocatori pagheranno di più.",
+      "loss": "Perdita"
+    },
+    "yakumanStacking": {
+      "$": "Cumulo di Yakuman",
+      "help": "Se consentire il cumulo di più <H>Yakuman</H> insieme o porre il limite massimo a un singolo <H>Yakuman</H>.<br />Anche i <H>Doppi Yakuman</H> vengono disattivati se questa opzione è disattivata."
+    }
+  },
+  "yaku": {
+    "akadora": {
+      "$": "Cinque Rossi",
+      "help": ""
+    },
+    "bakazeEast": {
+      "$": "Vento Prevalente (Est)",
+      "help": ""
+    },
+    "bakazeNorth": {
+      "$": "Vento Prevalente (Nord)",
+      "help": ""
+    },
+    "bakazeSouth": {
+      "$": "Vento Prevalente (Sud)",
+      "help": ""
+    },
+    "bakazeWest": {
+      "$": "Vento Prevalente (Ovest)",
+      "help": ""
+    },
+    "benikujaku": {
+      "$": "Pavone Rosso",
+      "help": "Una mano composta unicamente utilizzando tessere rosse di bambù (1, 5, 7, 9) e/or il drago rosso."
+    },
+    "chankan": {
+      "$": "Rubare un Kan",
+      "help": "Vittoria ai danni di un giocatore che aggiorna un pon in un kan."
+    },
+    "chiihou": {
+      "$": "Benedizione della Terra",
+      "help": "Dichiarazione di tsumo al tuo primo turno come non-dealer. Le chiamate la annullano."
+    },
+    "chiitoitsu": {
+      "$": "Sette Coppie",
+      "help": "Una mano composta da sette coppie. Un'eccezione alla consueta composizione della mano di quattro combinazioni e una coppia."
+    },
+    "chiniisou": {
+      "$": "Colore Puro",
+      "help": "Una mano composta interamente da un solo seme."
+    },
+    "chinroutou": {
+      "$": "Tutte Terminali",
+      "help": "Una mano composta interamente da tessere terminali."
+    },
+    "chun": {
+      "$": "Drago Rosso",
+      "help": ""
+    },
+    "chuurenpoutou": {
+      "$": "Nove Porte",
+      "help": "Una mano composta dalle tessere <B>1112345678999</B> dello stesso seme più una tessera extra dello stesso seme."
+    },
+    "daichiishin": {
+      "$": "Sette Grandi Stelle",
+      "help": "Una mano di Sette Coppie composta da tutte e sette le tessere degli onori. Non si combina con Tutti Onori."
+    },
+    "daichikurin": {
+      "$": "Foresta di Bambù",
+      "help": "Una mano di Sette Coppie composta dalle tessere da 2 a 8 di bambù."
+    },
+    "daisangen": {
+      "$": "Tre Grandi Draghi",
+      "help": "Una combinazione di ciascun drago."
+    },
+    "daisharin": {
+      "$": "Grandi Ruote",
+      "help": "Una mano di Sette Coppie composta dalle tessere da 2 a 8 di cerchi."
+    },
+    "dasuurin": {
+      "$": "Vicini Numerosi",
+      "help": "Una mano di Sette Coppie composta dalle tessere da 2 a 8 di caratteri."
+    },
+    "daisuushii": {
+      "$": "Quattro Grandi Venti",
+      "help": "Una combinazione di ciascun vento."
+    },
+    "dora": {
+      "$": "Dora",
+      "help": ""
+    },
+    "doubleriichi": {
+      "$": "Doppio Riichi",
+      "help": "Dichiarare riichi con una scommessa di 1000 punti quando si è in tenpai al proprio primo turno. Le chiamate la annullano. Non è più possibile modificare la mano; i pescapesca vengono scartati a meno che non portino alla vittoria."
+    },
+    "haiteiraoyue": {
+      "$": "In Fondo al Mare",
+      "help": "Vittoria sull'ultimo pescaggio dal muro."
+    },
+    "haku": {
+      "$": "Drago Bianco",
+      "help": ""
+    },
+    "hatsu": {
+      "$": "Drago Verde",
+      "help": ""
+    },
+    "honchantaiyaochuu": {
+      "$": "Mano Semiesterna",
+      "help": "Tutte le combinazioni di tessere nella mano contengono una terminale o un onore."
+    },
+    "honiisou": {
+      "$": "Mezzo Colore",
+      "help": "Una mano composta unicamente da un solo seme e tessere degli onori."
+    },
+    "honroutou": {
+      "$": "Tutte Terminali e Onori",
+      "help": "Una mano composta interamente da tessere terminali e onori."
+    },
+    "houteiraoyui": {
+      "$": "In Fondo al Fiume",
+      "help": "Vittoria sull'ultimo scarto del muro."
+    },
+    "hyakumangoku": {
+      "$": "Un Milione di Koku",
+      "help": "Una mano di colore puro di caratteri, tale che la somma dei valori numerici sia almeno pari a 100."
+    },
+    "iipeikou": {
+      "$": "Sequenza Doppia Pura",
+      "help": "Una mano con due sequenze identiche."
+    },
+    "ikkitsuukan": {
+      "$": "Scala Pura",
+      "help": "Le sequenze <B>123</B>, <B>456</B>, <B>789</B> in un unico seme."
+    },
+    "ippatsu": {
+      "$": "Ippatsu",
+      "help": "Un han <H>1</H> addizionale se si vince prima del proprio scarto successivo dopo aver chiamato il riichi. Le chiamate la annullano."
+    },
+    "isshokusanjun": {
+      "$": "Sequenza Tripla Pura",
+      "help": "Una mano contenente tre sequenze identiche nello stesso seme."
+    },
+    "jikazeEast": {
+      "$": "Vento del Posto (Est)",
+      "help": ""
+    },
+    "jikazeNorth": {
+      "$": "Vento del Posto (Nord)",
+      "help": ""
+    },
+    "jikazeSouth": {
+      "$": "Vento del Posto (Sud)",
+      "help": ""
+    },
+    "jikazeWest": {
+      "$": "Vento del Posto (Ovest)",
+      "help": ""
+    },
+    "junchantaiyaochuu": {
+      "$": "Mano Completamente Esterna",
+      "help": "Tutte le combinazioni di tessere nella mano contengono una terminale."
+    },
+    "junseichuurenpoutou": {
+      "$": "Nove Porte Pure",
+      "help": "Con Nove Porte, vittoria con un'attesa a nove uscite. Ovvero, la tua mano in tenpai è esattamente <B>1112345678999</B>."
+    },
+    "kita": {
+      "$": "Kita",
+      "help": ""
+    },
+    "kokuiisou": {
+      "$": "Tutto Nero",
+      "help": "Una mano composta unicamente utilizzando tessere nere di cerchi (2, 4, 8) e/or le tessere dei venti."
+    },
+    "kokushimusou": {
+      "$": "Tredici Orfani",
+      "help": "Una mano con ciascuna delle tredici diverse tessere terminali e onori, più una terminale o onore extra. In alcune varianti di regole, il ron può essere consentito su un kan chiuso della tessera vincente."
+    },
+    "kokushimusoujuusanmenmachi": {
+      "$": "Tredici Orfani con Attesa a Tredici Uscite",
+      "help": "Con Tredici Orfani, vittoria con un'attesa a tredici uscite. Ovvero, la tua mano in tenpai possiede già una di ciascuna tessera terminale e onore."
+    },
+    "menzenchintsumohou": {
+      "$": "Mano Completamente Nascosta",
+      "help": "Vittoria con tsumo con una mano chiusa."
+    },
+    "otakazeNorth": {
+      "$": "Vento Ospite (Nord)",
+      "help": ""
+    },
+    "other": {
+      "dora": {
+        "$": "Dora",
+        "help": "Un indicatore dora viene girato all'inizio di ogni mano, indicando la dora. Un altro indicatore dora viene girato per ogni kan. Gli indicatori uradora sottostanti vengono rivelati in caso di vittoria con riichi.<br />Anche i cinque rossi sono dora. Ogni dora in mano conta come <H>1</H> han.<br />I venti seguono l'ordine Est → Sud → Ovest → Nord → Est.<br />I draghi seguono l'ordine Bianco → Verde → Rosso → Bianco."
+      },
+      "kazehai": {
+        "$": "Yakuhai (Venti)",
+        "help": "Il vento del round e/or il vento del posto. Ottieni <H>1</H> han per ogni combinazione. Ottieni <H>2</H> han se il vento è sia del round che del posto."
+      },
+      "kita": {
+        "$": "Kita",
+        "help": "Nel mahjong a tre giocatori, le tessere del Nord che sono state chiamate contano come dora. In alcune varianti delle regole, il Nord conta invece come yakuhai per tutti i giocatori."
+      },
+      "nagashimangan": {
+        "$": "Mangan al Pareggio",
+        "help": "In caso di pareggio per esaurimento tessere, viene assegnato un <H>Mangan</H> se i tuoi scarti contengono solo terminali e onori e nessuno di essi è stato chiamato dagli altri giocatori. Questo può essere calcolato come un <H>Mangan</H>, <H>5</H> han, ecc. a seconda delle varianti di regole."
+      },
+      "sangenpai": {
+        "$": "Yakuhai (Draghi)",
+        "help": "Uno qualsiasi dei tre draghi. Ottieni <H>1</H> han per ogni combinazione."
+      }
+    },
+    "otherDora": {
+      "$": "Altre Dora",
+      "help": ""
+    },
+    "otherYaku": {
+      "$": "Altri Yaku",
+      "help": ""
+    },
+    "otherYakuman": {
+      "$": "Altri Yakuman",
+      "help": ""
+    },
+    "pinfu": {
+      "$": "Pinfu",
+      "help": "Una mano del valore di <H>0</H> fu in base alla sua composizione. Ovvero, contiene solo sequenze, una coppia non-yakuhai (non un drago o un vento di round/posto) e un'attesa bilaterale aperta."
+    },
+    "renhou": {
+      "$": "Benedizione dell'Uomo",
+      "help": "Dichiarazione di ron prima del tuo primo turno. Le chiamate la annullano."
+    },
+    "riichi": {
+      "$": "Riichi",
+      "help": "Dichiarare riichi con una scommessa di 1000 punti quando si è in tenpai (a una tessera dalla vittoria). Non è più possibile modificare la mano; i pescapesca vengono scartati a meno che non portino alla vittoria."
+    },
+    "rinshankaihou": {
+      "$": "Dopo un Kan",
+      "help": "Vittoria sul pescaggio dal muro morto dopo aver chiamato kan. Nel mahjong a tre giocatori, conta anche una vittoria sul pescaggio dal muro morto dopo aver chiamato kita."
+    },
+    "ryanpeikou": {
+      "$": "Due Volte Sequenza Doppia Pura",
+      "help": "Due istanze separate di due sequenze identiche. Non si combina con Sette Coppie."
+    },
+    "ryuuiisou": {
+      "$": "Tutto Verde",
+      "help": "Una mano composta unicamente utilizzando tessere verdi di bambù (2, 3, 4, 6, 8) e/or il drago verde. Il drago verde potrebbe essere richiesto in alcune varianti delle regole."
+    },
+    "sanankou": {
+      "$": "Tre Triplette Nascoste",
+      "help": "Tre triplette nascoste (non chiamate con pon, kan aperto o ron). Le altre combinazioni possono essere aperte."
+    },
+    "sankantsu": {
+      "$": "Tre Quad",
+      "help": "Una mano contenente tre kan."
+    },
+    "sanrenkou": {
+      "$": "Tre Triplette Consecutive",
+      "help": "Una mano contenente tre triplette nello stesso seme dove i loro numeri avanzano di uno."
+    },
+    "sanshokudoujun": {
+      "$": "Mista Sequenza Tripla",
+      "help": "La stessa sequenza in ciascun seme."
+    },
+    "sanshokudoukou": {
+      "$": "Triple Triplette",
+      "help": "Una mano contenente la stessa tripletta in ciascun seme."
+    },
+    "shiiaruraotai": {
+      "$": "Tutte Chiamate",
+      "help": "Una mano con quattro combinazioni aperte (escluso quindi il kan chiuso) in attesa di una singola tessera per il completamento. Può vincere sia per tsumo che per ron."
+    },
+    "shousangen": {
+      "$": "Tre Piccoli Draghi",
+      "help": "Due combinazioni e una coppia di ciascun drago. I <H>2</H> han derivanti dall'avere due triplette di draghi sono comunque inclusi."
+    },
+    "shousuushii": {
+      "$": "Quattro Piccoli Venti",
+      "help": "Tre combinazioni e una coppia di ciascun vento."
+    },
+    "suuankan": {
+      "$": "Quattro Quad",
+      "help": "Una mano contenente quattro kan."
+    },
+    "suuankou": {
+      "$": "Quattro Triplette Nascoste",
+      "help": "Quattro triplette nascoste (non chiamate con pon, kan aperto o ron)."
+    },
+    "suuankoutankimachi": {
+      "$": "Quattro Triplette Nascoste con Attesa Singola",
+      "help": "Con quattro triplette nascoste, vittoria con un'attesa su una singola tessera (formando una coppia, consentendo il ron)."
+    },
+    "tanyaochuu": {
+      "$": "Tutte Semplici",
+      "help": "Una mano composta unicamente da tessere da 2 a 8. Questo yaku potrebbe richiedere la mano chiusa in alcune varianti delle regole."
+    },
+    "tenhou": {
+      "$": "Benedizione del Cielo",
+      "help": "Dichiarazione di tsumo al tuo primo turno come dealer. Le chiamate la annullano."
+    },
+    "toitoihou": {
+      "$": "Solo Triplette",
+      "help": "Una mano composta unicamente da triplette."
+    },
+    "tsuuiisou": {
+      "$": "Tutti Onori",
+      "help": "Una mano composta interamente da tessere degli onori."
+    },
+    "uradora": {
+      "$": "Uradora",
+      "help": ""
+    },
+    "uumensai": {
+      "$": "Tutti i Tipi",
+      "help": "Una mano contenente tutti e cinque i diversi semi (caratteri, cerchi, bambù, venti e draghi)."
+    }
+  }
+}
