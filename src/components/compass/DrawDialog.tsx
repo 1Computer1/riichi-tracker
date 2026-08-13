@@ -180,7 +180,6 @@ export function DrawDialog({
                     key={i}
                     tile={`${nextWind(bottomWind, i, isSanma)}z`}
                     dora={violationPlayer === i}
-                    forced={game.riichi[i]}
                     onClick={() => {
                       setViolationPlayer(i);
                     }}
